@@ -63,6 +63,7 @@ UDP does offer the ability to "broadcast" data across a network--simply specify 
 		<Item Name="Simple UDP - Sender.vi" Type="VI" URL="../Simple UDP - Sender.vi"/>
 		<Item Name="Simple UDP - Receiver.vi" Type="VI" URL="../Simple UDP - Receiver.vi"/>
 		<Item Name="Simple UDP - Sender2.vi" Type="VI" URL="../Simple UDP - Sender2.vi"/>
+		<Item Name="Simple UDP - Sender_and_receiver.vi" Type="VI" URL="../Simple UDP - Sender_and_receiver.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Simple Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Simple Error Handler.vi"/>
