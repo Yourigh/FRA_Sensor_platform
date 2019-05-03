@@ -1,0 +1,4 @@
+[faild] IP = 192.168.0.5
+[success] IP = 192.168.0.5 # username = s1 # TIME = 16:03:36 # DATE = 01-May-19
+[success] IP = 192.168.0.3 # username = s2 # TIME = 16:05:26 # DATE = 01-May-19
+[success] IP = 192.168.0.5 # username = s2 # TIME = 16:09:20 # DATE = 01-May-19
