@@ -1,0 +1,9 @@
+JLINK	JLINK	cable	ESP32	ESP32	huzzah
+pin	name	color	pin	signal
+----------------------------------------------
+4	GND	black	1	GND	GND
+5	TDI	white	14	IO12	12
+7	TMS	grey	13	IO14	14
+9	TCK	purple	16	IO13	13
+13	TDO	blue	23	IO2	directly to pin 24 of ESP32
+15	nRST	green	3	EN	RST

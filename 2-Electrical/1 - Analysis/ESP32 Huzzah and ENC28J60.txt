@@ -1,0 +1,17 @@
+ETH*	name	cable		ESP32	ESP32	Huzzah
+pin				VSPI	IO	pin
+-------------------------------------------------------
+10	CS	y-purple	29	IO5	5
+11	MOSI	y-grey		37	IO23	23
+12	MISO	y-white		31	IO19	19
+13	SCK	grey		30	IO18	18
+GND		white				GND
+5V		purple				USB
+
+
+*Deek-robot
+NANO Ethernet Shield V1.0
+
+note:
+SPID = MOSI = data out
+SPIQ = MISO = data in
