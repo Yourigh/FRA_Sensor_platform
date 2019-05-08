@@ -19,3 +19,14 @@ esp docs:
 5	MTMS / GPIO14	TMS
 6	GND	GND
 https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/jtag-debugging/configure-other-jtag.html
+
+JLINK	JLINK	ESP32	ESP32	Feather
+pin	name	pin	signal	huzzah32
+----------------------------------------------
+1	Vcc			3V
+4	GND	1	GND	GND
+5	TDI	14	IO12	12
+7	TMS	13	IO14	14
+9	TCK	16	IO13	13
+13	TDO	23	IO15	15
+15	nRST	3	EN	RST
