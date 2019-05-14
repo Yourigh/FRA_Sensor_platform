@@ -747,7 +747,7 @@ uint16_t EtherCard::packetLoop (uint16_t plen) {
 #if ETHERCARD_UDPSERVER
     if (ether.udpServerListening() && gPB[IP_PROTO_P]==IP_PROTO_UDP_V)
     {   //Call UDP server handler (callback) if one is defined for this packet
-        if(ether.udpServerHasProcessedPacket(plen))
+        if(ether.udpServerHasProcessedPacket(plen)) //SENDING UDP
             return 0; //An UDP server handler (callback) has processed this packet
     }
 #endif

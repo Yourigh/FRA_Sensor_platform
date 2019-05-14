@@ -60,7 +60,7 @@ bool EtherCard::udpServerHasProcessedPacket(uint16_t plen) {
         if(gPB[UDP_DST_PORT_H_P] == (listeners[i].port >> 8) && gPB[UDP_DST_PORT_L_P] == ((byte) listeners[i].port) && listeners[i].listening)
         {
             uint16_t datalen = (uint16_t) (gPB[UDP_LEN_H_P] << 8)  + gPB[UDP_LEN_L_P] - UDP_HEADER_LEN;
-            listeners[i].callback(
+            listeners[i].callback( //this calls callback function, the print to Serial now
                 listeners[i].port,
                 gPB + IP_SRC_P,
                 (gPB[UDP_SRC_PORT_H_P] << 8) | gPB[UDP_SRC_PORT_L_P],

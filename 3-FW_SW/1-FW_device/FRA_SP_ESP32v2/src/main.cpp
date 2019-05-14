@@ -9,19 +9,25 @@
 #include <EtherCard.h>
 #include <IPAddress.h>
 
-#define STATIC 1  // set to 1 to disable DHCP (adjust myip/gwip values below)
+#define STATIC 0  // set to 1 to disable DHCP (adjust myip/gwip values below)
 
 #if STATIC
 // ethernet interface ip address
-static byte myip[] = { 192,168,1,198 };
+static byte myip[] = { 192,168,0,10 };
 // gateway ip address
-static byte gwip[] = { 192,168,1,1 };
+static byte gwip[] = { 192,168,0,2 };
 #endif
 
 // ethernet mac address - must be unique on your network
 static byte mymac[] = { 0x70,0x69,0x69,0x2D,0x30,0x31 };
 
 byte Ethernet::buffer[500]; // tcp/ip send and receive buffer
+
+//UDP sender
+const int dstPort PROGMEM = 1337;
+const int srcPort PROGMEM = 4321;
+static byte destIp[] = { 192,168,0,210 }; // UDP unicast on network
+char textToSend[] = "test 123"; //debug
 
 //callback that prints received packets to the serial port
 void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
@@ -33,9 +39,9 @@ void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_por
   Serial.println(src_port);
 
 
-  Serial.print("src_port: ");
+  Serial.print("src_IP: ");
   ether.printIp(src_ip);
-  Serial.println("data: ");
+  Serial.println("\ndata: ");
   Serial.println(data);
 }
 
@@ -62,25 +68,37 @@ void setup(){
   ether.printIp("IP:  ", ether.myip);
   ether.printIp("GW:  ", ether.gwip);
   ether.printIp("DNS: ", ether.dnsip);
+  ether.printIp("Sending to: ", destIp);//Destination IP for sender
 
   //register udpSerialPrint() to port 1337
   ether.udpServerListenOnPort(&udpSerialPrint, 1337);
 
   //register udpSerialPrint() to port 42.
   ether.udpServerListenOnPort(&udpSerialPrint, 42);
+
+  //uint8_t ipDestinationAddress[IP_LEN];
+  //ether.parseIp(ipDestinationAddress, "192.168.0.210");
 }
 
+
 void loop(){
-  //this must be called for ethercard functions to work.
-  ether.packetLoop(ether.packetReceive());
-
-
 
   static uint32_t bl = 0;
+  static uint8_t count = 0;
+  
+
   if (millis()>(bl+100)){
     bl = millis();
     digitalWrite(33, !digitalRead(33));
+
+    textToSend[0] = count++; //debug scroll though ASCII table to see it moving
+  
+    ether.sendUdp(textToSend, sizeof(textToSend), srcPort, destIp, dstPort );
   }
+  //this must be called for ethercard functions to work.
+  ether.packetLoop(ether.packetReceive());
+  
+  
 }
 
 /*
@@ -116,23 +134,4 @@ import hypermedia.net.*;
  print(char(data[i]));
  println();
  }
-*/
-
-
-/*#include <Arduino.h>
-#include <EtherCard.h>
-
-void setup() {
-  // put your setup code here, to run once:
-  pinMode(33,OUTPUT);
-  Serial.begin(115200);
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-  delay(600);
-  digitalWrite(33,1);
-  delay(600);
-  digitalWrite(33,0);
-}
 */
