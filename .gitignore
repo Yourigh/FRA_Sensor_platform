@@ -1,6 +1,10 @@
 # Prerequisites
 *.d
 
+#VScode
+.pioenvs/
+.vscode/
+
 # Object files
 *.o
 *.ko
