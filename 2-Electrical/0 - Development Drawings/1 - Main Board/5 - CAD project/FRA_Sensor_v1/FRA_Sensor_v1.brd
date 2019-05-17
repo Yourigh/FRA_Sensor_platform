@@ -3610,6 +3610,10 @@ design rules under a new name.</description>
 <element name="L2" library="FRA_eagle_lib" package="VLS3012HBX-1R5M" value="TYS60451R5N-10 1.5uH" x="-71.12" y="-323.85"/>
 <element name="Q2" library="microbuilder" package="SOT23-WIDE" value="" x="-71.12" y="-330.2"/>
 <element name="Q3" library="microbuilder" package="SOT23-WIDE" value="" x="-71.12" y="-334.01"/>
+<element name="R31" library="resistor" package="R0603" value="47" x="-71.12" y="-339.09"/>
+<element name="R32" library="resistor" package="R0603" value="47" x="-71.12" y="-344.17"/>
+<element name="R47" library="resistor" package="R0603" value="47" x="-71.12" y="-349.25"/>
+<element name="R48" library="resistor" package="R0603" value="47" x="-71.12" y="-354.33"/>
 </elements>
 <signals>
 <signal name="N$1">
@@ -4388,9 +4392,13 @@ design rules under a new name.</description>
 </signal>
 <signal name="SCL">
 <contactref element="U2" pad="36"/>
+<contactref element="R47" pad="1"/>
+<wire x1="74.66" y1="58.31" x2="-71.97" y2="-349.25" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="SDA">
 <contactref element="U2" pad="33"/>
+<contactref element="R32" pad="1"/>
+<wire x1="70.85" y1="58.31" x2="-71.97" y2="-344.17" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="ADC">
 <contactref element="R14" pad="2"/>
@@ -5101,12 +5109,18 @@ design rules under a new name.</description>
 </signal>
 <signal name="VSPI_CS_ETH">
 <contactref element="U2" pad="37"/>
+<contactref element="R48" pad="1"/>
+<wire x1="75.93" y1="58.31" x2="-71.97" y2="-354.33" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VSPI_MISO">
 <contactref element="U2" pad="31"/>
+<contactref element="R31" pad="1"/>
+<wire x1="68.31" y1="58.31" x2="-71.97" y2="-339.09" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VSPI_MOSI">
 <contactref element="U2" pad="30"/>
+<contactref element="R17" pad="1"/>
+<wire x1="-71.97" y1="-231.14" x2="67.04" y2="58.31" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="VSS2">
 <contactref element="J4" pad="6"/>
