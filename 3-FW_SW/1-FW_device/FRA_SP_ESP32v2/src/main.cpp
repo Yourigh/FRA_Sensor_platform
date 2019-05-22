@@ -6,6 +6,7 @@
 //
 // License: GPLv2
 
+//For Ethernet
 #include <EtherCard.h>
 #include <IPAddress.h>
 
@@ -19,7 +20,7 @@ static byte gwip[] = { 192,168,0,2 };
 #endif
 
 // ethernet mac address - must be unique on your network
-static byte mymac[] = { 0x70,0x69,0x69,0x2D,0x30,0x31 };
+uint8_t chipid[6];
 
 byte Ethernet::buffer[500]; // tcp/ip send and receive buffer
 
@@ -46,17 +47,28 @@ void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_por
 }
 
 void setup(){
+  #define ETH_NRST_PIN 4
+  pinMode(ETH_NRST_PIN,OUTPUT);
+  digitalWrite(ETH_NRST_PIN,0);
   pinMode(33,OUTPUT);
+  pinMode(2,OUTPUT); //LED devkit V1
   pinMode(27,OUTPUT);
   digitalWrite(27,0);
-  Serial.begin(921600);
+  Serial.begin(115200);
   Serial.println(F("\n[backSoon]"));
   delay(300);
   digitalWrite(33,1);
+  digitalWrite(2,1);
   delay(300);
   digitalWrite(33,0);
+  digitalWrite(2,0);
+  digitalWrite(ETH_NRST_PIN,1);
+  delay(10);
+
+  esp_efuse_read_mac(chipid);
+  chipid[5]++; //use MAC address for ETH one larger than WiFi MAC (WiFi MAC is chip ID)
   // Change 'SS' to your Slave Select pin, if you arn't using the default pin
-  if (ether.begin(sizeof Ethernet::buffer, mymac, 23) == 0)
+  if (ether.begin(sizeof Ethernet::buffer, chipid, 23) == 0)
     Serial.println(F("Failed to access Ethernet controller"));
 #if STATIC
   ether.staticSetup(myip, gwip);
@@ -65,6 +77,9 @@ void setup(){
     Serial.println(F("DHCP failed"));
 #endif
 
+  Serial.printf("ETH  MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",chipid[0], chipid[1], chipid[2], chipid[3], chipid[4], chipid[5]);
+  chipid[5]--;
+  Serial.printf("WiFi MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",chipid[0], chipid[1], chipid[2], chipid[3], chipid[4], chipid[5]);
   ether.printIp("IP:  ", ether.myip);
   ether.printIp("GW:  ", ether.gwip);
   ether.printIp("DNS: ", ether.dnsip);
@@ -78,6 +93,7 @@ void setup(){
 
   //uint8_t ipDestinationAddress[IP_LEN];
   //ether.parseIp(ipDestinationAddress, "192.168.0.210");
+
 }
 
 
@@ -90,7 +106,7 @@ void loop(){
   if (millis()>(bl+100)){
     bl = millis();
     digitalWrite(33, !digitalRead(33));
-
+    digitalWrite(2, !digitalRead(2));
     textToSend[0] = count++; //debug scroll though ASCII table to see it moving
   
     ether.sendUdp(textToSend, sizeof(textToSend), srcPort, destIp, dstPort );

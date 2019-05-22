@@ -384,14 +384,22 @@ byte ENC28J60::initialize (uint16_t size, const byte* macaddr, byte csPin) {
     bufferSize = size;
     //if (bitRead(SPCR, SPE) == 0)
         initSPI();
+
+    Serial.write("SPI init ok\n");
     selectPin = csPin;
     pinMode(selectPin, OUTPUT);
     disableChip();
 
     writeOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
+    Serial.write("Reset written ok\n");
     delay(2); // errata B7/2
+    uint32_t timeout;
+    timeout = millis();
     while (!readOp(ENC28J60_READ_CTRL_REG, ESTAT) & ESTAT_CLKRDY)
-        ;
+        if ((timeout+5000)<millis()) {
+            Serial.write("Ethernet answer timeout (5s)\n");
+            break;
+        }
 
     writeReg(ERXST, RXSTART_INIT);
     writeReg(ERXRDPT, RXSTART_INIT);
