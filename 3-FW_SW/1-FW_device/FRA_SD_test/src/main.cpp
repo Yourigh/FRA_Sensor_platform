@@ -7,11 +7,11 @@
 
 #define SD_CHIP_SELECT  17  // SD chip select pin
 #define USE_DS1307       0  // set nonzero to use DS1307 RTC
-#define LOG_INTERVAL  1000  // mills between entries
-#define SENSOR_COUNT     3  // number of analog pins to log
+#define LOG_INTERVAL    10  // mills between entries
+#define SENSOR_COUNT     3  // number of analog pins to log   // JR, not working now, edited with maua; commands
 #define ECHO_TO_SERIAL   1  // echo data to serial port if nonzero
 #define WAIT_TO_START    1  // Wait for serial input in setup()
-#define ADC_DELAY       10  // ADC delay for high impedence sensors
+#define ADC_DELAY        0  // ADC delay for high impedence sensors
 
 // file system object
 SdFat sd;
@@ -65,6 +65,13 @@ ostream& operator << (ostream& os, DateTime& dt) {
 #endif  // USE_DS1307
 //------------------------------------------------------------------------------
 void setup() {
+  #define ETH_CS 23
+  #define ETH_EN 4
+  pinMode(ETH_CS,OUTPUT);
+  digitalWrite(ETH_CS,1);
+  pinMode(ETH_EN,OUTPUT);
+  digitalWrite(ETH_EN,1);
+
   Serial.begin(115200);
   
   // Wait for USB Serial.
@@ -100,7 +107,7 @@ void setup() {
 
   // Initialize at the highest speed supported by the board that is
   // not over 50 MHz. Try a lower speed if SPI errors occur.
-  if (!sd.begin(SD_CHIP_SELECT, SD_SCK_MHZ(50))) {
+  if (!sd.begin(SD_CHIP_SELECT, SD_SCK_MHZ(20))) {  //TO INCREASE ON FINAL PCB
     sd.initErrorHalt();
   }
 
@@ -161,7 +168,8 @@ void loop() {
   bout << ',' << now;
 #endif  // USE_DS1307
 
-  // read analog pins and format data
+  // read analog pins and format data 
+/*
   for (uint8_t ia = 0; ia < SENSOR_COUNT; ia++) {
 #if ADC_DELAY
     analogRead(ia);
@@ -169,6 +177,11 @@ void loop() {
 #endif  // ADC_DELAY
     bout << ',' << analogRead(ia);
   }
+*/
+//MANUAL for ESP32 JR
+bout << ',' << analogRead(A2);
+bout << ',' << analogRead(A3);
+bout << ',' << analogRead(A4);
   bout << endl;
 
   // log data and flush to SD
