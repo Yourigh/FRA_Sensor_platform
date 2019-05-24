@@ -17565,7 +17565,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="SUPPLY19" library="supply2" deviceset="GND" device=""/>
 <part name="R21" library="resistor" deviceset="R-EU_" device="R0603" value="0"/>
 <part name="D3" library="nxp_60" deviceset="BAS17" device=""/>
-<part name="LED_12" library="pinhead" deviceset="PINHD-1X4" device="" value="LED_ring_12"/>
+<part name="SENSOR_1" library="pinhead" deviceset="PINHD-1X4" device="" value="SENS1"/>
 <part name="R25" library="resistor" deviceset="R-EU_" device="R0603" value="10K"/>
 <part name="C16" library="resistor" deviceset="C-EU" device="C0603K" value="1n"/>
 <part name="SUPPLY26" library="supply2" deviceset="GND" device=""/>
@@ -17807,6 +17807,15 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="SUPPLY50" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
 <part name="SUPPLY54" library="supply2" deviceset="GND" device=""/>
 <part name="U$7" library="FRA_eagle_lib" deviceset="ETH_MODULE_OUTLINE" device=""/>
+<part name="SENSOR_2" library="pinhead" deviceset="PINHD-1X4" device="" value="SENS1"/>
+<part name="SENSOR_3" library="pinhead" deviceset="PINHD-1X4" device="" value="SENS1"/>
+<part name="SENSOR_4" library="pinhead" deviceset="PINHD-1X4" device="" value="SENS1"/>
+<part name="SENSOR_5" library="pinhead" deviceset="PINHD-1X4" device="" value="SENS1"/>
+<part name="SENSOR_6" library="pinhead" deviceset="PINHD-1X4" device="" value="SENS1"/>
+<part name="SENSOR_7" library="pinhead" deviceset="PINHD-1X4" device="" value="SENS1"/>
+<part name="SENSOR_8" library="pinhead" deviceset="PINHD-1X4" device="" value="SENS1"/>
+<part name="SENSOR_9" library="pinhead" deviceset="PINHD-1X4" device="" value="SENS1"/>
+<part name="SENSOR_10" library="pinhead" deviceset="PINHD-1X4" device="" value="SENS1"/>
 </parts>
 <sheets>
 <sheet>
@@ -19804,7 +19813,7 @@ every port???</text>
 <instance part="SUPPLY84" gate="G$1" x="38.1" y="91.44"/>
 <instance part="SUPPLY85" gate="G$1" x="53.34" y="86.36"/>
 <instance part="D3" gate="G$1" x="30.48" y="7.62" rot="R270"/>
-<instance part="LED_12" gate="A" x="53.34" y="7.62" smashed="yes">
+<instance part="SENSOR_1" gate="A" x="53.34" y="7.62" smashed="yes">
 <attribute name="NAME" x="46.99" y="15.875" size="1.778" layer="95"/>
 </instance>
 <instance part="T3" gate="G$1" x="12.7" y="12.7" smashed="yes">
@@ -19819,6 +19828,33 @@ every port???</text>
 <instance part="U$5" gate="G$1" x="73.66" y="5.08"/>
 <instance part="U$6" gate="G$1" x="63.5" y="5.08"/>
 <instance part="LIGHT_DR1" gate="G$1" x="68.58" y="15.24"/>
+<instance part="SENSOR_2" gate="A" x="96.52" y="10.16" smashed="yes">
+<attribute name="NAME" x="90.17" y="18.415" size="1.778" layer="95"/>
+</instance>
+<instance part="SENSOR_3" gate="A" x="119.38" y="10.16" smashed="yes">
+<attribute name="NAME" x="113.03" y="18.415" size="1.778" layer="95"/>
+</instance>
+<instance part="SENSOR_4" gate="A" x="119.38" y="35.56" smashed="yes">
+<attribute name="NAME" x="113.03" y="43.815" size="1.778" layer="95"/>
+</instance>
+<instance part="SENSOR_5" gate="A" x="99.06" y="35.56" smashed="yes">
+<attribute name="NAME" x="92.71" y="43.815" size="1.778" layer="95"/>
+</instance>
+<instance part="SENSOR_6" gate="A" x="78.74" y="27.94" smashed="yes">
+<attribute name="NAME" x="72.39" y="36.195" size="1.778" layer="95"/>
+</instance>
+<instance part="SENSOR_7" gate="A" x="58.42" y="27.94" smashed="yes">
+<attribute name="NAME" x="52.07" y="36.195" size="1.778" layer="95"/>
+</instance>
+<instance part="SENSOR_8" gate="A" x="40.64" y="27.94" smashed="yes">
+<attribute name="NAME" x="34.29" y="36.195" size="1.778" layer="95"/>
+</instance>
+<instance part="SENSOR_9" gate="A" x="25.4" y="30.48" smashed="yes">
+<attribute name="NAME" x="19.05" y="38.735" size="1.778" layer="95"/>
+</instance>
+<instance part="SENSOR_10" gate="A" x="0" y="33.02" smashed="yes">
+<attribute name="NAME" x="-6.35" y="41.275" size="1.778" layer="95"/>
+</instance>
 </instances>
 <busses>
 </busses>
