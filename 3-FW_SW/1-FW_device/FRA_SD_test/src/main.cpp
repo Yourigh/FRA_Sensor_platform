@@ -9,8 +9,8 @@
 #define USE_DS1307       0  // set nonzero to use DS1307 RTC
 #define LOG_INTERVAL    10  // mills between entries
 #define SENSOR_COUNT     3  // number of analog pins to log   // JR, not working now, edited with maua; commands
-#define ECHO_TO_SERIAL   1  // echo data to serial port if nonzero
-#define WAIT_TO_START    1  // Wait for serial input in setup()
+#define ECHO_TO_SERIAL   0  // echo data to serial port if nonzero
+#define WAIT_TO_START    0  // Wait for serial input in setup()
 #define ADC_DELAY        0  // ADC delay for high impedence sensors
 
 // file system object
@@ -71,6 +71,7 @@ void setup() {
   digitalWrite(ETH_CS,1);
   pinMode(ETH_EN,OUTPUT);
   digitalWrite(ETH_EN,1);
+  pinMode(2,OUTPUT);
 
   Serial.begin(115200);
   
@@ -160,7 +161,7 @@ void loop() {
   } while (m % LOG_INTERVAL);
 
   // use buffer stream to format line
-  obufstream bout(buf, sizeof(buf));s
+  obufstream bout(buf, sizeof(buf));
 
   //last row write time was:
   bout << a << ","; //log write time
@@ -188,7 +189,7 @@ bout << ',' << analogRead(A2);
 bout << ',' << analogRead(A3);
 bout << ',' << analogRead(A4);
   bout << endl;
-
+digitalWrite(2,~digitalRead(2));
   // log data and flush to SD
   
   a = micros(); //measure write time
@@ -214,5 +215,6 @@ bout << ',' << analogRead(A4);
   }
   logfile.close();
   cout << F("Done!");
+  digitalWrite(2,0);
   SysCall::halt();
 }
