@@ -132,7 +132,7 @@ void setup() {
 
   // format header in buffer
   obufstream bout(buf, sizeof(buf));
-
+  bout << F("w_duration  ,");
   bout << F("millis");
 
 #if USE_DS1307
@@ -149,6 +149,8 @@ void setup() {
 #endif  // ECHO_TO_SERIAL
 }
 //------------------------------------------------------------------------------
+unsigned long a;
+
 void loop() {
   uint32_t m;
 
@@ -158,7 +160,10 @@ void loop() {
   } while (m % LOG_INTERVAL);
 
   // use buffer stream to format line
-  obufstream bout(buf, sizeof(buf));
+  obufstream bout(buf, sizeof(buf));s
+
+  //last row write time was:
+  bout << a << ","; //log write time
 
   // start with time in millis
   bout << m;
@@ -185,8 +190,11 @@ bout << ',' << analogRead(A4);
   bout << endl;
 
   // log data and flush to SD
+  
+  a = micros(); //measure write time
   logfile << buf << flush;
-
+  a = micros() - a;
+  
   // check for error
   if (!logfile) {
     error("write data failed");
