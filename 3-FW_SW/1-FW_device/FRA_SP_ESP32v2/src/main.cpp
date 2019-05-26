@@ -10,6 +10,10 @@
 #include <EtherCard.h>
 #include <IPAddress.h>
 
+//For time
+#include <Time.h>
+#include <TimeLib.h>
+
 #define STATIC 0  // set to 1 to disable DHCP (adjust myip/gwip values below)
 
 #if STATIC
@@ -25,9 +29,9 @@ uint8_t chipid[6];
 byte Ethernet::buffer[500]; // tcp/ip send and receive buffer
 
 //UDP sender
-const int dstPort PROGMEM = 1337;
-const int srcPort PROGMEM = 4321;
-static byte destIp[] = { 192,168,0,210 }; // UDP unicast on network
+const int dstPort PROGMEM = 1111;
+const int srcPort PROGMEM = 1100;
+static byte destIp[] = { 192,168,0,5 }; // UDP unicast on network
 char textToSend[] = "test 123"; //debug
 
 //callback that prints received packets to the serial port
@@ -44,6 +48,15 @@ void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_por
   ether.printIp(src_ip);
   Serial.println("\ndata: ");
   Serial.println(data);
+
+  Serial.printf("DataHEX: %02x:%02x:%02x:%02x:%02x\n",data[0], data[1], data[2], data[3], data[4]);
+  uint32_t epoch_time = 0;
+  epoch_time = ((uint32_t)data[0]<<24) | ((uint32_t)data[1]<<16) | ((uint32_t)data[2]<<8) | ((uint32_t)data[3]);
+  Serial.printf("Epoch time received: %d\n",epoch_time);
+  if (epoch_time > 1558883838){ //sanity check, if pc is sending time from past May 26 2019, ignore
+    setTime(epoch_time);
+    Serial.printf("Epoch time accepted: %d\n",epoch_time);
+  }
 }
 
 void setup(){
@@ -86,68 +99,42 @@ void setup(){
   ether.printIp("Sending to: ", destIp);//Destination IP for sender
 
   //register udpSerialPrint() to port 1337
-  ether.udpServerListenOnPort(&udpSerialPrint, 1337);
-
+  ether.udpServerListenOnPort(&udpSerialPrint, 1100);
+/*
   //register udpSerialPrint() to port 42.
-  ether.udpServerListenOnPort(&udpSerialPrint, 42);
+  ether.udpServerListenOnPort(&udpSerialPrint, 42);*/
 
-  //uint8_t ipDestinationAddress[IP_LEN];
-  //ether.parseIp(ipDestinationAddress, "192.168.0.210");
-
+  
+  textToSend[0] = 0xAA;
+  textToSend[1] = 0xBB;
+  textToSend[2] = 1;
+  textToSend[3] = 1;
+  textToSend[4] = 4;
+  textToSend[5] = 0;
 }
 
 
 void loop(){
 
   static uint32_t bl = 0;
-  static uint8_t count = 0;
+  
   
 
-  if (millis()>(bl+100)){
+static uint8_t count = 1;
+  if (millis()>(bl+10000)){ //every 100ms
     bl = millis();
     digitalWrite(33, !digitalRead(33));
     digitalWrite(2, !digitalRead(2));
     textToSend[0] = count++; //debug scroll though ASCII table to see it moving
   
     ether.sendUdp(textToSend, sizeof(textToSend), srcPort, destIp, dstPort );
+
+    bl = millis();
+    Serial.printf("time: %d\n",now());
   }
   //this must be called for ethercard functions to work.
   ether.packetLoop(ether.packetReceive());
   
-  
+  //setTime(t);
+  //now();
 }
-
-/*
-//Processing sketch to send test UDP packets.
-
-import hypermedia.net.*;
-
- UDP udp;  // define the UDP object
-
-
- void setup() {
- udp = new UDP( this, 6000 );  // create a new datagram connection on port 6000
- //udp.log( true );     // <-- printout the connection activity
- udp.listen( true );           // and wait for incoming message
- }
-
- void draw()
- {
- }
-
- void keyPressed() {
- String ip       = "192.168.0.200";  // the remote IP address
- int port        = 1337;    // the destination port
-
- udp.send("Greetings via UDP!", ip, port );   // the message to send
-
- }
-
- void receive( byte[] data ) {       // <-- default handler
- //void receive( byte[] data, String ip, int port ) {  // <-- extended handler
-
- for(int i=0; i < data.length; i++)
- print(char(data[i]));
- println();
- }
-*/
