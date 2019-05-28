@@ -32,7 +32,7 @@ byte Ethernet::buffer[500]; // tcp/ip send and receive buffer
 const int dstPort PROGMEM = 1111;
 const int srcPort PROGMEM = 1100;
 static byte destIp[] = { 192,168,0,5 }; // UDP unicast on network
-char textToSend[] = "test 123"; //debug
+uint8_t sendUDP_Buffer[100]; 
 
 //callback that prints received packets to the serial port
 void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
@@ -105,36 +105,36 @@ void setup(){
   ether.udpServerListenOnPort(&udpSerialPrint, 42);*/
 
   
-  textToSend[0] = 0xAA;
-  textToSend[1] = 0xBB;
-  textToSend[2] = 1;
-  textToSend[3] = 1;
-  textToSend[4] = 4;
-  textToSend[5] = 0;
+  sendUDP_Buffer[0] = 0xFF;
+  sendUDP_Buffer[1] = 0xFF;
+  sendUDP_Buffer[2] = 0xFF;
+  sendUDP_Buffer[3] = 0xFF;
+  sendUDP_Buffer[4] = 4;
 }
 
 
 void loop(){
+uint32_t bl = 0;
+uint32_t timenow = 0;
+uint8_t count = 1;
+  while(1){
+    if (millis()>(bl+2000)){ //every 2s
+      bl = millis();
+      digitalWrite(33, !digitalRead(33));
+      digitalWrite(2, !digitalRead(2));
 
-  static uint32_t bl = 0;
-  
-  
+      timenow = now();
+      sendUDP_Buffer[0] = timenow >> 24;
+      sendUDP_Buffer[1] = timenow >> 16;
+      sendUDP_Buffer[2] = timenow >> 8;
+      sendUDP_Buffer[3] = timenow;
+      ether.sendUdp((char *)sendUDP_Buffer, 5, srcPort, destIp, dstPort );
 
-static uint8_t count = 1;
-  if (millis()>(bl+10000)){ //every 100ms
-    bl = millis();
-    digitalWrite(33, !digitalRead(33));
-    digitalWrite(2, !digitalRead(2));
-    textToSend[0] = count++; //debug scroll though ASCII table to see it moving
-  
-    ether.sendUdp(textToSend, sizeof(textToSend), srcPort, destIp, dstPort );
+      bl = millis();
+      Serial.printf("time: %d\n",now());
+    }
 
-    bl = millis();
-    Serial.printf("time: %d\n",now());
+    //this must be called for ethercard functions to work.
+    ether.packetLoop(ether.packetReceive());
   }
-  //this must be called for ethercard functions to work.
-  ether.packetLoop(ether.packetReceive());
-  
-  //setTime(t);
-  //now();
 }
