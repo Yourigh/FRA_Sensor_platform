@@ -162,8 +162,8 @@
 <smd name="M3" x="-13.208" y="-2.54" dx="2.54" dy="1.27" layer="1" rot="R90"/>
 <smd name="M2" x="13.97" y="-2.54" dx="2.54" dy="1.27" layer="1" rot="R90"/>
 <smd name="M1" x="12.192" y="11.43" dx="2.54" dy="1.27" layer="1" rot="R90"/>
-<smd name="10" x="-11.938" y="13.462" dx="1.4224" dy="0.7112" layer="1" rot="R90"/>
-<smd name="11" x="-10.668" y="13.462" dx="1.4224" dy="0.7112" layer="1" rot="R90"/>
+<smd name="11" x="-11.938" y="13.462" dx="1.4224" dy="0.7112" layer="1" rot="R90"/>
+<smd name="10" x="-10.668" y="13.462" dx="1.4224" dy="0.7112" layer="1" rot="R90"/>
 <smd name="8" x="-9.398" y="13.462" dx="1.4224" dy="0.7112" layer="1" rot="R90"/>
 <smd name="7" x="-7.874" y="13.462" dx="1.4224" dy="0.7112" layer="1" rot="R90"/>
 <smd name="6" x="-5.334" y="13.462" dx="1.4224" dy="0.7112" layer="1" rot="R90"/>
@@ -177,6 +177,11 @@
 <text x="-7.62" y="5.08" size="1.27" layer="22">Amphenol MMC/SD</text>
 <hole x="9.906" y="10.414" drill="1.6"/>
 <hole x="-11.176" y="10.414" drill="1.1"/>
+<text x="10.16" y="12.065" size="0.508" layer="21">9</text>
+<text x="7.62" y="12.065" size="0.508" layer="21">1</text>
+<text x="-9.525" y="12.065" size="0.508" layer="21">8</text>
+<text x="-10.795" y="12.065" size="0.508" layer="21">10</text>
+<text x="-12.065" y="12.065" size="0.508" layer="21">11</text>
 </package>
 <package name="TRANSFLASH-LOCK-SOCK">
 <wire x1="-6.78" y1="8.89" x2="6.78" y2="8.89" width="0.127" layer="21"/>
