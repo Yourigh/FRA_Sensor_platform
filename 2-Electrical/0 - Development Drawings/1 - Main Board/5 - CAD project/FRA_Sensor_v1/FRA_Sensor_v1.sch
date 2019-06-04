@@ -18241,11 +18241,9 @@ Source: &lt;a href="https://www.mouser.es/datasheet/2/18/11400841-1156069.pdf"&g
 </part>
 <part name="C2" library="resistor" deviceset="C-EU" device="C0603K" value="10u"/>
 <part name="C3" library="resistor" deviceset="C-EU" device="C0603K" value="100n"/>
-<part name="C4" library="resistor" deviceset="C-EU" device="C0603K" value="10u"/>
 <part name="C5" library="resistor" deviceset="C-EU" device="C0603K" value="100n"/>
 <part name="SUPPLY2" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY3" library="supply2" deviceset="GND" device=""/>
-<part name="SUPPLY4" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY5" library="supply2" deviceset="GND" device=""/>
 <part name="FRAME1" library="SparkFun-Aesthetics" deviceset="FRAME-A4L" device=""/>
 <part name="D3" library="nxp_60" deviceset="BAS17" device=""/>
@@ -18313,8 +18311,6 @@ Source: &lt;a href="https://www.mouser.es/datasheet/2/18/11400841-1156069.pdf"&g
 <part name="SUPPLY53" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY56" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
 <part name="SUPPLY57" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
-<part name="SUPPLY58" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
-<part name="SUPPLY59" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
 <part name="SUPPLY61" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
 <part name="SUPPLY67" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
 <part name="SUPPLY73" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
@@ -18530,6 +18526,7 @@ Source: &lt;a href="https://www.mouser.es/datasheet/2/18/11400841-1156069.pdf"&g
 <part name="Q4" library="adafruit" deviceset="MOSFET-N" device="REFLOW" value="Si2300DS"/>
 <part name="C21" library="resistor" deviceset="C-EU" device="C0603K" value="10u"/>
 <part name="SUPPLY101" library="supply2" deviceset="GND" device=""/>
+<part name="SUPPLY4" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -18559,11 +18556,9 @@ Source: &lt;a href="https://www.mouser.es/datasheet/2/18/11400841-1156069.pdf"&g
 <instance part="R6" gate="G$1" x="165.1" y="101.6"/>
 <instance part="C2" gate="G$1" x="172.72" y="160.02"/>
 <instance part="C3" gate="G$1" x="182.88" y="160.02"/>
-<instance part="C4" gate="G$1" x="193.04" y="160.02"/>
 <instance part="C5" gate="G$1" x="203.2" y="160.02"/>
 <instance part="SUPPLY2" gate="GND" x="172.72" y="152.4"/>
 <instance part="SUPPLY3" gate="GND" x="182.88" y="152.4"/>
-<instance part="SUPPLY4" gate="GND" x="193.04" y="152.4"/>
 <instance part="SUPPLY5" gate="GND" x="203.2" y="152.4"/>
 <instance part="FRAME1" gate="G$1" x="5.08" y="2.54"/>
 <instance part="R40" gate="G$1" x="238.76" y="106.68" rot="R90"/>
@@ -18574,8 +18569,6 @@ Source: &lt;a href="https://www.mouser.es/datasheet/2/18/11400841-1156069.pdf"&g
 <instance part="SUPPLY43" gate="GND" x="147.32" y="101.6"/>
 <instance part="SUPPLY56" gate="G$1" x="172.72" y="167.64"/>
 <instance part="SUPPLY57" gate="G$1" x="182.88" y="167.64"/>
-<instance part="SUPPLY58" gate="G$1" x="193.04" y="167.64"/>
-<instance part="SUPPLY59" gate="G$1" x="203.2" y="167.64"/>
 <instance part="SUPPLY61" gate="G$1" x="238.76" y="127"/>
 <instance part="SUPPLY67" gate="G$1" x="170.18" y="127"/>
 <instance part="SUPPLY9" gate="G$1" x="162.56" y="137.16"/>
@@ -18588,6 +18581,7 @@ Source: &lt;a href="https://www.mouser.es/datasheet/2/18/11400841-1156069.pdf"&g
 <instance part="J5" gate="J1" x="76.2" y="88.9"/>
 <instance part="SUPPLY68" gate="G$1" x="88.9" y="101.6"/>
 <instance part="SUPPLY72" gate="GND" x="88.9" y="81.28"/>
+<instance part="SUPPLY4" gate="G$1" x="203.2" y="167.64"/>
 </instances>
 <busses>
 </busses>
@@ -18699,10 +18693,6 @@ Source: &lt;a href="https://www.mouser.es/datasheet/2/18/11400841-1156069.pdf"&g
 <segment>
 <pinref part="C3" gate="G$1" pin="2"/>
 <pinref part="SUPPLY3" gate="GND" pin="GND"/>
-</segment>
-<segment>
-<pinref part="C4" gate="G$1" pin="2"/>
-<pinref part="SUPPLY4" gate="GND" pin="GND"/>
 </segment>
 <segment>
 <pinref part="C5" gate="G$1" pin="2"/>
@@ -18829,18 +18819,6 @@ Source: &lt;a href="https://www.mouser.es/datasheet/2/18/11400841-1156069.pdf"&g
 <pinref part="SUPPLY67" gate="G$1" pin="3.3V"/>
 </segment>
 </net>
-<net name="5V" class="0">
-<segment>
-<pinref part="C4" gate="G$1" pin="1"/>
-<wire x1="193.04" y1="167.64" x2="193.04" y2="162.56" width="0.1524" layer="91"/>
-<pinref part="SUPPLY58" gate="G$1" pin="5V"/>
-</segment>
-<segment>
-<pinref part="C5" gate="G$1" pin="1"/>
-<wire x1="203.2" y1="167.64" x2="203.2" y2="162.56" width="0.1524" layer="91"/>
-<pinref part="SUPPLY59" gate="G$1" pin="5V"/>
-</segment>
-</net>
 <net name="V_USB" class="0">
 <segment>
 <pinref part="R43" gate="G$1" pin="2"/>
@@ -18864,6 +18842,11 @@ Source: &lt;a href="https://www.mouser.es/datasheet/2/18/11400841-1156069.pdf"&g
 <pinref part="SUPPLY68" gate="G$1" pin="V_USB"/>
 <wire x1="81.28" y1="96.52" x2="88.9" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="88.9" y1="96.52" x2="88.9" y2="101.6" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="C5" gate="G$1" pin="1"/>
+<wire x1="203.2" y1="167.64" x2="203.2" y2="162.56" width="0.1524" layer="91"/>
+<pinref part="SUPPLY4" gate="G$1" pin="V_USB"/>
 </segment>
 </net>
 <net name="D_P_" class="0">
