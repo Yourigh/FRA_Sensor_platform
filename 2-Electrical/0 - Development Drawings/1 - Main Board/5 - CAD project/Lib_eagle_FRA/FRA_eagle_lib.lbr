@@ -203,18 +203,18 @@
 <rectangle x1="-1.2" y1="0.85" x2="-0.7" y2="1.5" layer="51"/>
 </package>
 <package name="VLS3012HBX-1R5M">
-<wire x1="-1.4" y1="1.6" x2="1.4" y2="1.6" width="0.127" layer="51"/>
-<wire x1="1.4" y1="1.6" x2="1.4" y2="-1.6" width="0.127" layer="51"/>
-<wire x1="1.4" y1="-1.6" x2="-1.4" y2="-1.6" width="0.127" layer="51"/>
-<wire x1="-1.4" y1="-1.6" x2="-1.4" y2="1.6" width="0.127" layer="51"/>
-<wire x1="-1.838" y1="1.9" x2="1.838" y2="1.9" width="0.2032" layer="21"/>
-<wire x1="1.838" y1="1.9" x2="1.838" y2="-1.9" width="0.2032" layer="21"/>
-<wire x1="1.838" y1="-1.9" x2="-1.838" y2="-1.9" width="0.2032" layer="21"/>
-<wire x1="-1.838" y1="-1.9" x2="-1.838" y2="1.9" width="0.2032" layer="21"/>
-<smd name="P$1" x="-1.05" y="0" dx="1" dy="3.4" layer="1"/>
-<smd name="P$2" x="1.05" y="0" dx="1" dy="3.4" layer="1"/>
-<text x="-2.033303125" y="2.410884375" size="0.8128" layer="25" ratio="18">&gt;NAME</text>
-<text x="-1.945471875" y="-2.6032125" size="0.4064" layer="27" ratio="10">&gt;VALUE</text>
+<wire x1="-1.4" y1="1.5" x2="1.4" y2="1.5" width="0.127" layer="51"/>
+<wire x1="1.4" y1="1.5" x2="1.4" y2="-1.7" width="0.127" layer="51"/>
+<wire x1="1.4" y1="-1.7" x2="-1.4" y2="-1.7" width="0.127" layer="51"/>
+<wire x1="-1.4" y1="-1.7" x2="-1.4" y2="1.5" width="0.127" layer="51"/>
+<wire x1="-1.838" y1="1.8" x2="1.838" y2="1.8" width="0.2032" layer="21"/>
+<wire x1="1.838" y1="1.8" x2="1.838" y2="-2" width="0.2032" layer="21"/>
+<wire x1="1.838" y1="-2" x2="-1.838" y2="-2" width="0.2032" layer="21"/>
+<wire x1="-1.838" y1="-2" x2="-1.838" y2="1.8" width="0.2032" layer="21"/>
+<smd name="P$1" x="-1.05" y="-0.1" dx="1" dy="3.4" layer="1"/>
+<smd name="P$2" x="1.05" y="-0.1" dx="1" dy="3.4" layer="1"/>
+<text x="-2.033303125" y="2.310884375" size="0.8128" layer="25" ratio="18">&gt;NAME</text>
+<text x="-1.945471875" y="-2.7032125" size="0.4064" layer="27" ratio="10">&gt;VALUE</text>
 </package>
 <package name="ETH_MODULE_OUTLINE">
 <wire x1="0" y1="0" x2="7.4" y2="0" width="0.127" layer="21"/>
@@ -241,6 +241,34 @@
 <wire x1="9" y1="49.7" x2="24" y2="49.7" width="0.127" layer="21"/>
 <circle x="10.6" y="48.3" radius="0.4472125" width="0.127" layer="21"/>
 <text x="7.9" y="47.8" size="1.27" layer="21">1</text>
+</package>
+<package name="IND_3.2X2.8MM">
+<wire x1="-1.4" y1="1.5" x2="1.4" y2="1.5" width="0.127" layer="51"/>
+<wire x1="1.4" y1="1.5" x2="1.4" y2="-1.7" width="0.127" layer="51"/>
+<wire x1="1.4" y1="-1.7" x2="-1.4" y2="-1.7" width="0.127" layer="51"/>
+<wire x1="-1.4" y1="-1.7" x2="-1.4" y2="1.5" width="0.127" layer="51"/>
+<wire x1="-1.838" y1="1.8" x2="1.838" y2="1.8" width="0.2032" layer="21"/>
+<wire x1="1.838" y1="1.8" x2="1.838" y2="-2" width="0.2032" layer="21"/>
+<wire x1="1.838" y1="-2" x2="-1.838" y2="-2" width="0.2032" layer="21"/>
+<wire x1="-1.838" y1="-2" x2="-1.838" y2="1.8" width="0.2032" layer="21"/>
+<smd name="P$1" x="-1.05" y="-0.1" dx="1" dy="3.4" layer="1"/>
+<smd name="P$2" x="1.05" y="-0.1" dx="1" dy="3.4" layer="1"/>
+<text x="-2.033303125" y="2.310884375" size="0.8128" layer="25" ratio="18">&gt;NAME</text>
+<text x="-1.945471875" y="-2.7032125" size="0.4064" layer="27" ratio="10">&gt;VALUE</text>
+</package>
+<package name="TYS60451R5N-10">
+<wire x1="-1.4" y1="2.5" x2="1.4" y2="2.5" width="0.127" layer="51"/>
+<wire x1="1.4" y1="2.5" x2="1.4" y2="-2.5" width="0.127" layer="51"/>
+<wire x1="1.4" y1="-2.5" x2="-1.4" y2="-2.5" width="0.127" layer="51"/>
+<wire x1="-1.4" y1="-2.5" x2="-1.4" y2="2.5" width="0.127" layer="51"/>
+<wire x1="-2.838" y1="2.8" x2="2.838" y2="2.8" width="0.2032" layer="21"/>
+<wire x1="2.838" y1="2.8" x2="2.838" y2="-2.8" width="0.2032" layer="21"/>
+<wire x1="2.838" y1="-2.8" x2="-2.838" y2="-2.8" width="0.2032" layer="21"/>
+<wire x1="-2.838" y1="-2.8" x2="-2.838" y2="2.8" width="0.2032" layer="21"/>
+<smd name="P$1" x="-2.2" y="0" dx="2.2" dy="6" layer="1"/>
+<smd name="P$2" x="2.2" y="0" dx="2.2" dy="6" layer="1"/>
+<text x="0.389115625" y="-1.933303125" size="0.8128" layer="25" ratio="18" rot="R90">&gt;NAME</text>
+<text x="-1.145471875" y="-3.6032125" size="0.4064" layer="27" ratio="10">&gt;VALUE</text>
 </package>
 </packages>
 <symbols>
@@ -476,7 +504,16 @@ https://eu.mouser.com/datasheet/2/400/nductor_commercial_power_vls3012hbx_en-112
 <gate name="G$1" symbol="INDUCTOR" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="VLS3012HBX-1R5M">
+<device name="3X3MM" package="VLS3012HBX-1R5M">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
+<connect gate="G$1" pin="2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="6X6MM" package="TYS60451R5N-10">
 <connects>
 <connect gate="G$1" pin="1" pad="P$1"/>
 <connect gate="G$1" pin="2" pad="P$2"/>
