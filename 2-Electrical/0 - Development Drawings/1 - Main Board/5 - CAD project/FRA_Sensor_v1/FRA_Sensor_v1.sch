@@ -21834,7 +21834,7 @@ Mouser GSD090012SEU</text>
 <instance part="SUPPLY24" gate="GND" x="15.24" y="129.54"/>
 <instance part="SUPPLY36" gate="GND" x="20.32" y="129.54"/>
 <instance part="D8" gate="D1" x="114.3" y="127" rot="R90"/>
-<instance part="SUPPLY38" gate="GND" x="127" y="139.7"/>
+<instance part="SUPPLY38" gate="GND" x="127" y="152.4"/>
 <instance part="R19" gate="G$1" x="101.6" y="127" rot="R180"/>
 <instance part="SUPPLY39" gate="GND" x="160.02" y="68.58" rot="R270"/>
 <instance part="SUPPLY50" gate="G$1" x="200.66" y="73.66"/>
@@ -21988,7 +21988,7 @@ Mouser GSD090012SEU</text>
 </segment>
 <segment>
 <pinref part="SUPPLY38" gate="GND" pin="GND"/>
-<wire x1="127" y1="142.24" x2="127" y2="157.48" width="0.1524" layer="91"/>
+<wire x1="127" y1="154.94" x2="127" y2="157.48" width="0.1524" layer="91"/>
 <pinref part="S1" gate="1" pin="S"/>
 <wire x1="127" y1="157.48" x2="124.46" y2="157.48" width="0.1524" layer="91"/>
 </segment>
