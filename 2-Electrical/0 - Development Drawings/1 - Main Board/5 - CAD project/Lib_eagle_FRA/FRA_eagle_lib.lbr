@@ -44,7 +44,7 @@
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
 <layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="yes" active="yes"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="yes" active="yes"/>
@@ -334,6 +334,19 @@
 <wire x1="-2.648" y1="3.175" x2="-2.648" y2="1.905" width="0.2032" layer="21"/>
 <wire x1="-2.686" y1="3.175" x2="-2.686" y2="1.905" width="0.2032" layer="22"/>
 </package>
+<package name="ETH_MODULE_OUTLINE_SMALL">
+<wire x1="32.6" y1="25.4" x2="32.6" y2="50.5" width="0.127" layer="21"/>
+<wire x1="32.6" y1="50.5" x2="0" y2="50.5" width="0.127" layer="21"/>
+<wire x1="0" y1="50.5" x2="0" y2="25.4" width="0.127" layer="21"/>
+<hole x="2.5" y="47.5" drill="2.3"/>
+<hole x="30.5" y="47.5" drill="2.3"/>
+<wire x1="9" y1="49.7" x2="9" y2="44.7" width="0.127" layer="21"/>
+<wire x1="9" y1="44.7" x2="24" y2="44.7" width="0.127" layer="21"/>
+<wire x1="24" y1="44.7" x2="24" y2="49.7" width="0.127" layer="21"/>
+<wire x1="9" y1="49.7" x2="24" y2="49.7" width="0.127" layer="21"/>
+<circle x="10.6" y="48.3" radius="0.4472125" width="0.127" layer="21"/>
+<text x="7.9" y="47.8" size="1.27" layer="21">1</text>
+</package>
 </packages>
 <symbols>
 <symbol name="CITIPEL_4P50">
@@ -613,7 +626,12 @@ https://eu.mouser.com/datasheet/2/400/nductor_commercial_power_vls3012hbx_en-112
 <gate name="G$1" symbol="ETH_MODULE_OUTLINE" x="2.54" y="0"/>
 </gates>
 <devices>
-<device name="" package="ETH_MODULE_OUTLINE">
+<device name="BIG" package="ETH_MODULE_OUTLINE">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="" package="ETH_MODULE_OUTLINE_SMALL">
 <technologies>
 <technology name=""/>
 </technologies>
