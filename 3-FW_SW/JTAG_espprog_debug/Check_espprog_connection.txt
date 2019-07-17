@@ -1,0 +1,27 @@
+d:
+cd D:\Cadence\SPB_Data\.platformio\packages\tool-openocd-esp32\bin
+openocd -f interface/ftdi/esp32_devkitj_v1.cfg -f board/esp-wroom-32.cfg
+
+OK vypis:
+? openocd -f interface/ftdi/esp32_devkitj_v1.cfg -f board/esp-wroom-32.cfg
+Open On-Chip Debugger  v0.10.0-esp32-20190708 (2019-07-08-11:04)
+Licensed under GNU GPL v2
+For bug reports, read
+        http://openocd.org/doc/doxygen/bugs.html
+none separate
+adapter speed: 10000 kHz
+Info : Configured 2 cores
+esp32 interrupt mask on
+Info : Listening on port 6666 for tcl connections
+Info : Listening on port 4444 for telnet connections
+Error: libusb_open() failed with LIBUSB_ERROR_NOT_SUPPORTED
+Info : ftdi: if you experience problems at higher adapter clocks, try the command "ftdi_tdo_sample_edge falling"
+Info : clock speed 10000 kHz
+Info : JTAG tap: esp32.cpu0 tap/device found: 0x120034e5 (mfg: 0x272 (Tensilica), part: 0x2003, ver: 0x1)
+Info : JTAG tap: esp32.cpu1 tap/device found: 0x120034e5 (mfg: 0x272 (Tensilica), part: 0x2003, ver: 0x1)
+Info : Detected debug stubs @ 3ffc1034 on core0 of target 'esp32'
+Info : Listening on port 3333 for gdb connections
+shutdown command invoked
+Info : Restore debug stubs @ 3ffc1034 on core0 of target 'esp32'
+Warn : Flash driver of esp32.flash does not support free_driver_priv()
+Warn : Flash driver of irom does not support free_driver_priv()

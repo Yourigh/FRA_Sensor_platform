@@ -23,7 +23,7 @@ ofstream logfile;
 ArduinoOutStream cout(Serial);
 
 // buffer to format data - makes it eaiser to echo to Serial
-char buf[80];
+char SDbuf[80];
 //------------------------------------------------------------------------------
 #if SENSOR_COUNT > 6
 #error SENSOR_COUNT too large
@@ -80,7 +80,7 @@ void setup() {
     SysCall::yield();
   }
   // F() stores strings in flash to save RAM
-  cout << endl << F("FreeStack: ") << FreeStack() << endl;
+  cout << endl << F("FreeStack: ") << FreeStack() << endl; //only for serial 
 
 #if WAIT_TO_START
   cout << F("Type any character to start\n");
@@ -113,11 +113,13 @@ void setup() {
   }
 
   // create a new file in root, the current working directory
-  char name[] = "logger00.csv";
+  char name[] = "logger0000.csv";
 
-  for (uint8_t i = 0; i < 100; i++) {
-    name[6] = i/10 + '0';
-    name[7] = i%10 + '0';
+  for (uint8_t i = 0; i < 10000; i++) {
+    name[6] = i/1000 + '0';
+    name[7] = (i/100)%10 + '0';
+    name[8] = (i/10)%10 + '0';
+    name[9] = i%10 + '0';
     if (sd.exists(name)) {
       continue;
     }
@@ -132,7 +134,7 @@ void setup() {
   cout << F("Type any character to stop\n\n");
 
   // format header in buffer
-  obufstream bout(buf, sizeof(buf));
+  obufstream bout(SDbuf, sizeof(SDbuf));
   bout << F("w_duration  ,");
   bout << F("millis");
 
@@ -143,10 +145,10 @@ void setup() {
   for (uint8_t i = 0; i < SENSOR_COUNT; i++) {
     bout << F(",sens") << int(i);
   }
-  logfile << buf << endl;
+  logfile << SDbuf << endl;
 
 #if ECHO_TO_SERIAL
-  cout << buf << endl;
+  cout << SDbuf << endl;
 #endif  // ECHO_TO_SERIAL
 }
 //------------------------------------------------------------------------------
@@ -161,7 +163,7 @@ void loop() {
   } while (m % LOG_INTERVAL);
 
   // use buffer stream to format line
-  obufstream bout(buf, sizeof(buf));
+  obufstream bout(SDbuf, sizeof(SDbuf));
 
   //last row write time was:
   bout << a << ","; //log write time
@@ -193,7 +195,7 @@ digitalWrite(2,~digitalRead(2));
   // log data and flush to SD
   
   a = micros(); //measure write time
-  logfile << buf << flush;
+  logfile << SDbuf << flush;
   a = micros() - a;
   
   // check for error
@@ -202,7 +204,7 @@ digitalWrite(2,~digitalRead(2));
   }
 
 #if ECHO_TO_SERIAL
-  cout << buf;
+  cout << SDbuf;
 #endif  // ECHO_TO_SERIAL
 
   // don't log two points in the same millis

@@ -30,6 +30,7 @@
 #define DHCP_ACK 5
 #define DHCP_NAK 6
 #define DHCP_RELEASE 7
+#define DHCP_TIMEOUT 1000//60000 //in ms
 
 // DHCP States for access in applications (ref RFC 2131)
 enum {
@@ -99,7 +100,7 @@ typedef struct {
 #define DHCP_INFINITE_LEASE  0xffffffff
 
 static byte dhcpState = DHCP_STATE_INIT;
-static char hostname[DHCP_HOSTNAME_MAX_LEN] = "Arduino-ENC28j60-00";   // Last two characters will be filled by last 2 MAC digits ;
+static char hostname[DHCP_HOSTNAME_MAX_LEN] = "FRAunit-ENC28j60-00";   // Last two characters will be filled by last 2 MAC digits ;
 static uint32_t currentXid;
 static uint32_t stateTimer;
 static uint32_t leaseStart;
@@ -356,7 +357,7 @@ bool EtherCard::dhcpSetup (const char *hname, bool fromRam) {
     dhcpState = DHCP_STATE_INIT;
     uint16_t start = millis();
 
-    while (dhcpState != DHCP_STATE_BOUND && uint16_t(millis()) - start < 60000) {
+    while (dhcpState != DHCP_STATE_BOUND && uint16_t(millis()) - start < DHCP_TIMEOUT) {
         if (isLinkUp()) DhcpStateMachine(packetReceive());
     }
     updateBroadcastAddress();

@@ -4364,7 +4364,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="46.7614" y="13.7795" size="1.27" layer="27" rot="R180"/>
 <attribute name="PARTNO" value="CRCW06030000Z0EAC" x="46.1264" y="11.8745" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="C6" library="resistor" package="C0603K" value="10u" x="40.9956" y="3.5814" smashed="yes">
+<element name="C6" library="resistor" package="C0603K" value="10u/25V" x="40.9956" y="3.5814" smashed="yes">
 <attribute name="NAME" x="40.1956" y="1.1199" size="1.016" layer="25"/>
 <attribute name="VALUE" x="40.1956" y="1.9314" size="1.016" layer="27"/>
 <attribute name="PARTNO" value="GRM188R61E106KA73J" x="40.9956" y="3.5814" size="1.778" layer="27" display="off"/>
@@ -4452,7 +4452,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="29.16555" y="13.0302" size="1.27" layer="27" rot="R180"/>
 <attribute name="PARTNO" value="CRCW06030000Z0EAC" x="28.53055" y="11.1252" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="C14" library="resistor" package="C0603K" value="10u" x="22.94255" y="5.4229" smashed="yes">
+<element name="C14" library="resistor" package="C0603K" value="10u/25V" x="22.94255" y="5.4229" smashed="yes">
 <attribute name="NAME" x="22.76485" y="6.6952" size="1.016" layer="25"/>
 <attribute name="VALUE" x="22.14255" y="3.7729" size="1.016" layer="27"/>
 <attribute name="PARTNO" value="GRM188R61E106KA73J" x="22.94255" y="5.4229" size="1.778" layer="27" display="off"/>
@@ -4574,7 +4574,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="9.73455" y="39.74275" size="1.27" layer="25" ratio="10" rot="R270"/>
 <attribute name="PARTNO" value="TB001-500-02BE" x="5.715" y="42.4307" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="C7" library="resistor" package="153CLV-0605" value="220u" x="17.68475" y="33.1724" smashed="yes">
+<element name="C7" library="resistor" package="153CLV-0605" value="220u/25V" x="17.68475" y="33.1724" smashed="yes">
 <attribute name="NAME" x="14.91705" y="28.0902" size="1.27" layer="25"/>
 <attribute name="VALUE" x="14.25975" y="28.2874" size="1.27" layer="27"/>
 <attribute name="PARTNO" value="EMZR250ARA221MF80G" x="17.68475" y="33.1724" size="1.778" layer="27" display="off"/>
@@ -4769,7 +4769,7 @@ design rules under a new name.</description>
 <element name="FID1" library="microbuilder" package="FIDUCIAL_1MM" value="FIDUCIAL&quot;&quot;" x="2" y="98" locked="yes" smashed="yes"/>
 <element name="FID2" library="microbuilder" package="FIDUCIAL_1MM" value="FIDUCIAL&quot;&quot;" x="98" y="98" locked="yes" smashed="yes"/>
 <element name="FID4" library="microbuilder" package="FIDUCIAL_1MM" value="FIDUCIAL&quot;&quot;" x="2" y="2" locked="yes" smashed="yes"/>
-<element name="C37" library="resistor" package="C0603K" value="10u" x="11.2395" y="49.91735" smashed="yes" rot="R270">
+<element name="C37" library="resistor" package="C0603K" value="10u/25V" x="11.2395" y="49.91735" smashed="yes" rot="R270">
 <attribute name="NAME" x="12.5118" y="51.33965" size="1.016" layer="25" rot="R270"/>
 <attribute name="VALUE" x="9.5895" y="50.71735" size="1.016" layer="27" rot="R270"/>
 <attribute name="PARTNO" value="GRM188R61E106KA73J" x="11.2395" y="49.91735" size="1.778" layer="27" rot="R270" display="off"/>

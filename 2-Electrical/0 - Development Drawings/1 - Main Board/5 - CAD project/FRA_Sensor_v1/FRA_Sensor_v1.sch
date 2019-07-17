@@ -18322,7 +18322,7 @@ Source: PCA9555_5.pdf</description>
 <part name="R16" library="resistor" deviceset="R-EU_" device="R0603" value="0">
 <attribute name="PARTNO" value="CRCW06030000Z0EAC"/>
 </part>
-<part name="C6" library="resistor" deviceset="C-EU" device="C0603K" value="10u">
+<part name="C6" library="resistor" deviceset="C-EU" device="C0603K" value="10u/25V">
 <attribute name="PARTNO" value="GRM188R61E106KA73J"/>
 </part>
 <part name="C9" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
@@ -18385,7 +18385,7 @@ Source: PCA9555_5.pdf</description>
 <part name="R11" library="resistor" deviceset="R-EU_" device="R0603" value="0">
 <attribute name="PARTNO" value="CRCW06030000Z0EAC"/>
 </part>
-<part name="C14" library="resistor" deviceset="C-EU" device="C0603K" value="10u">
+<part name="C14" library="resistor" deviceset="C-EU" device="C0603K" value="10u/25V">
 <attribute name="PARTNO" value="GRM188R61E106KA73J"/>
 </part>
 <part name="C15" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
@@ -18470,7 +18470,7 @@ Source: PCA9555_5.pdf</description>
 <part name="X1" library="con-wago-500" deviceset="W237-102" device="" value="TB001-500-02BE">
 <attribute name="PARTNO" value="TB001-500-02BE"/>
 </part>
-<part name="C7" library="resistor" deviceset="CPOL-EU" device="153CLV-0605" value="220u">
+<part name="C7" library="resistor" deviceset="CPOL-EU" device="153CLV-0605" value="220u/25V">
 <attribute name="PARTNO" value="EMZR250ARA221MF80G"/>
 </part>
 <part name="SUPPLY13" library="supply2" deviceset="GND" device=""/>
@@ -18589,7 +18589,7 @@ Source: PCA9555_5.pdf</description>
 <part name="FID1" library="microbuilder" deviceset="FIDUCIAL" device="&quot;&quot;"/>
 <part name="FID2" library="microbuilder" deviceset="FIDUCIAL" device="&quot;&quot;"/>
 <part name="FID4" library="microbuilder" deviceset="FIDUCIAL" device="&quot;&quot;"/>
-<part name="C37" library="resistor" deviceset="C-EU" device="C0603K" value="10u">
+<part name="C37" library="resistor" deviceset="C-EU" device="C0603K" value="10u/25V">
 <attribute name="PARTNO" value="GRM188R61E106KA73J"/>
 </part>
 <part name="C41" library="resistor" deviceset="C-EU" device="C0603K" value="10u">

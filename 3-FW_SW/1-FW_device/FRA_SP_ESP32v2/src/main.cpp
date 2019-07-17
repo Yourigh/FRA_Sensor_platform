@@ -1,9 +1,5 @@
-// Demonstrates usage of the new udpServer feature.
-// You can register the same function to multiple ports,
-// and multiple functions to the same port.
-//
-// 2013-4-7 Brian Lee <cybexsoft@hotmail.com>
-//
+// FRA main board source code
+// Main pheripherals: ADCs, SD card, IO expander, Ethernet module
 // License: GPLv2
 
 //For Ethernet
@@ -14,7 +10,27 @@
 #include <Time.h>
 #include <TimeLib.h>
 
+// Writer to SD card
+#include <SPI.h>
+#include "SdFat.h" //JR all SysCall::halt(); commented so the system will not go off
+#include "sdios.h"
+#include "FreeStack.h"
+#define SD_CHIP_SELECT  17  // SD chip select pin
+
+// file system object
+SdFat sd;
+
+// text file for logging
+ofstream logfile;
+// buffer to format data - makes it eaiser to echo to Serial / inherited
+char SDbuf[300];//limited to 299 characters
+// store error strings in flash to save RAM
+#define error(s) sd.errorHalt(F(s))
+bool use_sd=1;
+
+//For Ethernet
 #define STATIC 0  // set to 1 to disable DHCP (adjust myip/gwip values below)
+//without DHCP there was a problem with UDP
 
 #if STATIC
 // ethernet interface ip address
@@ -59,8 +75,15 @@ void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_por
   }
 }
 
+uint8_t sd_create_file();
+uint8_t sd_format_header();
+uint8_t sd_write_sample();
+
+void debug_sd_log();
+
 void setup(){
   #define ETH_NRST_PIN 4
+  #define ETH_CS_PIN 23
   pinMode(ETH_NRST_PIN,OUTPUT);
   digitalWrite(ETH_NRST_PIN,0);
   pinMode(33,OUTPUT);
@@ -81,11 +104,12 @@ void setup(){
   esp_efuse_read_mac(chipid);
   chipid[5]++; //use MAC address for ETH one larger than WiFi MAC (WiFi MAC is chip ID)
   // Change 'SS' to your Slave Select pin, if you arn't using the default pin
-  if (ether.begin(sizeof Ethernet::buffer, chipid, 23) == 0)
+  if (ether.begin(sizeof Ethernet::buffer, chipid, ETH_CS_PIN) == 0)
     Serial.println(F("Failed to access Ethernet controller"));
 #if STATIC
   ether.staticSetup(myip, gwip);
 #else
+  Serial.println(F("Waiting for DHCP..."));
   if (!ether.dhcpSetup())
     Serial.println(F("DHCP failed"));
 #endif
@@ -103,16 +127,25 @@ void setup(){
 /*
   //register udpSerialPrint() to port 42.
   ether.udpServerListenOnPort(&udpSerialPrint, 42);*/
-
   
+  //Default values for buffer
   sendUDP_Buffer[0] = 0xFF;
   sendUDP_Buffer[1] = 0xFF;
   sendUDP_Buffer[2] = 0xFF;
   sendUDP_Buffer[3] = 0xFF;
   sendUDP_Buffer[4] = 4;
+
+  // Initialize at the highest speed supported by the board that is
+  // not over 50 MHz. Try a lower speed if SPI errors occur.
+  use_sd = 1;
+  if (!sd.begin(SD_CHIP_SELECT, SD_SCK_MHZ(20))) {  //TO INCREASE ON FINAL PCB
+    sd.initErrorHalt(); //halt turned off, but will give logs to serial
+    use_sd=0;
+  }
+
+  //debug_sd_log();
+
 }
-
-
 void loop(){
 uint32_t bl = 0;
 uint32_t timenow = 0;
@@ -136,5 +169,89 @@ uint8_t count = 1;
 
     //this must be called for ethercard functions to work.
     ether.packetLoop(ether.packetReceive());
+  }
+}
+
+uint8_t sd_create_file(){
+    // create a new file in root, the current working directory
+  char name[] = "logger0000.csv";
+
+  for (uint16_t i = 0; i < 10000; i++) {
+    name[6] = i/1000 + '0';
+    name[7] = (i/100)%10 + '0';
+    name[8] = (i/10)%10 + '0';
+    name[9] = i%10 + '0';
+    if (sd.exists(name)) {
+      continue;
+    }
+    logfile.open(name);
+    break;
+  }
+  if (!logfile.is_open()) {
+    return 0;
+  }
+  Serial.printf("Log file: %s\n",name);
+  return 1; //success
+}
+uint8_t sd_format_header(){
+    // format header in buffer
+  obufstream bout(SDbuf, sizeof(SDbuf));
+  bout << F("Time ,");
+  bout << F("Sample ");
+
+  //TODO real header
+  for (uint8_t i = 0; i < 12; i++) {
+    bout << F(",sens") << int(i);
+  }
+  logfile << SDbuf << endl;
+  // check for error
+  if (!logfile) {
+    return 0; //write data error
+  }
+  return 1;
+}
+uint8_t sd_write_sample(){
+  obufstream bout(SDbuf, sizeof(SDbuf));
+  //check if logfile is open
+  if (!logfile.is_open()) {
+    return 0;
+  }
+
+  //last row write time was:
+  bout << now() << ","; //log current time
+  // log sample number - TODO sample number variable
+  bout << 1;
+
+  for (uint8_t ia = 0; ia < 3; ia++) {
+    bout << ',' << analogRead(ia+A2); //TODO result array writing
+  }
+  //flush = write to SD
+  logfile << SDbuf << flush;
+  // check for error
+  if (!logfile) {
+    return 0; //write data error
+  }
+  return 1;
+}
+
+////////////////////////////DEBUG FUNCTIONS
+void debug_sd_log(){
+  //test function, will be used like this in FSM
+  if (use_sd) {
+    if (!sd_create_file()){
+      error("file.open");
+      use_sd = 0;
+    }
+  }
+  if (use_sd) {
+    if(!sd_format_header())
+      error("write data failed");
+  }
+  if (use_sd) {
+    if(!sd_write_sample())
+      error("write data failed");
+  }
+  if (use_sd) {
+    logfile.close();
   }
 }
