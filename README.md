@@ -6,3 +6,5 @@ Built on ESP32 module and Arduino framework using Platformio IDE.
 
 # Resources
 https://github.com/greiman/SdFat
+https://github.com/sumotoy/gpio_expander
+https://github.com/8-DK/EtherCard
