@@ -19939,8 +19939,8 @@ IO26 ADC</text>
 <text x="180.34" y="73.66" size="1.778" layer="97">place on BOT</text>
 <text x="182.88" y="48.26" size="1.778" layer="97">female</text>
 <text x="12.7" y="50.8" size="1.778" layer="97">RTC DNI</text>
-<text x="223.52" y="86.36" size="1.778" layer="97">Multicomp MC34459
-Mouser GSD090012SEU</text>
+<text x="220.98" y="81.28" size="1.778" layer="97">Multicomp MC34459
+Mouser GSD090012SEU - not correct</text>
 <text x="106.68" y="86.36" size="1.778" layer="97">5k</text>
 </plain>
 <instances>
