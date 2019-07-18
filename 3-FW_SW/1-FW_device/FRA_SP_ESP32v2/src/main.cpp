@@ -15,11 +15,15 @@
 #include "SdFat.h" //JR all SysCall::halt(); commented so the system will not go off
 #include "sdios.h"
 #include "FreeStack.h"
-#define SD_CHIP_SELECT  17  // SD chip select pin
 
+//GPIO expander
+#include <Wire.h>
+#define IOEXP_ADDR 0x75
+
+// Writer to SD card
+#define SD_CHIP_SELECT  17  // SD chip select pin
 // file system object
 SdFat sd;
-
 // text file for logging
 ofstream logfile;
 // buffer to format data - makes it eaiser to echo to Serial / inherited
@@ -31,25 +35,20 @@ bool use_sd=1;
 //For Ethernet
 #define STATIC 0  // set to 1 to disable DHCP (adjust myip/gwip values below)
 //without DHCP there was a problem with UDP
-
 #if STATIC
 // ethernet interface ip address
 static byte myip[] = { 192,168,0,10 };
 // gateway ip address
 static byte gwip[] = { 192,168,0,2 };
 #endif
-
 // ethernet mac address - must be unique on your network
 uint8_t chipid[6];
-
 byte Ethernet::buffer[500]; // tcp/ip send and receive buffer
-
 //UDP sender
 const int dstPort PROGMEM = 1111;
 const int srcPort PROGMEM = 1100;
 static byte destIp[] = { 192,168,0,5 }; // UDP unicast on network
 uint8_t sendUDP_Buffer[100]; 
-
 //callback that prints received packets to the serial port
 void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
   IPAddress src(src_ip[0],src_ip[1],src_ip[2],src_ip[3]);
@@ -75,11 +74,15 @@ void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_por
   }
 }
 
+//functions
 uint8_t sd_create_file();
 uint8_t sd_format_header();
 uint8_t sd_write_sample();
-
+uint8_t ioexp_init();
+uint8_t ioexp_out_all_low();
+//debug functions
 void debug_sd_log();
+void debug_GPIOexp();
 
 void setup(){
   #define ETH_NRST_PIN 4
@@ -145,7 +148,23 @@ void setup(){
 
   //debug_sd_log();
 
+  Wire.begin(21,22,400000UL);
+  
+  while(1){
+
+  if (!ioexp_init())
+    error("failed to init GPIO expander");
+  delay(500);
+  if (!ioexp_out_all_low())
+    error("failed to communicate with GPIO exp.");
+  delay(500);
+  
+  }
+  debug_GPIOexp();
+  
 }
+
+
 void loop(){
 uint32_t bl = 0;
 uint32_t timenow = 0;
@@ -234,7 +253,84 @@ uint8_t sd_write_sample(){
   return 1;
 }
 
+//io expander initialization, Wire must be already on, puts all outputs to HIGH
+uint8_t ioexp_init(){
+  uint8_t error_ioexp;
+  Wire.beginTransmission(IOEXP_ADDR);
+  Wire.write(0x06); //conf reg
+  Wire.write(0x00); //all as output
+  Wire.write(0x00); //all as output
+  error_ioexp = Wire.endTransmission();
+  if (error_ioexp){
+    return 0;
+  }
+  delay(1);
+  Wire.beginTransmission(IOEXP_ADDR);
+  Wire.write(0x04); //polarity inversion
+  Wire.write(0x00); // no inversion
+  Wire.write(0x00); // no inversion
+  error_ioexp = Wire.endTransmission(); 
+  if (error_ioexp){
+    return 0;
+  }
+  delay(1);
+  Wire.beginTransmission(IOEXP_ADDR);
+  Wire.write(0x02); //output reg
+  Wire.write(0xFF); //all outputs high
+  Wire.write(0xFF); 
+  error_ioexp = Wire.endTransmission(); 
+  if (error_ioexp){
+    return 0;
+  }
+  return 1;
+}
+
+//puts all outputs to low
+uint8_t ioexp_out_all_low(){
+  uint8_t error_ioexp;
+  Wire.beginTransmission(IOEXP_ADDR);
+  Wire.write(0x02); //output reg
+  Wire.write(0x00); //all outputs high
+  Wire.write(0x00); 
+  error_ioexp = Wire.endTransmission(); 
+  if (error_ioexp){
+    return 0;
+  }
+  return 1;
+}
+
 ////////////////////////////DEBUG FUNCTIONS
+void debug_GPIOexp(){
+  /*Wire.beginTransmission(IOEXP_ADDR);
+  Wire.write(0x06); //conf reg
+  Wire.write(0x00); //all as output
+  Wire.write(0x00); //all as output
+  Wire.endTransmission();*/
+  uint16_t word_toio;
+  while(1){
+    delay(500);
+    Wire.beginTransmission(IOEXP_ADDR);
+    Wire.write(0x02); //output reg
+    Wire.write(0x00); 
+    Wire.write(0x00); 
+    Wire.endTransmission();
+    delay(500);
+    Wire.beginTransmission(IOEXP_ADDR);
+    Wire.write(0x02); //conf reg
+    Wire.write(0xFF); 
+    Wire.write(0xFF); 
+    Wire.endTransmission();
+    for (word i = 0; i <= 16; i++) {// This loop will set one output pin LOW at a time while all other pins are set LOW., all way to 16 so there are all zeros too
+      word_toio = ~(0x0000 | (1 << i));
+      Wire.beginTransmission(IOEXP_ADDR);
+      Wire.write(0x02); //conf reg
+      Wire.write(word_toio & 0x00FF); 
+      Wire.write(word_toio >> 8); 
+      Wire.endTransmission();
+      delay(200);
+    }
+  }
+}
 void debug_sd_log(){
   //test function, will be used like this in FSM
   if (use_sd) {
@@ -255,3 +351,4 @@ void debug_sd_log(){
     logfile.close();
   }
 }
+
