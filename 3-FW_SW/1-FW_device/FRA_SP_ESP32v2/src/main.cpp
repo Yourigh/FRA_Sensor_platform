@@ -16,6 +16,21 @@
 #include "sdios.h"
 #include "FreeStack.h"
 
+//custom pins
+#define PIN_ETH_INT 2
+#define PIN_ETH_RST 4
+#define PIN_LED 16
+#define PIN_SD_CS  17  // SD chip select pin
+#define PIN_SDA 21
+#define PIN_SCL 22
+#define PIN_ETH_CS 23
+#define PIN_FAN 25
+#define PIN_TP8 26
+#define PIN_TP9 27
+#define PIN_BTN1 34
+#define PIN_TP7 36
+#define PIN_TP6 39
+
 //GPIO expander
 #include <Wire.h>
 #define IOEXP_ADDR 0x75
@@ -27,9 +42,7 @@ ADS1115 adc1(ADS1115_ADDRESS_ADDR_GND);
 ADS1115 adc2(ADS1115_ADDRESS_ADDR_VDD);
 //ADS1115 adc3(ADS1115_ADDRESS_ADDR_SCL);
 
-
 // Writer to SD card
-#define SD_CHIP_SELECT  17  // SD chip select pin
 // file system object
 SdFat sd;
 // text file for logging
@@ -55,7 +68,7 @@ byte Ethernet::buffer[500]; // tcp/ip send and receive buffer
 //UDP sender
 const int dstPort PROGMEM = 1111;
 const int srcPort PROGMEM = 1100;
-static byte destIp[] = { 192,168,0,5 }; // UDP unicast on network
+uint8_t destIp[] = { 192,168,0,5 }; // UDP unicast or broadcast, this ip does not matter, will be broadcast on given IP network by DHCP
 uint8_t sendUDP_Buffer[100]; 
 //callback that prints received packets to the serial port
 void udpSerialPrint(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
@@ -95,10 +108,9 @@ void debug_GPIOexp();
 uint8_t debug_adc();
 
 void setup(){
-  #define ETH_NRST_PIN 4
-  #define ETH_CS_PIN 23
-  pinMode(ETH_NRST_PIN,OUTPUT);
-  digitalWrite(ETH_NRST_PIN,0);
+  
+  pinMode(PIN_ETH_RST,OUTPUT);
+  digitalWrite(PIN_ETH_RST,0);
   pinMode(33,OUTPUT);
   pinMode(2,OUTPUT); //LED devkit V1
   pinMode(27,OUTPUT);
@@ -111,13 +123,13 @@ void setup(){
   delay(300);
   digitalWrite(33,0);
   digitalWrite(2,0);
-  digitalWrite(ETH_NRST_PIN,1);
+  digitalWrite(PIN_ETH_RST,1);
   delay(10);
 
   esp_efuse_read_mac(chipid);
   chipid[5]++; //use MAC address for ETH one larger than WiFi MAC (WiFi MAC is chip ID)
   // Change 'SS' to your Slave Select pin, if you arn't using the default pin
-  if (ether.begin(sizeof Ethernet::buffer, chipid, ETH_CS_PIN) == 0)
+  if (ether.begin(sizeof Ethernet::buffer, chipid, PIN_ETH_CS) == 0)
     Serial.println(F("Failed to access Ethernet controller"));
 #if STATIC
   ether.staticSetup(myip, gwip);
@@ -133,6 +145,9 @@ void setup(){
   ether.printIp("IP:  ", ether.myip);
   ether.printIp("GW:  ", ether.gwip);
   ether.printIp("DNS: ", ether.dnsip);
+  for (int r=0;r<3;r++)
+    destIp[r] = ether.gwip[r];
+  destIp[3]=255; //broadcast address
   ether.printIp("Sending to: ", destIp);//Destination IP for sender
 
   //register udpSerialPrint() to port 1337
@@ -146,19 +161,19 @@ void setup(){
   sendUDP_Buffer[1] = 0xFF;
   sendUDP_Buffer[2] = 0xFF;
   sendUDP_Buffer[3] = 0xFF;
-  sendUDP_Buffer[4] = 4;
+  sendUDP_Buffer[4] = 0x04;
 
   // Initialize at the highest speed supported by the board that is
   // not over 50 MHz. Try a lower speed if SPI errors occur.
   use_sd = 1;
-  if (!sd.begin(SD_CHIP_SELECT, SD_SCK_MHZ(20))) {  //TO INCREASE ON FINAL PCB
+  if (!sd.begin(PIN_SD_CS, SD_SCK_MHZ(20))) {  //TO INCREASE ON FINAL PCB
     sd.initErrorHalt(); //halt turned off, but will give logs to serial
     use_sd=0;
   }
 
   //debug_sd_log();
 
-  Wire.begin(21,22,400000UL);
+  Wire.begin(PIN_SDA,PIN_SCL,400000UL);
   
   if (!ioexp_init())
     error("failed to init GPIO expander");
@@ -167,34 +182,34 @@ void setup(){
   if(!adc_init())
    error("failed to init ADC");
   
-  debug_adc();
+  //debug_adc();
 }
 
 
 void loop(){
-uint32_t bl = 0;
-uint32_t timenow = 0;
-uint8_t count = 1;
-  while(1){
-    if (millis()>(bl+2000)){ //every 2s
-      bl = millis();
-      digitalWrite(33, !digitalRead(33));
-      digitalWrite(2, !digitalRead(2));
+  uint32_t bl = 0;
+  uint32_t timenow = 0;
+  uint8_t count = 1;
+    while(1){
+      if (millis()>(bl+2000)){ //every 2s
+        bl = millis();
+        digitalWrite(33, !digitalRead(33));
+        digitalWrite(2, !digitalRead(2));
 
-      timenow = now();
-      sendUDP_Buffer[0] = timenow >> 24;
-      sendUDP_Buffer[1] = timenow >> 16;
-      sendUDP_Buffer[2] = timenow >> 8;
-      sendUDP_Buffer[3] = timenow;
-      ether.sendUdp((char *)sendUDP_Buffer, 5, srcPort, destIp, dstPort );
+        timenow = now();
+        sendUDP_Buffer[0] = timenow >> 24;
+        sendUDP_Buffer[1] = timenow >> 16;
+        sendUDP_Buffer[2] = timenow >> 8;
+        sendUDP_Buffer[3] = timenow;
+        ether.sendUdp((char *)sendUDP_Buffer, 5, srcPort, destIp, dstPort );
 
-      bl = millis();
-      Serial.printf("time: %d\n",now());
+        bl = millis();
+        Serial.printf("time: %d\n",now());
+      }
+
+      //this must be called for ethercard functions to work.
+      ether.packetLoop(ether.packetReceive());
     }
-
-    //this must be called for ethercard functions to work.
-    ether.packetLoop(ether.packetReceive());
-  }
 }
 
 uint8_t sd_create_file(){
