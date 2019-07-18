@@ -20,6 +20,14 @@
 #include <Wire.h>
 #define IOEXP_ADDR 0x75
 
+//ADC
+#include "ADS1115.h"
+
+ADS1115 adc1(ADS1115_ADDRESS_ADDR_GND);
+ADS1115 adc2(ADS1115_ADDRESS_ADDR_VDD);
+//ADS1115 adc3(ADS1115_ADDRESS_ADDR_SCL);
+
+
 // Writer to SD card
 #define SD_CHIP_SELECT  17  // SD chip select pin
 // file system object
@@ -80,9 +88,11 @@ uint8_t sd_format_header();
 uint8_t sd_write_sample();
 uint8_t ioexp_init();
 uint8_t ioexp_out_all_low();
+uint8_t adc_init();
 //debug functions
 void debug_sd_log();
 void debug_GPIOexp();
+uint8_t debug_adc();
 
 void setup(){
   #define ETH_NRST_PIN 4
@@ -150,18 +160,14 @@ void setup(){
 
   Wire.begin(21,22,400000UL);
   
-  while(1){
-
   if (!ioexp_init())
     error("failed to init GPIO expander");
-  delay(500);
-  if (!ioexp_out_all_low())
-    error("failed to communicate with GPIO exp.");
-  delay(500);
+  //debug_GPIOexp();
+
+  if(!adc_init())
+   error("failed to init ADC");
   
-  }
-  debug_GPIOexp();
-  
+  debug_adc();
 }
 
 
@@ -299,8 +305,72 @@ uint8_t ioexp_out_all_low(){
   return 1;
 }
 
+uint8_t adc_init(){
+  if (!adc1.testConnection())
+    return 0;
+  adc1.initialize(); // initialize ADS1115 16 bit A/D chip
+  adc1.setMode(ADS1115_MODE_SINGLESHOT);
+  adc1.setRate(ADS1115_RATE_64);
+  adc1.setGain(ADS1115_PGA_6P144); //6.144V range
+  adc1.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
+  if (!adc2.testConnection())
+    return 0;
+  adc2.initialize(); // initialize ADS1115 16 bit A/D chip
+  adc2.setMode(ADS1115_MODE_SINGLESHOT);
+  adc2.setRate(ADS1115_RATE_64); 
+  adc2.setGain(ADS1115_PGA_6P144); //6.144V range
+  adc2.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
+  //TODO add same for adc2 and adc3
+  return 1;
+}
+
 ////////////////////////////DEBUG FUNCTIONS
+uint8_t debug_adc(){
+  uint32_t m=micros();
+  uint32_t n=micros();
+  /* 
+  Serial.println(adc1.testConnection() ? "ADC1 connection successful" : "ADC1 connection failed");
+  adc1.initialize(); // initialize ADS1115 16 bit A/D chip
+
+  adc1.setMode(ADS1115_MODE_SINGLESHOT);
+  adc1.setRate(ADS1115_RATE_64); //16 SPS is enough even for 100ms sampling
+  adc1.setGain(ADS1115_PGA_6P144); //6.144V range
+  //ALERT/RDY pin already disabled in INIT
+*/
+  adc1.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
+  adc2.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
+  while(1){
+    adc1.triggerConversion(); //16ms wait after this, then poll
+    m=micros();
+    if(!adc1.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
+      return 0;
+    n=micros();
+    Serial.printf("Conversion took %d us ",n-m); //typically for 64SPS : under 16400 us
+    Serial.print("1A0: "); Serial.print(adc1.getMilliVolts(false)); Serial.print("mV\t\n");
+    delay(200);
+    adc2.triggerConversion(); //16ms wait after this, then poll
+    m=micros();
+    if(!adc2.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
+      return 0;
+    n=micros();
+    Serial.printf("Conversion took %d us ",n-m); //typically for 64SPS : 16246 us
+    Serial.print("2A0: "); Serial.print(adc2.getMilliVolts(false)); Serial.print("mV\t\n");
+    delay(200);
+  }
+}
 void debug_GPIOexp(){
+  while(1){
+
+  if (!ioexp_init()) //puts all high
+    error("failed to init GPIO expander");
+  delay(500);
+  if (!ioexp_out_all_low())
+    error("failed to communicate with GPIO exp.");
+  delay(500);
+  
+  }
+  //old version
+  //init old
   /*Wire.beginTransmission(IOEXP_ADDR);
   Wire.write(0x06); //conf reg
   Wire.write(0x00); //all as output
