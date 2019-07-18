@@ -30,7 +30,7 @@
 #define DHCP_ACK 5
 #define DHCP_NAK 6
 #define DHCP_RELEASE 7
-#define DHCP_TIMEOUT 1000//60000 //in ms
+#define DHCP_TIMEOUT 60000 //in ms
 
 // DHCP States for access in applications (ref RFC 2131)
 enum {
