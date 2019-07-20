@@ -1,1 +1,8 @@
-0,No error1,failed to initalize Ethernet controller2,failed to obtaiin IP from DHCP server3,SD card communication fail. continuing with no logging to SD card4,failed to initalize I2C bus5,failed to initalize IO Expander 6,failed to initalize ADC7,error in setting time. time is from the past. time not set. continuing
+0,No error
+1,failed to initalize Ethernet controller
+2,failed to obtaiin IP from DHCP server
+3,SD card communication fail. continuing with no logging to SD card
+4,failed to initalize I2C bus
+5,failed to initalize IO Expander 
+6,failed to initalize ADC
+7,error in setting time. time is from the past. time not set. continuing
