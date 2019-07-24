@@ -19,6 +19,7 @@
 		<Item Name="Sensor_power_ctrl.ctl" Type="VI" URL="../subVIs/Sensor_power_ctrl.ctl"/>
 		<Item Name="UDP_read_datagram.ctl" Type="VI" URL="../subVIs/UDP_read_datagram.ctl"/>
 		<Item Name="UI_states.ctl" Type="VI" URL="../subVIs/UI_states.ctl"/>
+		<Item Name="Write_error_to_error_indicator.vi" Type="VI" URL="../subVIs/Write_error_to_error_indicator.vi"/>
 		<Item Name="Write_sensor_power.vi" Type="VI" URL="../subVIs/Write_sensor_power.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
