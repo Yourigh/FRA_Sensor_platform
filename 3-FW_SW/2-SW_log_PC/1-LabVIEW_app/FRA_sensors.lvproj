@@ -15,8 +15,11 @@
 		<Item Name="FRA_UDP_get_time.vi" Type="VI" URL="../subVIs/FRA_UDP_get_time.vi"/>
 		<Item Name="FRA_UDP_get_timestamp_msg_type.vi" Type="VI" URL="../subVIs/FRA_UDP_get_timestamp_msg_type.vi"/>
 		<Item Name="FRA_UDP_send_ACK.vi" Type="VI" URL="../subVIs/FRA_UDP_send_ACK.vi"/>
+		<Item Name="Power_ctrl_to_ioEXPSET.vi" Type="VI" URL="../subVIs/Power_ctrl_to_ioEXPSET.vi"/>
+		<Item Name="Sensor_power_ctrl.ctl" Type="VI" URL="../subVIs/Sensor_power_ctrl.ctl"/>
 		<Item Name="UDP_read_datagram.ctl" Type="VI" URL="../subVIs/UDP_read_datagram.ctl"/>
 		<Item Name="UI_states.ctl" Type="VI" URL="../subVIs/UI_states.ctl"/>
+		<Item Name="Write_sensor_power.vi" Type="VI" URL="../subVIs/Write_sensor_power.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>

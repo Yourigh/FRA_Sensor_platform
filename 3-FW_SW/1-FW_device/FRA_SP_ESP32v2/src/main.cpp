@@ -35,14 +35,14 @@
 
 //GPIO expander
 #include <Wire.h>
-#define IOEXP_ADDR 0x75
+#define IOEXP_ADDR 0x20 //0x75 debug board, 0x20 final
 
 //ADC
 #include "ADS1115.h"
 
 ADS1115 adc1(ADS1115_ADDRESS_ADDR_GND);
 ADS1115 adc2(ADS1115_ADDRESS_ADDR_VDD);
-//ADS1115 adc3(ADS1115_ADDRESS_ADDR_SCL);
+ADS1115 adc3(ADS1115_ADDRESS_ADDR_SCL);
 
 // Writer to SD card
 // file system object
@@ -70,13 +70,15 @@ byte Ethernet::buffer[500]; // tcp/ip send and receive buffer
 const int dstPort PROGMEM = 1111;
 const int srcPort PROGMEM = 1100;
 uint8_t destIp[] = { 192,168,0,5 }; // UDP unicast or broadcast, this ip does not matter, will be broadcast on given IP network by DHCP
-uint8_t sendUDP_Buffer[100]; 
+uint8_t sendUDP_Buffer[100]; //send function limited to 220
 uint8_t receiveUDP_Buffer[100]; 
-uint8_t error_code = 0; //error flag, 0 means no error
+uint8_t error_code = 0; //error flag, 0 means no error, 9 is error test, not actual error
 
 //Globals
 bool use_sd=1;
 bool UDP_read_flag = 0;
+bool UDP_send_flag = 0;
+bool BTN1_flag = 0;
 //functions
 uint8_t sd_create_file();
 uint8_t sd_format_header();
@@ -87,6 +89,8 @@ uint8_t adc_init();
 void udpReceiveProcess(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len);
 uint8_t setup_time();
 void insert_time_to_send_buffer();
+uint8_t ioexp_read(uint8_t *port0,uint8_t *port1);
+void IRAM_ATTR ISR_BTN1(){BTN1_flag = 1;}
 //debug functions
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len);
 void debug_sd_log();
@@ -102,7 +106,9 @@ uint8_t debug_adc();
 #endif 
 
 void setup(){
-  
+  pinMode(PIN_BTN1,INPUT);
+  attachInterrupt(digitalPinToInterrupt(PIN_BTN1), ISR_BTN1, FALLING);
+  pinMode(PIN_ETH_INT,INPUT);
   pinMode(PIN_ETH_NRST,OUTPUT);
   digitalWrite(PIN_ETH_NRST,0);
   pinMode(PIN_LED,OUTPUT); //LED on final HW
@@ -122,13 +128,14 @@ void setup(){
 #if STATIC
   ether.staticSetup(myip, gwip);
 #else
-  Serial.println(F("Waiting for DHCP...")); //60s timeout
-  if (!ether.dhcpSetup()){ //blocking
-    Serial.println(F("DHCP failed"));
-    error_code = 2;
+  if (error_code==0){
+    Serial.println(F("Waiting for DHCP...")); //60s timeout
+    if (!ether.dhcpSetup()){ //blocking
+      Serial.println(F("DHCP failed"));
+      error_code = 2;
+    }
   }
 #endif
-
   Serial.printf("ETH  MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",chipid[0], chipid[1], chipid[2], chipid[3], chipid[4], chipid[5]);
   chipid[5]--;
   Serial.printf("WiFi MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",chipid[0], chipid[1], chipid[2], chipid[3], chipid[4], chipid[5]);
@@ -139,21 +146,13 @@ void setup(){
     destIp[r] = ether.gwip[r];
   destIp[3]=255; //broadcast address
   ether.printIp("Destination IP default: ", destIp);//Destination IP for sender
-
   //register udpReceiveProcess() to port 1100
   ether.udpServerListenOnPort(&udpReceiveProcess, 1100);
-  
-  //Default values for buffer - announcement (byte 4 value 4) with unknown time information
-  sendUDP_Buffer[0] = 0xFF;
-  sendUDP_Buffer[1] = 0xFF;
-  sendUDP_Buffer[2] = 0xFF;
-  sendUDP_Buffer[3] = 0xFF;
-  sendUDP_Buffer[4] = 0x04;
 
   // Initialize at the highest speed supported by the board that is
   // not over 50 MHz. Try a lower speed if SPI errors occur.
   use_sd = 1;
-  if (!sd.begin(PIN_SD_CS, SD_SCK_MHZ(20))) {  //TO INCREASE ON FINAL PCB
+  if (!sd.begin(PIN_SD_CS, SD_SCK_MHZ(20))) {  //TO INCREASE ON FINAL PCB from 20 to xx
     sd.initErrorHalt(); //halt turned off, but will give logs to serial
     use_sd=0;
     error_code = 3;
@@ -215,6 +214,7 @@ void loop(){
         insert_time_to_send_buffer();
         sendUDP_Buffer[4] = 0x04; //Announcement
         ether.sendUdp((char *)sendUDP_Buffer, 5, srcPort, destIp, dstPort ); //broadcast
+        UDP_send_flag = 1;
         timer1 = millis();
         state = s2_wait_for_ACK;
         break;
@@ -228,7 +228,7 @@ void loop(){
               error_code = 7;
             }
             UDP_read_flag = 0; //done with data - processed
-            state = s3_IDLE;
+            state = s4_report_error; //test error reporting with code 0
             break;
           } else {
             UDP_read_flag = 0; //not good ACK - discard data.
@@ -249,9 +249,31 @@ void loop(){
               //now useless
               UDP_read_flag = 0;
               break;
+            case 2://reset unit
+              ESP.restart();
+              break;
             case 5://Sensor power control
               PRINTDEBUG("Received power setting [5-6] %02x:%02x\n",receiveUDP_Buffer[5],receiveUDP_Buffer[6]);
-              ioexp_out_set(~receiveUDP_Buffer[5],~receiveUDP_Buffer[6]);
+              ioexp_out_set(~receiveUDP_Buffer[5] & 0xFF,~receiveUDP_Buffer[6] & 0xFF);
+              PRINTDEBUG("sent to ioexp [5-6] %02x:%02x\n",~receiveUDP_Buffer[5] & 0xFF,~receiveUDP_Buffer[6] & 0xFF);
+              uint8_t port0_check;
+              uint8_t port1_check;
+              if(!ioexp_read(&port0_check,&port1_check)){
+                PRINTDEBUG("failed to read IO exp status\n");
+                error_code = 9;
+              }
+              PRINTDEBUG("IO exp state: %02x:%02x\n",port0_check,port1_check);
+              if (!(((~receiveUDP_Buffer[5] & 0xFF) == port0_check)&((~receiveUDP_Buffer[6] & 0xFF) == port1_check))){
+                error_code = 8;//not matching
+                PRINTDEBUG("setting is not matching\n");
+              }
+              insert_time_to_send_buffer();
+              sendUDP_Buffer[4] = 0x05; //Power report send to master
+              sendUDP_Buffer[5] = ether.myip[3];
+              sendUDP_Buffer[6] = ~port0_check;
+              sendUDP_Buffer[7] = ~port1_check;
+              ether.sendUdp((char *)sendUDP_Buffer, 8, srcPort, destIp, dstPort );
+              UDP_send_flag = 1;
               UDP_read_flag = 0;
               break;
           }
@@ -266,6 +288,7 @@ void loop(){
         //must be sent because some routers strip source IP address when coming from ethernet to wifi on same network
         sendUDP_Buffer[6] = error_code; //error message type
         ether.sendUdp((char *)sendUDP_Buffer, 7, srcPort, destIp, dstPort ); //unicast to master
+        UDP_send_flag = 1;
         error_code = 0;
         state = s3_IDLE;
         break;
@@ -277,17 +300,19 @@ void loop(){
     //this must be called for ethercard functions to work. 
     //Returns Length of received data. If non-zero, something is coming.
     if (UDP_read_flag == 0) //if receive buffer ready for data, check if thre is incoming DTG
-      ether.packetLoop(ether.packetReceive()); //Returns Length of received data. If non-zero, something is coming.
+      if ((digitalRead(PIN_ETH_INT)==0) | (UDP_send_flag)){ //if interrupt of incoming data or want to send data
+        UDP_send_flag = 0;
+        ether.packetLoop(ether.packetReceive()); //Returns Length of received data. If non-zero, something is coming.
+      }
       //data were already processed and put into receiveUDP_buffer.
       //flag is set to 1 by the same function
-
 
     //DEBUG CODE
     #ifdef DEBUG
       //toogle PIN LED on every iteration - scope check
       digitalWrite(PIN_LED, !digitalRead(PIN_LED));
-
-      if (millis()>(bl+1000)){ //every 1s
+      if (BTN1_flag){PRINTDEBUG("Button pressed!\n");BTN1_flag = 0;}
+      if (millis()>(bl+10000)){ //every 1s
         bl=millis();
         Serial.printf("time: %d, state: %d\n",now(),state);
       }
@@ -401,13 +426,32 @@ uint8_t ioexp_init(){
   return 1;
 }
 
-//puts all outputs to low
+//puts all outputs to state as in arguments
 uint8_t ioexp_out_set(uint8_t port0,uint8_t port1){
   uint8_t error_ioexp;
   Wire.beginTransmission(IOEXP_ADDR);
   Wire.write(0x02); //output reg
   Wire.write(port0); //all outputs high
   Wire.write(port1); 
+  error_ioexp = Wire.endTransmission(); 
+  if (error_ioexp){
+    return 0;
+  }
+  return 1;
+}
+uint8_t ioexp_read(uint8_t *port0,uint8_t *port1){
+  uint8_t error_ioexp;
+  Wire.beginTransmission(IOEXP_ADDR);
+  Wire.requestFrom(IOEXP_ADDR, 2);
+  uint32_t timeout_ioexp;
+  timeout_ioexp = millis();
+  if (Wire.available()){
+    *port0 = (uint8_t)Wire.read();
+    *port1 = (uint8_t)Wire.read();
+  } else {
+    if (millis()>(timeout_ioexp+1000)) //1 s timeout
+      return 0;
+  }
   error_ioexp = Wire.endTransmission(); 
   if (error_ioexp){
     return 0;
@@ -442,7 +486,8 @@ void udpReceiveProcess(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_
     PRINTDEBUG("%02x:",receiveUDP_Buffer[o]);
   PRINTDEBUG(" Data read buffer\n");
   if (receiveUDP_Buffer[4] == 0x01)
-    memcpy(destIp,src_ip,IP_LEN);  //if it is acknowledgment, change destination IP to unicast.
+    destIp[3] = src_ip[3];
+    //memcpy(destIp,src_ip,IP_LEN);  //if it is acknowledgment, change destination IP to unicast.
   UDP_read_flag = 1;
 }
 uint8_t setup_time(){
@@ -467,6 +512,7 @@ void insert_time_to_send_buffer(){
   sendUDP_Buffer[3] = timenow;
   return;
 }
+
 ////////////////////////////DEBUG FUNCTIONS
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
   IPAddress src(src_ip[0],src_ip[1],src_ip[2],src_ip[3]);
@@ -570,6 +616,7 @@ void debug_GPIOexp(){
   }
 }
 void debug_sd_log(){
+  Serial.println("SD debugging:\n");
   //test function, will be used like this in FSM
   if (use_sd) {
     if (!sd_create_file()){
