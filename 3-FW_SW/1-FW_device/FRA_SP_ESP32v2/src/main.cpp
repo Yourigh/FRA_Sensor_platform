@@ -72,7 +72,7 @@ const int srcPort PROGMEM = 1100;
 uint8_t destIp[] = { 192,168,0,5 }; // UDP unicast or broadcast, this ip does not matter, will be broadcast on given IP network by DHCP
 uint8_t sendUDP_Buffer[100]; //send function limited to 220
 uint8_t receiveUDP_Buffer[100]; 
-uint8_t error_code = 0; //error flag, 0 means no error, 9 is error test, not actual error
+uint8_t error_code[255]; //error flag, 0 at index 0 means no error
 
 //Globals
 bool use_sd=1;
@@ -91,6 +91,7 @@ uint8_t setup_time();
 void insert_time_to_send_buffer();
 uint8_t ioexp_read(uint8_t *port0,uint8_t *port1);
 void IRAM_ATTR ISR_BTN1(){BTN1_flag = 1;}
+void log_error_code(uint8_t ec);
 //debug functions
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len);
 void debug_sd_log();
@@ -106,6 +107,7 @@ uint8_t debug_adc();
 #endif 
 
 void setup(){
+  error_code[0] = 0;
   pinMode(PIN_BTN1,INPUT);
   attachInterrupt(digitalPinToInterrupt(PIN_BTN1), ISR_BTN1, FALLING);
   pinMode(PIN_ETH_INT,INPUT);
@@ -123,16 +125,16 @@ void setup(){
   // Change 'SS' to your Slave Select pin, if you arn't using the default pin
   if (ether.begin(sizeof Ethernet::buffer, chipid, PIN_ETH_CS) == 0){
     Serial.println(F("Failed to access Ethernet controller"));
-    error_code = 1;
+    log_error_code(1);
   }
 #if STATIC
   ether.staticSetup(myip, gwip);
 #else
-  if (error_code==0){
+  if (error_code[0]==0){
     Serial.println(F("Waiting for DHCP...")); //60s timeout
     if (!ether.dhcpSetup()){ //blocking
       Serial.println(F("DHCP failed"));
-      error_code = 2;
+      log_error_code(2);
     }
   }
 #endif
@@ -155,23 +157,23 @@ void setup(){
   if (!sd.begin(PIN_SD_CS, SD_SCK_MHZ(20))) {  //TO INCREASE ON FINAL PCB from 20 to xx
     sd.initErrorHalt(); //halt turned off, but will give logs to serial
     use_sd=0;
-    error_code = 3;
+    log_error_code(3);
   }
 
   //debug_sd_log();
 
   if(!Wire.begin(PIN_SDA,PIN_SCL,400000UL))
-    error_code = 4;
+    log_error_code(4);
   
   if (!ioexp_init()){
     error("failed to init GPIO expander");
-    error_code = 5;
+    log_error_code(5);
   }
   //debug_GPIOexp();
 
   if(!adc_init()){
    error("failed to init ADC");
-   error_code = 6;
+   log_error_code(6);
   }
   
   //debug_adc();
@@ -225,10 +227,10 @@ void loop(){
             PRINTDEBUG("Destination IP changed: %d.%d.%d.%d\n",destIp[0],destIp[1],destIp[2],destIp[3]);
             if (!setup_time()){
               error("error in setting time, time is from the past, ignoring");
-              error_code = 7;
+              log_error_code(7);
             }
             UDP_read_flag = 0; //done with data - processed
-            state = s4_report_error; //test error reporting with code 0
+            state = s3_IDLE;
             break;
           } else {
             UDP_read_flag = 0; //not good ACK - discard data.
@@ -241,7 +243,7 @@ void loop(){
         }
         break;
       case s3_IDLE:
-        if (error_code != 0)
+        if (error_code[0] != 0)
           state = s4_report_error;
         if (UDP_read_flag){
           switch (receiveUDP_Buffer[4]){//master is commanding!, commands start at 5
@@ -260,11 +262,11 @@ void loop(){
               uint8_t port1_check;
               if(!ioexp_read(&port0_check,&port1_check)){
                 PRINTDEBUG("failed to read IO exp status\n");
-                error_code = 9;
+                log_error_code(9);
               }
               PRINTDEBUG("IO exp state: %02x:%02x\n",port0_check,port1_check);
               if (!(((~receiveUDP_Buffer[5] & 0xFF) == port0_check)&((~receiveUDP_Buffer[6] & 0xFF) == port1_check))){
-                error_code = 8;//not matching
+                log_error_code(8);//not matching
                 PRINTDEBUG("setting is not matching\n");
               }
               insert_time_to_send_buffer();
@@ -281,15 +283,20 @@ void loop(){
         }
         break;
       case s4_report_error:
-        PRINTDEBUG("Sending error report code %d\n",error_code);
-        insert_time_to_send_buffer();
-        sendUDP_Buffer[4] = 0x03; //error message type
-        sendUDP_Buffer[5] = ether.myip[3]; //unit number as well as last byte of IP
-        //must be sent because some routers strip source IP address when coming from ethernet to wifi on same network
-        sendUDP_Buffer[6] = error_code; //error message type
-        ether.sendUdp((char *)sendUDP_Buffer, 7, srcPort, destIp, dstPort ); //unicast to master
+        for (uint8_t q=0;q<255;q++){
+          if (error_code[q] == 0) break;
+          PRINTDEBUG("Sending error report code %d\n",error_code[q]);
+          insert_time_to_send_buffer();
+          sendUDP_Buffer[4] = 0x03; //error message type
+          sendUDP_Buffer[5] = ether.myip[3]; //unit number as well as last byte of IP
+          //must be sent because some routers strip source IP address when coming from ethernet to wifi on same network
+          sendUDP_Buffer[6] = error_code[q]; //error message type
+          ether.sendUdp((char *)sendUDP_Buffer, 7, srcPort, destIp, dstPort ); //unicast to master
+          ether.packetLoop(ether.packetReceive());
+          delay(1);
+        }
         UDP_send_flag = 1;
-        error_code = 0;
+        error_code[0] = 0; //reset error code array
         state = s3_IDLE;
         break;
       case s200_debug_OK:
@@ -511,6 +518,15 @@ void insert_time_to_send_buffer(){
   sendUDP_Buffer[2] = timenow >> 8;
   sendUDP_Buffer[3] = timenow;
   return;
+}
+void log_error_code(uint8_t ec){
+  for (uint8_t i = 0;i<255;i++){
+    if (error_code[i]==0){
+      error_code[i] = ec;
+      error_code[i+1] = 0;
+      return;
+    }
+  }
 }
 
 ////////////////////////////DEBUG FUNCTIONS
