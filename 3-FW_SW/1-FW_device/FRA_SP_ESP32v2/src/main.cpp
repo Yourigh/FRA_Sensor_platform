@@ -16,8 +16,12 @@
 #include "sdios.h"
 #include "FreeStack.h"
 
+//reset fix
+#include <esp_int_wdt.h>
+#include <esp_task_wdt.h>
+
 //custom pins
-#define PIN_ETH_INT 2
+#define PIN_ETH_INT 36 //was 2, changed due to FW loading problems
 #define PIN_ETH_NRST 4
 #define PIN_LED 16
 #define PIN_SD_CS  17  // SD chip select pin
@@ -72,7 +76,7 @@ const int srcPort PROGMEM = 1100;
 uint8_t destIp[] = { 192,168,0,5 }; // UDP unicast or broadcast, this ip does not matter, will be broadcast on given IP network by DHCP
 uint8_t sendUDP_Buffer[100]; //send function limited to 220
 uint8_t receiveUDP_Buffer[100]; 
-uint8_t error_code[255]; //error flag, 0 at index 0 means no error
+uint8_t error_code[50]; //error flag, 0 at index 0 means no error
 
 //Globals
 bool use_sd=1;
@@ -92,6 +96,7 @@ void insert_time_to_send_buffer();
 uint8_t ioexp_read(uint8_t *port0,uint8_t *port1);
 void IRAM_ATTR ISR_BTN1(){BTN1_flag = 1;}
 void log_error_code(uint8_t ec);
+void hard_restart();
 //debug functions
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len);
 void debug_sd_log();
@@ -252,7 +257,8 @@ void loop(){
               UDP_read_flag = 0;
               break;
             case 2://reset unit
-              ESP.restart();
+              hard_restart();
+              //ESP.restart(); - does not restart completely
               break;
             case 5://Sensor power control
               PRINTDEBUG("Received power setting [5-6] %02x:%02x\n",receiveUDP_Buffer[5],receiveUDP_Buffer[6]);
@@ -283,8 +289,7 @@ void loop(){
         }
         break;
       case s4_report_error:
-        for (uint8_t q=0;q<255;q++){
-          if (error_code[q] == 0) break;
+        for (uint8_t q=0;(q<254)&(error_code[q]!=0);q++){
           PRINTDEBUG("Sending error report code %d\n",error_code[q]);
           insert_time_to_send_buffer();
           sendUDP_Buffer[4] = 0x03; //error message type
@@ -296,7 +301,7 @@ void loop(){
           delay(1);
         }
         UDP_send_flag = 1;
-        error_code[0] = 0; //reset error code array
+        error_code[0] = 0; //reset error code array 0 on index 0 is no error
         state = s3_IDLE;
         break;
       case s200_debug_OK:
@@ -390,7 +395,7 @@ uint8_t sd_write_sample(){
   bout << 1;
 
   for (uint8_t ia = 0; ia < 3; ia++) {
-    bout << ',' << analogRead(ia+A2); //TODO result array writing
+    bout << ',' << ia; //TODO result array writing
   }
   //flush = write to SD
   logfile << SDbuf << flush;
@@ -520,7 +525,7 @@ void insert_time_to_send_buffer(){
   return;
 }
 void log_error_code(uint8_t ec){
-  for (uint8_t i = 0;i<255;i++){
+  for (uint8_t i = 0;i<49;i++){
     if (error_code[i]==0){
       error_code[i] = ec;
       error_code[i+1] = 0;
@@ -528,7 +533,11 @@ void log_error_code(uint8_t ec){
     }
   }
 }
-
+void hard_restart() {
+  esp_task_wdt_init(1,true);
+  esp_task_wdt_add(NULL);
+  while(true);
+}
 ////////////////////////////DEBUG FUNCTIONS
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
   IPAddress src(src_ip[0],src_ip[1],src_ip[2],src_ip[3]);
