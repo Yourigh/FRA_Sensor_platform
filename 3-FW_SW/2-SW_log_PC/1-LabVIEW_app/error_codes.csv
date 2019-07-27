@@ -9,3 +9,6 @@
 8,IO expander output does not match the setting - power setting not valid
 9,failed to read IO expander status - power settings not valid
 10,test error reporting - NO ACTUAL ERROR
+11,ADC1 readout failed - timeout
+12,ADC2 readout failed - timeout
+13,ADC3 readout failed - timeout

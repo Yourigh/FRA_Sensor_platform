@@ -24,7 +24,7 @@ uint16_t ENC28J60::bufferSize;
 bool ENC28J60::broadcast_enabled = false;
 bool ENC28J60::promiscuous_enabled = false;
 
-static const int spiClk = 10000000; // 8 MHz
+static const int spiClk = 20000000; // 40M not working, 20M OK, 10M OK, 1M works, - SPI clock setting for Ethernet controller
 SPIClass * SpiPtr = NULL;
 
 // ENC28J60 Control Registers

@@ -71,8 +71,8 @@ static byte gwip[] = { 192,168,0,2 };
 uint8_t chipid[6];
 byte Ethernet::buffer[500]; // tcp/ip send and receive buffer
 //UDP sender
-const int dstPort PROGMEM = 1111;
-const int srcPort PROGMEM = 1100;
+const int dstPort PROGMEM = 65511;
+const int srcPort PROGMEM = 65500;
 uint8_t destIp[] = { 192,168,0,5 }; // UDP unicast or broadcast, this ip does not matter, will be broadcast on given IP network by DHCP
 uint8_t sendUDP_Buffer[100]; //send function limited to 220
 uint8_t receiveUDP_Buffer[100]; 
@@ -81,7 +81,6 @@ uint8_t error_code[50]; //error flag, 0 at index 0 means no error
 //Globals
 bool use_sd=1;
 bool UDP_read_flag = 0;
-bool UDP_send_flag = 0;
 bool BTN1_flag = 0;
 //functions
 uint8_t sd_create_file();
@@ -153,13 +152,13 @@ void setup(){
     destIp[r] = ether.gwip[r];
   destIp[3]=255; //broadcast address
   ether.printIp("Destination IP default: ", destIp);//Destination IP for sender
-  //register udpReceiveProcess() to port 1100
-  ether.udpServerListenOnPort(&udpReceiveProcess, 1100);
+  //register udpReceiveProcess() to port 65500
+  ether.udpServerListenOnPort(&udpReceiveProcess, srcPort);
 
   // Initialize at the highest speed supported by the board that is
   // not over 50 MHz. Try a lower speed if SPI errors occur.
   use_sd = 1;
-  if (!sd.begin(PIN_SD_CS, SD_SCK_MHZ(20))) {  //TO INCREASE ON FINAL PCB from 20 to xx
+  if (!sd.begin(PIN_SD_CS, SD_SCK_MHZ(20))) {  //SPI clock , 50MHz or 40M does not wrok, 20M ok, 
     sd.initErrorHalt(); //halt turned off, but will give logs to serial
     use_sd=0;
     log_error_code(3);
@@ -180,8 +179,6 @@ void setup(){
    error("failed to init ADC");
    log_error_code(6);
   }
-  
-  //debug_adc();
 }
 /*
  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄ 
@@ -200,6 +197,11 @@ void loop(){
   
   uint32_t bl = 0;
   uint32_t timer1 = 0;
+  uint8_t adc_active_channel = 0; //looping thorugh channels of ADC
+  uint32_t adc_last_measurement_ms = 0; //millis of last measurement
+  uint32_t adc_period_ms = 5000; //every X ms 
+  uint8_t adc_PGA_setting[3][4]; //ADC is first index, ch second
+  uint16_t adc_result_raw[3][4]; //ADC is first index
   
   enum states {
       s0_START,
@@ -207,6 +209,11 @@ void loop(){
       s2_wait_for_ACK,
       s3_IDLE,
       s4_report_error,
+      s5_set_PGA,
+      s6_set_active_channel,
+      s7_trigger_and_wait,
+      s8_send_meas_to_UDP,
+      s9_write_meas_to_SD,
       s200_debug_OK = 200,
     } state;
   state = s0_START;
@@ -221,7 +228,7 @@ void loop(){
         insert_time_to_send_buffer();
         sendUDP_Buffer[4] = 0x04; //Announcement
         ether.sendUdp((char *)sendUDP_Buffer, 5, srcPort, destIp, dstPort ); //broadcast
-        UDP_send_flag = 1;
+        ether.packetLoop(ether.packetReceive()); //reduntant but just to be safe
         timer1 = millis();
         state = s2_wait_for_ACK;
         break;
@@ -281,11 +288,17 @@ void loop(){
               sendUDP_Buffer[6] = ~port0_check;
               sendUDP_Buffer[7] = ~port1_check;
               ether.sendUdp((char *)sendUDP_Buffer, 8, srcPort, destIp, dstPort );
-              UDP_send_flag = 1;
+              ether.packetLoop(ether.packetReceive()); //reduntant but just to be safe
               UDP_read_flag = 0;
               break;
-          }
+            }//if  command end
           UDP_read_flag = 0;
+        }
+        if ((adc_last_measurement_ms + adc_period_ms) < millis()){
+          //time ot measure a sample
+          adc_last_measurement_ms = millis();
+          adc_active_channel = 0;
+          state = s5_set_PGA;
         }
         break;
       case s4_report_error:
@@ -300,8 +313,60 @@ void loop(){
           ether.packetLoop(ether.packetReceive());
           delay(1);
         }
-        UDP_send_flag = 1;
         error_code[0] = 0; //reset error code array 0 on index 0 is no error
+        state = s3_IDLE;
+        break;
+      case s5_set_PGA:
+        adc_PGA_setting[0][adc_active_channel] = ADS1115_PGA_6P144;
+        adc_PGA_setting[1][adc_active_channel] = ADS1115_PGA_6P144;
+        adc_PGA_setting[2][adc_active_channel] = ADS1115_PGA_6P144;
+        //todo autoranging, now all ADCs are on max scale
+        adc1.setGain(adc_PGA_setting[0][adc_active_channel]);
+        adc2.setGain(adc_PGA_setting[1][adc_active_channel]); 
+        adc3.setGain(adc_PGA_setting[2][adc_active_channel]); 
+        state = s6_set_active_channel;
+        break;
+      case s6_set_active_channel:
+        adc1.setMultiplexer(ADS1115_MUX_P0_NG + adc_active_channel); //channel 0 single ended
+        adc2.setMultiplexer(ADS1115_MUX_P0_NG + adc_active_channel); //channel 0 single ended
+        adc3.setMultiplexer(ADS1115_MUX_P0_NG + adc_active_channel); //channel 0 single ended
+        state = s7_trigger_and_wait;
+        break;
+      case s7_trigger_and_wait:
+        adc1.triggerConversion(); //16ms wait after this, then poll, valid for 64SPS
+        adc2.triggerConversion(); 
+        adc3.triggerConversion(); 
+        delay(14); //todo use time more wisely? - log range array
+        //decrease delay if you change samples per second
+        //for 64SPS - 14ms ideal, same time as without delay
+        //quiet time for conversion. I2C is close to sensitive signals.
+        //todo log to range array and value array
+        PRINTDEBUG("Conv.trg'd ch %d\n",adc_active_channel);
+        if(!adc1.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
+          log_error_code(11);
+        adc_result_raw[0][adc_active_channel] = adc1.getConversion(false);
+        PRINTDEBUG("Conv 1A%d:%#06x\n",adc_active_channel,adc_result_raw[0][adc_active_channel]);
+        if(!adc2.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
+          log_error_code(12);
+        adc_result_raw[1][adc_active_channel] = adc2.getConversion(false);
+        PRINTDEBUG("Conv 1A%d:%#06x\n",adc_active_channel,adc_result_raw[1][adc_active_channel]);
+        if(!adc3.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
+          log_error_code(13);
+        adc_result_raw[2][adc_active_channel] = adc3.getConversion(false);
+        PRINTDEBUG("Conv 1A%d:%#06x\n",adc_active_channel,adc_result_raw[2][adc_active_channel]);
+        adc_active_channel++;
+        if (adc_active_channel == 4){
+          adc_active_channel == 0;
+          state = s8_send_meas_to_UDP; //measurement done on all 4 channels
+          break;
+        }
+        state = s5_set_PGA;
+        break;
+      case s8_send_meas_to_UDP:
+        
+        if (use_sd){
+          state = s9_write_meas_to_SD;
+        }
         state = s3_IDLE;
         break;
       case s200_debug_OK:
@@ -312,8 +377,7 @@ void loop(){
     //this must be called for ethercard functions to work. 
     //Returns Length of received data. If non-zero, something is coming.
     if (UDP_read_flag == 0) //if receive buffer ready for data, check if thre is incoming DTG
-      if ((digitalRead(PIN_ETH_INT)==0) | (UDP_send_flag)){ //if interrupt of incoming data or want to send data
-        UDP_send_flag = 0;
+      if (digitalRead(PIN_ETH_INT)==0){ //if interrupt of incoming data or want to send data
         ether.packetLoop(ether.packetReceive()); //Returns Length of received data. If non-zero, something is coming.
       }
       //data were already processed and put into receiveUDP_buffer.
@@ -326,7 +390,7 @@ void loop(){
       if (BTN1_flag){PRINTDEBUG("Button pressed!\n");BTN1_flag = 0;}
       if (millis()>(bl+10000)){ //every 1s
         bl=millis();
-        Serial.printf("time: %d, state: %d\n",now(),state);
+        Serial.printf("t: %d\t st:%d\n",now(),(int)state);
       }
     #endif
   }
@@ -478,28 +542,36 @@ uint8_t adc_init(){
   adc1.setMode(ADS1115_MODE_SINGLESHOT);
   adc1.setRate(ADS1115_RATE_64);
   adc1.setGain(ADS1115_PGA_6P144); //6.144V range
-  adc1.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
+  adc1.setMultiplexer(ADS1115_MUX_P1_NG); //channel 0 single ended
   if (!adc2.testConnection())
     return 0;
   adc2.initialize(); // initialize ADS1115 16 bit A/D chip
   adc2.setMode(ADS1115_MODE_SINGLESHOT);
   adc2.setRate(ADS1115_RATE_64); 
   adc2.setGain(ADS1115_PGA_6P144); //6.144V range
-  adc2.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
-  //TODO add same for adc2 and adc3
+  adc2.setMultiplexer(ADS1115_MUX_P1_NG); //channel 0 single ended
+  if (!adc2.testConnection())
+    return 0;
+  adc3.initialize(); // initialize ADS1115 16 bit A/D chip
+  adc3.setMode(ADS1115_MODE_SINGLESHOT);
+  adc3.setRate(ADS1115_RATE_64); 
+  adc3.setGain(ADS1115_PGA_6P144); //6.144V range
+  adc3.setMultiplexer(ADS1115_MUX_P1_NG); //channel 0 single ended
   return 1;
 }
 //callback that prints received packets to the serial port
 void udpReceiveProcess(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
   //debug_UDP_receive(dest_port, &src_ip[IP_LEN], src_port, data, len);
-  //callback is executed only if data received from 1100
+  //callback is executed only if data received from 65500
   memcpy(receiveUDP_Buffer, data, len);
   for (uint8_t o=0;o<len;o++)
     PRINTDEBUG("%02x:",receiveUDP_Buffer[o]);
   PRINTDEBUG(" Data read buffer\n");
-  if (receiveUDP_Buffer[4] == 0x01)
+  if (receiveUDP_Buffer[4] == 0x01){
     destIp[3] = src_ip[3];
     //memcpy(destIp,src_ip,IP_LEN);  //if it is acknowledgment, change destination IP to unicast.
+    memcpy(ether.gwip,src_ip,IP_LEN);  //change gateway to master
+  }
   UDP_read_flag = 1;
 }
 uint8_t setup_time(){
@@ -576,26 +648,36 @@ uint8_t debug_adc(){
   adc1.setGain(ADS1115_PGA_6P144); //6.144V range
   //ALERT/RDY pin already disabled in INIT
   */
-  adc1.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
-  adc2.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
-  while(1){
+  adc1.setMultiplexer(ADS1115_MUX_P1_NG); //channel 0 single ended
+  adc2.setMultiplexer(ADS1115_MUX_P1_NG); //channel 0 single ended
+  adc3.setMultiplexer(ADS1115_MUX_P1_NG); //channel 0 single ended
+  //while(1){
     adc1.triggerConversion(); //16ms wait after this, then poll
     m=micros();
     if(!adc1.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
       return 0;
     n=micros();
     Serial.printf("Conversion took %d us ",n-m); //typically for 64SPS : under 16400 us
-    Serial.print("1A0: "); Serial.print(adc1.getMilliVolts(false)); Serial.print("mV\t\n");
-    delay(200);
+    Serial.print("1A1: "); Serial.print(adc1.getMilliVolts(false)); Serial.print("mV\t\n");
+    //delay(200);
     adc2.triggerConversion(); //16ms wait after this, then poll
     m=micros();
     if(!adc2.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
       return 0;
     n=micros();
     Serial.printf("Conversion took %d us ",n-m); //typically for 64SPS : 16246 us
-    Serial.print("2A0: "); Serial.print(adc2.getMilliVolts(false)); Serial.print("mV\t\n");
-    delay(200);
-  }
+    Serial.print("2A1: "); Serial.print(adc2.getMilliVolts(false)); Serial.print("mV\t\n");
+    //delay(200);
+    adc3.triggerConversion(); //16ms wait after this, then poll
+    m=micros();
+    if(!adc3.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
+      return 0;
+    n=micros();
+    Serial.printf("Conversion took %d us ",n-m); //typically for 64SPS : 16246 us
+    Serial.print("3A1: "); Serial.print(adc3.getMilliVolts(false)); Serial.print("mV\t\n");
+    //delay(200);
+  //}
+  return 1;
 }
 void debug_GPIOexp(){
   while(1){

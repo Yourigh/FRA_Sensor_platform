@@ -1,0 +1,222 @@
+Partlist
+
+Exported from FRA_Sensor_v1.brd at 26-Jul-19 19:57
+
+EAGLE Version 7.6.0 Copyright (c) 1988-2016 CadSoft
+
+Assembly variant: 
+
+Part     Value                    Package               Library             Position (mm)         Orientation
+
+C1       100n                     C0603K                resistor            (46.1264 13.6398)     R180
+C2       10u                      C0603K                resistor            (75.40625 23.7998)    R270
+C3       100n                     C0603K                resistor            (77.00645 23.7998)    R270
+C4       100n                     C0603K                resistor            (56.6293 62.23)       R0
+C5       100n                     C0603K                resistor            (79.49565 11.8872)    R180
+C6       10u/25V                  C0603K                resistor            (40.9956 3.5814)      R0
+C7       220u/25V                 153CLV-0605           resistor            (17.68475 33.1724)    R0
+C8       10u                      C0603K                resistor            (32.08655 36.9316)    R0
+C9       100n                     C0603K                resistor            (40.9956 5.3467)      R0
+C10      10u/25V                  C0603K                resistor            (39.751 14.732)       R0
+C11      10u                      C0603K                resistor            (39.751 16.33855)     R0
+C12      100n                     C0603K                resistor            (39.751 17.9451)      R0
+C13      100n                     C0603K                resistor            (28.5877 13.0175)     R180
+C14      10u/25V                  C0603K                resistor            (22.94255 5.4229)     R0
+C15      100n                     C0603K                resistor            (22.8981 3.47345)     R0
+C16      100n                     C0603K                resistor            (65.913 44.73575)     R0
+C17      10u                      C0603K                resistor            (21.92655 18.12925)   R0
+C18      100n                     C0603K                resistor            (60.05195 69.38645)   R90
+C19      100n                     C0603K                resistor            (55.69585 69.38645)   R90
+C20      10u                      C0603K                resistor            (4.04495 66.27495)    R90
+C21      100n                     C0603K                resistor            (21.1582 68.76415)    R90
+C22      100n                     C0603K                resistor            (12.13485 56.6293)    R180
+C23      100n                     C0603K                resistor            (58.8391 42.3672)     R270
+C24      10u                      C0603K                resistor            (96.85655 60.4901)    R90
+C25      10u                      C0603K                resistor            (95.24365 60.4901)    R90
+C26      10u                      C0603K                resistor            (22.0091 14.3129)     R0
+C27      100n                     C0603K                resistor            (21.95195 16.33855)   R0
+C28      100n                     C0603K                resistor            (12.9032 40.8305)     R270
+C29      22p                      C0402                 resistor            (87.05215 62.5475)    R90
+C30      22p                      C0402                 resistor            (89.59215 62.5475)    R90
+C31      100n                     C0603K                resistor            (55.626 42.3672)      R270
+C32      100n                     C0603K                resistor            (43.561 51.6509)      R180
+C37      10u/25V                  C0603K                resistor            (11.2395 49.91735)    R270
+C38      100n                     C0603K                resistor            (59.8043 20.38985)    R180
+C39      10u                      C0603K                resistor            (25.2616375 21.750084375) R180
+C40      100n                     C0603K                resistor            (24.7142 25.67305)    R90
+C41      10u                      C0603K                resistor            (10.22985 52.451)     R0
+C42      100n                     C0603K                resistor            (45.11675 47.2948)    R270
+C43      100n                     C0603K                resistor            (45.11675 43.561)     R90
+C44      100n                     C0603K                resistor            (79.6544 62.54115)    R0
+C45      100n                     C0603K                resistor            (24.58085 62.23)      R0
+C46      100n                     C0603K                resistor            (16.8021 68.76415)    R90
+C47      100n                     C0603K                resistor            (27.3812 68.76415)    R90
+C48      100n                     C0603K                resistor            (31.7373 68.76415)    R90
+C49      100n                     C0603K                resistor            (76.23175 69.0753)    R90
+C50      100n                     C0603K                resistor            (71.87565 69.0753)    R90
+C51      100n                     C0603K                resistor            (82.7659 69.0753)     R90
+C52      100n                     C0603K                resistor            (87.122 69.0753)      R90
+D1       PESD1CAN                 SOT23                 diode               (80.535496875 8.796865625) R270
+D2       PESD1CAN                 SOT23                 diode               (88.035834375 10.253134375) R90
+D4       PESD1CAN                 SOT23                 diode               (15.94485 47.92345)   R180
+D6       PESD1CAN                 SOT23                 diode               (63.6651 52.38115)    R0
+FAN_5V   2pin                     1X02                  pinhead             (29.4386 34.35985)    R180
+FB1                               0603                  microbuilder        (33.951359375 41.52314375) R0
+FB2                               0603                  microbuilder        (42.6656625 45.152759375) R90
+FB3                               0603                  microbuilder        (11.8237 43.87215)    R0
+FB4                               0603                  microbuilder        (11.8237 46.6725)     R0
+FB5                               0603                  microbuilder        (5.6007 35.15995)     R0
+FB6                               0603                  microbuilder        (5.6007 30.18155)     R0
+FB7                               0603                  microbuilder        (2.0447 53.5559)      R90
+FB8                               0603                  microbuilder        (40.13835 45.11675)   R90
+FB9                               0603                  microbuilder        (33.91535 39.2049)    R0
+FB10                              0603                  microbuilder        (14.9352 50.841909375) R180
+FID1     FIDUCIAL""               FIDUCIAL_1MM          microbuilder        (2 98)                R0
+FID2     FIDUCIAL""               FIDUCIAL_1MM          microbuilder        (98 98)               R0
+FID4     FIDUCIAL""               FIDUCIAL_1MM          microbuilder        (2 2)                 R0
+IC1      CP2101                   MLP28                 SparkFun-Retired    (83.82 18.0975)       R90
+IC2      ADS1115IDGSR             SOP50P490X110-10N     SamacSys_Parts      (56.6293 65.03035)    R180
+IC3      P82B715DR                SOIC127P600X175-8N    SamacSys_Parts      (7.77875 59.42965)    R90
+IC4      ADS1115IDGSR             SOP50P490X110-10N     SamacSys_Parts      (79.69885 65.2399)    R180
+IC5      ADS1115IDGSR             SOP50P490X110-10N     SamacSys_Parts      (24.5364 65.0875)     R180
+IC8      PCA9555PW                TSSOP24               micro-philips       (38.27145 56.31815)   R180
+IC9      LDK320ADU50R             ST-SOT-89             SamacSys_Parts      (6.1468 50.8889)      R90
+J2       ETH_CONN                 2X6                   SparkFun-Connectors (27.305 26.67)        MR180
+J3       PJ-059A                  PJ-059A               FRA_eagle_lib       (10.5791 23.6474)     R0
+J4                                SDCMF-10915W010       sd-mmc              (64.135 4.445)        R0
+J5       WM9734TR-ND              USB-B-MICRO-SMD_VERT  SparkFun-Connectors (84.12854375 5.240696875) R0
+J8       1140084168               1140084168            SamacSys_Parts      (64.077075 7.1336375) R0
+J9       4pin                     1X04                  pinhead             (50 59)               R0
+JTAG1                             2X05_1.27MM_SMT       microbuilder        (70.292209375 51.451465625) R270
+L2       SRP5030CA-1R5M           SRP5030CA             FRA_eagle_lib       (36.1696 9.1821)      R180
+L3       SRP5030CA-1R5M           SRP5030CA             FRA_eagle_lib       (18.0086 8.97255)     R180
+LED_HDR  2pin                     1X02                  pinhead             (77.1652 35.15995)    R0
+Q2       FDN306P                  SOT23-WIDE            microbuilder        (18.28165 40.78605)   R0
+Q3       Si2300DS                 SOT23                 adafruit            (35.0393 34.33445)    R90
+Q5       FDN306P                  SOT23-WIDE            microbuilder        (7.15645 69.1868)     R0
+Q6       FDN306P                  SOT23-WIDE            microbuilder        (12.13485 69.1868)    R0
+Q7       DNI                      TO252                 microbuilder        (24.892 45.11675)     R90
+Q8       FDN306P                  SOT23-WIDE            microbuilder        (40.480615625 69.373490625) R0
+Q9       FDN306P                  SOT23-WIDE            microbuilder        (35.78225 69.38645)   R0
+Q10      FDN306P                  SOT23-WIDE            microbuilder        (63.16345 69.1868)    R0
+Q11      FDN306P                  SOT23-WIDE            microbuilder        (67.70624375 69.168646875) R0
+Q12      FDN306P                  SOT23-WIDE            microbuilder        (94.90075 87.122)     R90
+Q13      FDN306P                  SOT23-WIDE            microbuilder        (94.90075 81.21015)   R90
+Q14      FDN306P                  SOT23-WIDE            microbuilder        (45.11675 69.38645)   R0
+Q15      FDN306P                  SOT23-WIDE            microbuilder        (49.784 69.38645)     R0
+R1       12k                      R0603                 resistor            (97.1804 20.21205)    R180
+R2       12k                      R0603                 resistor            (96.5454 17.03705)    R270
+R3       100                      R0603                 resistor            (76.8477 19.3675)     R270
+R4       0                        R0603                 resistor            (79.06385 19.3675)    R270
+R5       0                        R0603                 resistor            (85.08104375 10.003196875) R90
+R6       0                        R0603                 resistor            (83.49354375 10.003196875) R90
+R7       0                        R0603                 resistor            (86.4616 24.294465625) R90
+R8       0                        R0603                 resistor            (64.5668 55.42915)    R180
+R9       100k                     R0603                 resistor            (84.4804 61.06795)    R0
+R10      100                      R0603                 resistor            (77.1652 57.1627)     R0
+R11      0                        R0603                 resistor            (28.53055 11.1252)    R180
+R12      100                      R0603                 resistor            (77.2414 43.688)      R0
+R13      100                      R0603                 resistor            (77.216 52.6034)      R0
+R14      DNI                      R0603                 resistor            (91.4781 65.65265)    R0
+R15      10k                      R0603                 resistor            (57.8739 69.38645)    R90
+R16      0                        R0603                 resistor            (46.1264 11.8745)     R180
+R17      47                       R0603                 resistor            (88.9254 36.2331)     R270
+R18      10k                      R0603                 resistor            (53.5178 69.38645)    R90
+R19      100                      R0603                 resistor            (78.49235 28.20035)   R0
+R20      47                       R0603                 resistor            (42.85615 36.7792)    R180
+R21      100k                     R0603                 resistor            (38.58895 34.30905)   R90
+R22      10k                      R0603                 resistor            (37.762815625 3.580765625) R0
+R23      DNI                      R0603                 resistor            (81.817434375 28.266528125) R0
+R24      100                      R0603                 resistor            (77.2287 54.87035)    R0
+R25      10k                      R0603                 resistor            (64.83985 48.16475)   R90
+R26      10                       R0603                 resistor            (55.83555 46.17085)   R180
+R27      10                       R0603                 resistor            (59.28995 46.13275)   R0
+R28      10k/1%                   R0603                 resistor            (46.5963 8.88365)     R0
+R29      DNI                      R0603                 resistor            (46.5963 6.76275)     R0
+R30      45.3k                    R0603                 resistor            (46.5963 4.638675)    R0
+R31      47                       R0603                 resistor            (90.98915 36.2585)    R270
+R32      0                        R0603                 resistor            (72.1106 42.1894)     R180
+R33      330                      R0603                 resistor            (4.04495 56.6293)     R90
+R34      330                      R0603                 resistor            (4.04495 62.8523)     R270
+R35      0                        R0603                 resistor            (32.04845 62.23)      R90
+R36      DNI                      R0603                 resistor            (28.6258 60.05195)    R0
+R37      DNI                      R0603                 resistor            (42.9387 24.58085)    R90
+R40      DNI                      R0603                 resistor            (88.265 21.2725)      R270
+R42      10k                      R0603                 resistor            (86.36 13.6525)       R0
+R43      0                        R0603                 resistor            (91.75115 11.43635)   R180
+R44      DNI                      R0603                 resistor            (90.325575 21.2852)   R270
+R47      0                        R0603                 resistor            (72.1106 44.46905)    R180
+R48      47                       R0603                 resistor            (97.41535 35.94735)   R270
+R49      10k                      R0603                 resistor            (19.3675 3.4925)      R0
+R50      10k/1%                   R0603                 resistor            (28.3464 8.24865)     R0
+R51      DNI                      R0603                 resistor            (28.3406875 4.048759375) R0
+R52      73.2k                    R0603                 resistor            (28.347671875 6.165215625) R0
+R53      100k                     R0603                 resistor            (13.9446 37.86505)    R180
+R54      100k                     R0603                 resistor            (15.3162 40.8305)     R270
+R55      47                       R0603                 resistor            (86.84895 36.2331)    R270
+R63      47                       R0603                 resistor            (84.77885 36.2331)    R270
+R64      10k                      R0603                 resistor            (55.17515 22.4536)    R90
+R65      0                        R0603                 resistor            (59.817 22.84095)     R180
+R67      10k                      R0603                 resistor            (7.15645 65.3415)     R180
+R68      10k                      R0603                 resistor            (96.06915 63.45555)   R180
+R70      10k                      R0603                 resistor            (12.13485 65.3415)    R180
+R71      10k                      R0603                 resistor            (40.4495 65.54115)    R180
+R72      10k                      R0603                 resistor            (35.78225 65.65265)   R180
+R73      10k                      R0603                 resistor            (63.16345 65.65265)   R180
+R74      10k                      R0603                 resistor            (67.8307 65.65265)    R180
+R75      10k                      R0603                 resistor            (98.01225 87.122)     R270
+R76      10k                      R0603                 resistor            (98.12375 81.21015)   R270
+R77      10k                      R0603                 resistor            (45.11675 65.65265)   R180
+R78      10k                      R0603                 resistor            (49.784 65.65265)     R180
+R81      2k2                      R0603                 resistor            (46.36135 49.784)     R0
+R82      2k2                      R0603                 resistor            (49.784 49.784)       R180
+R83      10k                      R0603                 resistor            (23.33625 68.76415)   R90
+R84      10k                      R0603                 resistor            (18.98015 68.76415)   R90
+R85      10k                      R0603                 resistor            (25.5143 68.76415)    R90
+R86      10k                      R0603                 resistor            (29.55925 68.76415)   R90
+R87      10k                      R0603                 resistor            (78.4098 69.0753)     R90
+R88      10k                      R0603                 resistor            (74.0537 69.0753)     R90
+R89      10k                      R0603                 resistor            (80.58785 69.0753)    R90
+R90      10k                      R0603                 resistor            (84.94395 69.0753)    R90
+S1                                B3F-31XX              adafruit            (95.8977 71.65975)    R90
+S_D1     4pin                     1X04                  pinhead             (61.3791 39.8272)     R270
+S_D2     4pin                     1X04                  pinhead             (53.086 39.8272)      R270
+T1       BC847                    SOT23                 transistor-neu-to92 (93.0529 18.94205)    R90
+T2       BC847                    SOT23                 transistor-neu-to92 (93.0529 15.13205)    R90
+TP1      TPTP10R                  TP10R                 testpad             (35.37585 3.60045)    R0
+TP2      TPTP10R                  TP10R                 testpad             (36.6141 16.42745)    R0
+TP3      TPTP10R                  TP10R                 testpad             (18.45945 16.63065)   R0
+TP4      TPTP10R                  TP10R                 testpad             (17.3228 3.5179)      R0
+TP5      TPTP10R                  TP10R                 testpad             (41.15435 33.34385)   R0
+TP6      TPTP10R                  TP10R                 testpad             (91.16695 59.1185)    R0
+TP7      TPTP10R                  TP10R                 testpad             (91.16695 61.91885)   R0
+TP8      TPTP10R                  TP10R                 testpad             (85.56625 59.1185)    R0
+TP9      TPTP10R                  TP10R                 testpad             (84.0105 59.1185)     R0
+TP10     TPTP10R                  TP10R                 testpad             (29.8704 64.0969)     R0
+TP11     TPTP10R                  TP10R                 testpad             (21.90115 35.56)      R0
+TP12     TPTP10R                  TP10R                 testpad             (84.0105 65.3415)     R0
+TP13     TPTP10R                  TP10R                 testpad             (43.16095 59.0677)    R0
+TP14     TPTP10R                  TP10R                 testpad             (29.55925 55.69585)   R0
+TP15     TPTP10R                  TP10R                 testpad             (31.115 55.69585)     R0
+TP16     TPTP10R                  TP10R                 testpad             (32.67075 55.69585)   R0
+TP17     TPTP10R                  TP10R                 testpad             (34.2265 55.69585)    R0
+TP19     TPTP10R                  TP10R                 testpad             (97.0788 26.44775)    R0
+TP20     TPTP10R                  TP10R                 testpad             (98.9457 26.44775)    R0
+TP21     TPTP10R                  TP10R                 testpad             (59.1185 61.29655)    R0
+U$1      TPS563249DDCR            SOT23-6               FRA_eagle_lib       (24.3586 9.98855)     R270
+U$2      HEADER_3X6P_ESPPROG      2X03_1.27MM_SMT       FRA_eagle_lib       (91.34475 26.81605)   R180
+U$3      CONN_03X2_WE_61200621621 WE_61200621621        FRA_eagle_lib       (15 90)               R270
+U$4      TPS563249DDCR            SOT23-6               FRA_eagle_lib       (42.25925 10.34415)   R270
+U$8      CONN_03X2_WE_61200621621 WE_61200621621        FRA_eagle_lib       (15 77)               R270
+U$9      CONN_03X2_WE_61200621621 WE_61200621621        FRA_eagle_lib       (32.5 90)             R270
+U$10     CONN_03X2_WE_61200621621 WE_61200621621        FRA_eagle_lib       (32.5 77)             R270
+U$11     CONN_03X2_WE_61200621621 WE_61200621621        FRA_eagle_lib       (67.5 90)             R270
+U$12     CONN_03X2_WE_61200621621 WE_61200621621        FRA_eagle_lib       (67.5 77)             R270
+U$13     CONN_03X2_WE_61200621621 WE_61200621621        FRA_eagle_lib       (85 90)               R270
+U$14     CONN_03X2_WE_61200621621 WE_61200621621        FRA_eagle_lib       (85 77)               R270
+U$15     CONN_03X2_WE_61200621621 WE_61200621621        FRA_eagle_lib       (50 90)               R270
+U$16     CONN_03X2_WE_61200621621 WE_61200621621        FRA_eagle_lib       (50 77)               R270
+U1       PCA9509DP                SOT505-1              nxp_60              (47.9171 45.4279)     R0
+U2       ESP-WROOM-32             ESP-WROOM-32          SparkFun-RF         (91.09 48.1711)       R0
+X1       TB001-500-02BE           W237-102              con-wago-500        (5.715 42.4307)       R270
+Y3       32.768kHz                CRYSTAL-SMD-3.2X1.5MM SparkFun-Clocks     (88.32215 59.69)      R0

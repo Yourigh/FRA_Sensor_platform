@@ -16851,7 +16851,7 @@ Grid 5.00 mm&lt;p&gt;
 <vertex x="0.9635" y="-0.3"/>
 <vertex x="0.254" y="-0.889"/>
 </polygon>
-<polygon width="0" layer="29">
+<polygon width="0.127" layer="29">
 <vertex x="0.381" y="-1.016"/>
 <vertex x="1.143" y="-0.381"/>
 <vertex x="1.143" y="2.413"/>
@@ -16861,7 +16861,7 @@ Grid 5.00 mm&lt;p&gt;
 <vertex x="-0.381" y="-2.159"/>
 <vertex x="0.381" y="-2.159"/>
 </polygon>
-<polygon width="0" layer="31">
+<polygon width="0.127" layer="31">
 <vertex x="0.916" y="1.246"/>
 <vertex x="0.916" y="2.159"/>
 <vertex x="-0.916" y="2.159"/>
@@ -17639,7 +17639,7 @@ Source: PCA9555_5.pdf</description>
 </libraries>
 <attributes>
 <attribute name="CNAME" value="FRA Sensor Unit"/>
-<attribute name="CREVISION" value="02"/>
+<attribute name="CREVISION" value="03"/>
 </attributes>
 <variantdefs>
 </variantdefs>
@@ -17788,11 +17788,12 @@ Source: PCA9555_5.pdf</description>
 <part name="J2" library="SparkFun-Connectors" deviceset="CONN_06X2" device="PTH_FEMALE" value="ETH_CONN">
 <attribute name="PARTNO" value="CES-106-01-T-D"/>
 </part>
-<part name="J4" library="sd-mmc" deviceset="SDCARD" device="">
+<part name="J4" library="sd-mmc" deviceset="SDCARD" device="" value="DNI">
 <attribute name="PARTNO" value="GSD090012SEU"/>
 </part>
 <part name="U$4" library="FRA_eagle_lib" deviceset="TPS5632149DDCR" device="" value="TPS563249DDCR">
-<attribute name="PARTNO" value="TPS563249DDCR"/>
+<attribute name="PARTNO" value="TPS563249DDCR
+"/>
 </part>
 <part name="SUPPLY6" library="supply2" deviceset="GND" device=""/>
 <part name="C1" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
@@ -17809,7 +17810,9 @@ Source: PCA9555_5.pdf</description>
 </part>
 <part name="SUPPLY14" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY15" library="supply2" deviceset="GND" device=""/>
-<part name="C10" library="resistor" deviceset="C-EU" device="C0603K" value="10u/25V"/>
+<part name="C10" library="resistor" deviceset="C-EU" device="C0603K" value="10u/25V">
+<attribute name="PARTNO" value="GRM188R61E106KA73J"/>
+</part>
 <part name="SUPPLY21" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY22" library="supply2" deviceset="GND" device=""/>
 <part name="C11" library="resistor" deviceset="C-EU" device="C0603K" value="10u">
@@ -17833,7 +17836,8 @@ Source: PCA9555_5.pdf</description>
 </part>
 <part name="SUPPLY30" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
 <part name="L2" library="FRA_eagle_lib" deviceset="SRP5030CA-1R5M" device="" value="SRP5030CA-1R5M">
-<attribute name="PARTNO" value="SRN6045TA-1R5Y"/>
+<attribute name="PARTNO" value="SRP5030CA-1R5M
+"/>
 </part>
 <part name="Q2" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
 <attribute name="PARTNO" value="FDN306P"/>
@@ -17855,7 +17859,8 @@ Source: PCA9555_5.pdf</description>
 <part name="SUPPLY48" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
 <part name="SUPPLY49" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
 <part name="U$1" library="FRA_eagle_lib" deviceset="TPS5632149DDCR" device="" value="TPS563249DDCR">
-<attribute name="PARTNO" value="TPS563249DDCR"/>
+<attribute name="PARTNO" value="TPS563249DDCR
+"/>
 </part>
 <part name="SUPPLY11" library="supply2" deviceset="GND" device=""/>
 <part name="C13" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
@@ -17872,7 +17877,9 @@ Source: PCA9555_5.pdf</description>
 </part>
 <part name="SUPPLY55" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY60" library="supply2" deviceset="GND" device=""/>
-<part name="C17" library="resistor" deviceset="C-EU" device="C0603K" value="10u"/>
+<part name="C17" library="resistor" deviceset="C-EU" device="C0603K" value="10u">
+<attribute name="PARTNO" value="GRM188R61A106KE69J"/>
+</part>
 <part name="SUPPLY62" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY63" library="supply2" deviceset="GND" device=""/>
 <part name="C26" library="resistor" deviceset="C-EU" device="C0603K" value="10u">
@@ -17894,7 +17901,8 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="ERJ-PB3D7322V"/>
 </part>
 <part name="L3" library="FRA_eagle_lib" deviceset="SRP5030CA-1R5M" device="" value="SRP5030CA-1R5M">
-<attribute name="PARTNO" value="SRN6045TA-1R5Y"/>
+<attribute name="PARTNO" value="SRP5030CA-1R5M
+"/>
 </part>
 <part name="R53" library="resistor" deviceset="R-EU_" device="R0603" value="100k">
 <attribute name="PARTNO" value="CRCW0603100KFKEAC"/>
@@ -17983,7 +17991,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="61300411121"/>
 </part>
 <part name="J5" library="SparkFun-Connectors" deviceset="USB_MICRO-B" device="_FEMALE-SMT-VERT" value="WM9734TR-ND ">
-<attribute name="PARTNO" value="Molex 105133-0001"/>
+<attribute name="PARTNO" value="105133-0001"/>
 </part>
 <part name="SUPPLY68" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
 <part name="SUPPLY72" library="supply2" deviceset="GND" device=""/>
@@ -18014,8 +18022,8 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CRCW0603100KFKEAC"/>
 </part>
 <part name="SUPPLY19" library="supply2" deviceset="GND" device=""/>
-<part name="FAN_5V" library="pinhead" deviceset="PINHD-1X2" device="" value="FAN">
-<attribute name="PARTNO" value="640456-2"/>
+<part name="FAN_5V" library="pinhead" deviceset="PINHD-1X2" device="" value="2pin">
+<attribute name="PARTNO" value="TSW-102-07-G-S"/>
 </part>
 <part name="SUPPLY87" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
 <part name="TP5" library="testpad" deviceset="TP" device="TP10R"/>
@@ -18086,7 +18094,7 @@ Source: PCA9555_5.pdf</description>
 <part name="SUPPLY120" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY121" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
 <part name="U$3" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
-<attribute name="PARTNO" value="Wurth 61200621621"/>
+<attribute name="PARTNO" value="61200621621"/>
 </part>
 <part name="SUPPLY59" library="supply2" deviceset="AGND" device=""/>
 <part name="Q5" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
@@ -18096,7 +18104,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CRCW060310K0JNEAC"/>
 </part>
 <part name="U$8" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
-<attribute name="PARTNO" value="Wurth 61200621621"/>
+<attribute name="PARTNO" value="61200621621"/>
 </part>
 <part name="SUPPLY58" library="supply2" deviceset="AGND" device=""/>
 <part name="Q6" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
@@ -18106,7 +18114,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CRCW060310K0JNEAC"/>
 </part>
 <part name="U$9" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
-<attribute name="PARTNO" value="Wurth 61200621621"/>
+<attribute name="PARTNO" value="61200621621"/>
 </part>
 <part name="SUPPLY108" library="supply2" deviceset="AGND" device=""/>
 <part name="Q8" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
@@ -18116,7 +18124,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CRCW060310K0JNEAC"/>
 </part>
 <part name="U$10" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
-<attribute name="PARTNO" value="Wurth 61200621621"/>
+<attribute name="PARTNO" value="61200621621"/>
 </part>
 <part name="SUPPLY116" library="supply2" deviceset="AGND" device=""/>
 <part name="Q9" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
@@ -18126,7 +18134,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CRCW060310K0JNEAC"/>
 </part>
 <part name="U$11" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
-<attribute name="PARTNO" value="Wurth 61200621621"/>
+<attribute name="PARTNO" value="61200621621"/>
 </part>
 <part name="SUPPLY124" library="supply2" deviceset="AGND" device=""/>
 <part name="Q10" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
@@ -18136,7 +18144,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CRCW060310K0JNEAC"/>
 </part>
 <part name="U$12" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
-<attribute name="PARTNO" value="Wurth 61200621621"/>
+<attribute name="PARTNO" value="61200621621"/>
 </part>
 <part name="SUPPLY126" library="supply2" deviceset="AGND" device=""/>
 <part name="Q11" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
@@ -18150,7 +18158,7 @@ Source: PCA9555_5.pdf</description>
 </part>
 <part name="FRAME7" library="SparkFun-Aesthetics" deviceset="FRAME-A4L" device=""/>
 <part name="U$13" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
-<attribute name="PARTNO" value="Wurth 61200621621"/>
+<attribute name="PARTNO" value="61200621621"/>
 </part>
 <part name="SUPPLY70" library="supply2" deviceset="AGND" device=""/>
 <part name="Q12" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
@@ -18160,7 +18168,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CRCW060310K0JNEAC"/>
 </part>
 <part name="U$14" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
-<attribute name="PARTNO" value="Wurth 61200621621"/>
+<attribute name="PARTNO" value="61200621621"/>
 </part>
 <part name="SUPPLY85" library="supply2" deviceset="AGND" device=""/>
 <part name="Q13" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
@@ -18170,7 +18178,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CRCW060310K0JNEAC"/>
 </part>
 <part name="U$15" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
-<attribute name="PARTNO" value="Wurth 61200621621"/>
+<attribute name="PARTNO" value="61200621621"/>
 </part>
 <part name="SUPPLY129" library="supply2" deviceset="AGND" device=""/>
 <part name="Q14" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
@@ -18180,7 +18188,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CRCW060310K0JNEAC"/>
 </part>
 <part name="U$16" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
-<attribute name="PARTNO" value="Wurth 61200621621"/>
+<attribute name="PARTNO" value="61200621621"/>
 </part>
 <part name="SUPPLY131" library="supply2" deviceset="AGND" device=""/>
 <part name="Q15" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
@@ -18331,7 +18339,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CC0603KRX7R8BB104"/>
 </part>
 <part name="SUPPLY66" library="supply2" deviceset="AGND" device=""/>
-<part name="J9" library="pinhead" deviceset="PINHD-1X4" device="" value="+  G  SCL SDA">
+<part name="J9" library="pinhead" deviceset="PINHD-1X4" device="" value="4pin">
 <attribute name="PARTNO" value="61300411121"/>
 </part>
 <part name="TP14" library="testpad" deviceset="TP" device="TP10R"/>
@@ -18362,7 +18370,7 @@ Source: PCA9555_5.pdf</description>
 <part name="SUPPLY95" library="supply2" deviceset="+5V/1" device="" value="5V_F"/>
 <part name="SUPPLY96" library="supply2" deviceset="+5V/1" device="" value="5V_F"/>
 <part name="J3" library="FRA_eagle_lib" deviceset="PJ-059A" device="">
-<attribute name="PARTNO" value="PJ-031C"/>
+<attribute name="PARTNO" value="PJ-059A "/>
 </part>
 <part name="FB10" library="microbuilder" deviceset="FERRITE" device="">
 <attribute name="PARTNO" value="BLM18PG121SN1D"/>
@@ -18385,7 +18393,7 @@ Source: PCA9555_5.pdf</description>
 </part>
 <part name="SUPPLY132" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
 <part name="LED_HDR" library="pinhead" deviceset="PINHD-1X2" device="" value="2pin">
-<attribute name="PARTNO" value="640456-2"/>
+<attribute name="PARTNO" value="TSW-102-07-G-S"/>
 </part>
 </parts>
 <sheets>
@@ -18405,6 +18413,14 @@ Source: PCA9555_5.pdf</description>
 <text x="58.42" y="86.36" size="1.778" layer="97">Molex
 
 105133-0001</text>
+<text x="142.24" y="55.88" size="1.778" layer="97">CP2101 EOL
+CP2102N-A01-GQFN28 is pin to pin replacment
+  R43 then 22.1k, R44 47.5k
+https://www.silabs.com/documents/public/application-notes/an976-cp2102-3-4-9-to-cp2102n-porting-guide.pdf</text>
+<text x="142.24" y="55.88" size="1.778" layer="97">CP2101 EOL
+CP2102N-A01-GQFN28 is pin to pin replacment
+  R43 then 22.1k, R44 47.5k
+https://www.silabs.com/documents/public/application-notes/an976-cp2102-3-4-9-to-cp2102n-porting-guide.pdf</text>
 </plain>
 <instances>
 <instance part="IC1" gate="G$1" x="195.58" y="106.68">
@@ -18829,7 +18845,9 @@ screw terminal</text>
 </instance>
 <instance part="SUPPLY14" gate="GND" x="101.6" y="127"/>
 <instance part="SUPPLY15" gate="GND" x="88.9" y="127"/>
-<instance part="C10" gate="G$1" x="160.02" y="119.38"/>
+<instance part="C10" gate="G$1" x="160.02" y="119.38">
+<attribute name="PARTNO" x="160.02" y="119.38" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY21" gate="GND" x="160.02" y="111.76"/>
 <instance part="SUPPLY22" gate="GND" x="170.18" y="111.76"/>
 <instance part="C11" gate="G$1" x="170.18" y="119.38">
@@ -18876,7 +18894,9 @@ screw terminal</text>
 </instance>
 <instance part="SUPPLY55" gate="GND" x="101.6" y="55.88"/>
 <instance part="SUPPLY60" gate="GND" x="88.9" y="55.88"/>
-<instance part="C17" gate="G$1" x="160.02" y="48.26"/>
+<instance part="C17" gate="G$1" x="160.02" y="48.26">
+<attribute name="PARTNO" x="160.02" y="48.26" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY62" gate="GND" x="160.02" y="40.64"/>
 <instance part="SUPPLY63" gate="GND" x="170.18" y="40.64"/>
 <instance part="C26" gate="G$1" x="170.18" y="48.26">
