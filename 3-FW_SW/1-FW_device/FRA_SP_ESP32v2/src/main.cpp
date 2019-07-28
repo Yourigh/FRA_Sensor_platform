@@ -199,7 +199,7 @@ void loop(){
   uint32_t timer1 = 0;
   uint8_t adc_active_channel = 0; //looping thorugh channels of ADC
   uint32_t adc_last_measurement_ms = 0; //millis of last measurement
-  uint32_t adc_period_ms = 5000; //every X ms 
+  uint32_t adc_period_ms = 1000; //every X ms 
   uint8_t adc_PGA_setting[3][4]; //ADC is first index, ch second
   uint16_t adc_result_raw[3][4]; //ADC is first index
   
@@ -341,19 +341,16 @@ void loop(){
         //for 64SPS - 14ms ideal, same time as without delay
         //quiet time for conversion. I2C is close to sensitive signals.
         //todo log to range array and value array
-        PRINTDEBUG("Conv.trg'd ch %d\n",adc_active_channel);
+        //PRINTDEBUG(" Conv.trg'd ch %d\n",adc_active_channel);
         if(!adc1.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
           log_error_code(11);
         adc_result_raw[0][adc_active_channel] = adc1.getConversion(false);
-        PRINTDEBUG("Conv 1A%d:%#06x\n",adc_active_channel,adc_result_raw[0][adc_active_channel]);
         if(!adc2.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
           log_error_code(12);
         adc_result_raw[1][adc_active_channel] = adc2.getConversion(false);
-        PRINTDEBUG("Conv 1A%d:%#06x\n",adc_active_channel,adc_result_raw[1][adc_active_channel]);
         if(!adc3.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT))
           log_error_code(13);
         adc_result_raw[2][adc_active_channel] = adc3.getConversion(false);
-        PRINTDEBUG("Conv 1A%d:%#06x\n",adc_active_channel,adc_result_raw[2][adc_active_channel]);
         adc_active_channel++;
         if (adc_active_channel == 4){
           adc_active_channel == 0;
@@ -363,7 +360,21 @@ void loop(){
         state = s5_set_PGA;
         break;
       case s8_send_meas_to_UDP:
-        
+        insert_time_to_send_buffer();
+        sendUDP_Buffer[4] = 0x02; //Measurement sample type message
+        sendUDP_Buffer[5] = ether.myip[3];
+        for (uint8_t adcn=0;adcn<3;adcn++){
+          for (uint8_t chn=0;chn<4;chn++){
+            //range goes to 6, 9, 12, 15, adc2 18, 21, 24, 27 adc3 30 
+            uint8_t index_sample_datagram = 6+(adcn*12)+chn*3; //defines range field
+            sendUDP_Buffer[index_sample_datagram]=adc_PGA_setting[adcn][chn];
+            //ADC result goes to 7..8, 10..11, 
+            sendUDP_Buffer[index_sample_datagram+1]=adc_result_raw[adcn][chn]>>8;
+            sendUDP_Buffer[index_sample_datagram+2]=adc_result_raw[adcn][chn]&0xFF;
+          }
+        }
+        ether.sendUdp((char *)sendUDP_Buffer, 41, srcPort, destIp, dstPort ); //unicast to master
+        ether.packetLoop(ether.packetReceive());
         if (use_sd){
           state = s9_write_meas_to_SD;
         }
