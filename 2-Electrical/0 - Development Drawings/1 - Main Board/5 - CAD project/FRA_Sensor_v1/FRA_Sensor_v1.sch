@@ -17792,8 +17792,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="GSD090012SEU"/>
 </part>
 <part name="U$4" library="FRA_eagle_lib" deviceset="TPS5632149DDCR" device="" value="TPS563249DDCR">
-<attribute name="PARTNO" value="TPS563249DDCR
-"/>
+<attribute name="PARTNO" value="TPS563249DDCR "/>
 </part>
 <part name="SUPPLY6" library="supply2" deviceset="GND" device=""/>
 <part name="C1" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
@@ -17836,8 +17835,7 @@ Source: PCA9555_5.pdf</description>
 </part>
 <part name="SUPPLY30" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
 <part name="L2" library="FRA_eagle_lib" deviceset="SRP5030CA-1R5M" device="" value="SRP5030CA-1R5M">
-<attribute name="PARTNO" value="SRP5030CA-1R5M
-"/>
+<attribute name="PARTNO" value="SRP5030CA-1R5M "/>
 </part>
 <part name="Q2" library="microbuilder" deviceset="MOSFET-P" device="WIDE" value="FDN306P">
 <attribute name="PARTNO" value="FDN306P"/>
@@ -17859,8 +17857,7 @@ Source: PCA9555_5.pdf</description>
 <part name="SUPPLY48" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
 <part name="SUPPLY49" library="SparkFun-PowerSymbols" deviceset="V_USB" device=""/>
 <part name="U$1" library="FRA_eagle_lib" deviceset="TPS5632149DDCR" device="" value="TPS563249DDCR">
-<attribute name="PARTNO" value="TPS563249DDCR
-"/>
+<attribute name="PARTNO" value="TPS563249DDCR "/>
 </part>
 <part name="SUPPLY11" library="supply2" deviceset="GND" device=""/>
 <part name="C13" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
@@ -17901,8 +17898,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="ERJ-PB3D7322V"/>
 </part>
 <part name="L3" library="FRA_eagle_lib" deviceset="SRP5030CA-1R5M" device="" value="SRP5030CA-1R5M">
-<attribute name="PARTNO" value="SRP5030CA-1R5M
-"/>
+<attribute name="PARTNO" value="SRP5030CA-1R5M "/>
 </part>
 <part name="R53" library="resistor" deviceset="R-EU_" device="R0603" value="100k">
 <attribute name="PARTNO" value="CRCW0603100KFKEAC"/>
@@ -19450,7 +19446,8 @@ IO26 ADC</text>
 <text x="223.52" y="91.44" size="1.778" layer="97">SD slot</text>
 <text x="35.56" y="134.62" size="1.778" layer="97">JTAG connection verified</text>
 <text x="63.5" y="7.62" size="1.778" layer="97">IO34-39 only INPUT</text>
-<text x="180.34" y="73.66" size="1.778" layer="97">place on BOT</text>
+<text x="162.56" y="73.66" size="1.778" layer="97">place on BOT in schematics.
+placed on top in assembly</text>
 <text x="182.88" y="48.26" size="1.778" layer="97">female</text>
 <text x="12.7" y="50.8" size="1.778" layer="97">RTC DNI</text>
 <text x="220.98" y="81.28" size="1.778" layer="97">Multicomp MC34459
@@ -19458,6 +19455,7 @@ Mouser GSD090012SEU - not correct</text>
 <text x="106.68" y="86.36" size="1.778" layer="97">5k</text>
 <text x="73.66" y="91.44" size="1.778" layer="97">RTC DNI</text>
 <text x="76.2" y="73.66" size="1.778" layer="97">IO2 must float or LOW</text>
+<text x="22.86" y="170.18" size="1.778" layer="97">Man. PN may be wrong (TH not SMT)</text>
 </plain>
 <instances>
 <instance part="FRAME4" gate="G$1" x="2.54" y="2.54"/>
