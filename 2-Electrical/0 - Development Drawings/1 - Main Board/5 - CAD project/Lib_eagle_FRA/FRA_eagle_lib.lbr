@@ -36,9 +36,9 @@
 <layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="yes" active="yes"/>
-<layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
+<layer number="31" name="tCream" color="7" fill="4" visible="yes" active="yes"/>
 <layer number="32" name="bCream" color="7" fill="5" visible="yes" active="yes"/>
 <layer number="33" name="tFinish" color="6" fill="3" visible="yes" active="yes"/>
 <layer number="34" name="bFinish" color="6" fill="6" visible="yes" active="yes"/>
@@ -383,6 +383,66 @@
 <text x="-11.41" y="4.98" size="1.27" layer="25">&gt;NAME</text>
 <hole x="-7.5" y="0" drill="2.3"/>
 </package>
+<package name="TH4_TGS2611_INSERTS">
+<circle x="0" y="0" radius="4.6" width="0.127" layer="51"/>
+<wire x1="-1.27" y1="5.08" x2="-1.27" y2="6.35" width="0.127" layer="51"/>
+<circle x="0" y="0" radius="4.6" width="0.127" layer="21"/>
+<wire x1="-1.27" y1="5.08" x2="-1.27" y2="6.35" width="0.127" layer="21"/>
+<wire x1="-1.27" y1="6.35" x2="1.27" y2="6.35" width="0.127" layer="51"/>
+<wire x1="1.27" y1="6.35" x2="1.27" y2="5.08" width="0.127" layer="51"/>
+<circle x="-3.81" y="5.08" radius="0.131509375" width="1.778" layer="51"/>
+<circle x="-3.81" y="5.08" radius="0.131509375" width="1.778" layer="21"/>
+<text x="2.54" y="5.08" size="1.27" layer="25">&gt;NAME</text>
+<text x="2.54" y="-5.08" size="1.27" layer="27">&gt;VALUE</text>
+<smd name="1" x="-1.8" y="1.8" dx="2.5" dy="2.5" layer="1" roundness="100"/>
+<smd name="4" x="1.8" y="1.8" dx="2.5" dy="2.5" layer="1" roundness="100"/>
+<smd name="2" x="-1.8" y="-1.8" dx="2.5" dy="2.5" layer="1" roundness="100"/>
+<smd name="3" x="1.8" y="-1.8" dx="2.5" dy="2.5" layer="1" roundness="100"/>
+</package>
+<package name="INSERT_MM5_0669">
+<pad name="1" x="0" y="0" drill="1.6" diameter="3"/>
+</package>
+<package name="INSERT_1MM5_9372">
+<pad name="1" x="0" y="0" drill="2.7" diameter="4.5"/>
+</package>
+<package name="TH3_4P50_INSERTS">
+<circle x="0" y="0" radius="10.2" width="0.127" layer="51"/>
+<circle x="0" y="0" radius="13.2" width="0.127" layer="39"/>
+<circle x="0" y="0" radius="10.2" width="0.127" layer="21"/>
+<text x="-3.81" y="6.35" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3.81" y="-7.62" size="1.27" layer="27">&gt;VALUE</text>
+<smd name="OUT" x="4.24" y="0" dx="5" dy="5" layer="1" roundness="100"/>
+<smd name="V_NEG" x="-3.38" y="2.54" dx="3.81" dy="3.81" layer="1" roundness="100"/>
+<smd name="V_POS" x="-3.38" y="-2.54" dx="3.81" dy="3.81" layer="1" roundness="100"/>
+</package>
+<package name="TGS5042">
+<wire x1="7.05" y1="-25.1" x2="-7.05" y2="-25.1" width="0.127" layer="21"/>
+<wire x1="-7.05" y1="-25.1" x2="-7.05" y2="25.1" width="0.127" layer="21"/>
+<wire x1="7.1" y1="-25.1" x2="7.05" y2="25.1" width="0.127" layer="21"/>
+<wire x1="7.05" y1="25.1" x2="-7.05" y2="25.1" width="0.127" layer="21"/>
+<pad name="P$1" x="0" y="25.1" drill="1" shape="long"/>
+<pad name="P$2" x="-3.75" y="-25.1" drill="1" shape="long"/>
+<pad name="P$3" x="3.75" y="-25.1" drill="1" shape="long"/>
+<wire x1="-7" y1="21.8" x2="7" y2="21.8" width="0.127" layer="21"/>
+<text x="-3.3" y="19.4" size="1.27" layer="25">&gt;NAME</text>
+<text x="-3.7" y="16.3" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="3-ELECTRODE">
+<circle x="0" y="0" radius="10.2" width="0.127" layer="21"/>
+<pad name="W" x="0" y="6.75" drill="2.7"/>
+<pad name="C" x="6.75" y="0" drill="2.7"/>
+<pad name="R" x="-6.75" y="0" drill="2.7"/>
+<circle x="0" y="0" radius="9" width="0.127" layer="21"/>
+<text x="-2.54" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+</package>
+<package name="3-ELECTRODE_INSERTS">
+<circle x="0" y="0" radius="10.2" width="0.127" layer="21"/>
+<circle x="0" y="0" radius="9" width="0.127" layer="21"/>
+<text x="-2.54" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+<smd name="R" x="-6.75" y="0" dx="3.7" dy="3.7" layer="1" roundness="100"/>
+<smd name="W" x="0" y="6.75" dx="3.7" dy="3.7" layer="1" roundness="100"/>
+<smd name="C" x="6.75" y="0" dx="3.7" dy="3.7" layer="1" roundness="100"/>
+</package>
 </packages>
 <symbols>
 <symbol name="CITIPEL_4P50">
@@ -546,6 +606,33 @@ Outline</text>
 <vertex x="0.508" y="-1.27"/>
 </polygon>
 </symbol>
+<symbol name="INS">
+<circle x="0" y="0" radius="2.54" width="0.254" layer="94"/>
+<pin name="1" x="-7.62" y="0" length="middle"/>
+</symbol>
+<symbol name="TGS5042">
+<wire x1="-5.08" y1="7.62" x2="-5.08" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="-10.16" x2="5.08" y2="-10.16" width="0.254" layer="94"/>
+<wire x1="5.08" y1="-10.16" x2="5.08" y2="7.62" width="0.254" layer="94"/>
+<wire x1="5.08" y1="7.62" x2="2.54" y2="7.62" width="0.254" layer="94"/>
+<wire x1="2.54" y1="7.62" x2="-2.54" y2="7.62" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="7.62" x2="-2.54" y2="7.62" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="7.62" x2="-2.54" y2="10.16" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="10.16" x2="2.54" y2="10.16" width="0.254" layer="94"/>
+<wire x1="2.54" y1="10.16" x2="2.54" y2="7.62" width="0.254" layer="94"/>
+<pin name="WE" x="0" y="12.7" length="short" rot="R270"/>
+<pin name="CE" x="0" y="-12.7" length="short" rot="R90"/>
+<text x="5.08" y="10.16" size="1.778" layer="95">&gt;NAME</text>
+<text x="5.08" y="7.62" size="1.778" layer="96">&gt;VALUE</text>
+</symbol>
+<symbol name="3E">
+<pin name="R" x="-12.7" y="0" length="middle"/>
+<pin name="W" x="0" y="12.7" length="middle" rot="R270"/>
+<pin name="C" x="12.7" y="0" length="middle" rot="R180"/>
+<text x="-2.54" y="-2.54" size="1.778" layer="95">GAS</text>
+<text x="-5.08" y="-5.08" size="1.778" layer="95">SENSOR</text>
+<circle x="0" y="0" radius="7.62" width="0.254" layer="94"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="CITIPEL_4P50" prefix="S$">
@@ -572,6 +659,16 @@ Outline</text>
 <technology name=""/>
 </technologies>
 </device>
+<device name="INSERTS" package="TH3_4P50_INSERTS">
+<connects>
+<connect gate="G$1" pin="OUT" pad="OUT"/>
+<connect gate="G$1" pin="V_NEG" pad="V_NEG"/>
+<connect gate="G$1" pin="V_POS" pad="V_POS"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
 </devices>
 </deviceset>
 <deviceset name="FIGARO_2611" prefix="S$">
@@ -587,6 +684,17 @@ Outline</text>
 </gates>
 <devices>
 <device name="" package="TH4_TGS2611">
+<connects>
+<connect gate="G$1" pin="1_RH" pad="1"/>
+<connect gate="G$1" pin="2_RS_N" pad="2"/>
+<connect gate="G$1" pin="3_RS_P" pad="3"/>
+<connect gate="G$1" pin="4_RH" pad="4"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="WITH_INSERTS" package="TH4_TGS2611_INSERTS">
 <connects>
 <connect gate="G$1" pin="1_RH" pad="1"/>
 <connect gate="G$1" pin="2_RS_N" pad="2"/>
@@ -762,6 +870,79 @@ Source: &lt;a href="https://www.mouser.com/datasheet/2/670/pj-059a-1312938.pdf"&
 <attribute name="MANUFACTURER_PART_NUMBER" value="PJ-059A" constant="no"/>
 <attribute name="MOUSER_PRICE-STOCK" value="https://www.mouser.com/ProductDetail/CUI/PJ-059A?qs=sGAEpiMZZMtnOp%252BbbqA009lE0K0K%252BPZGgL2j%2Fo1XCBQtBpzQrCB9dQ%3D%3D" constant="no"/>
 </technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="INSERT_MM5_0669" prefix="J">
+<gates>
+<gate name="G$1" symbol="INS" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="INSERT_MM5_0669">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1.5MM" package="INSERT_1MM5_9372">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TGS5042">
+<description>TGS5042
+CO sensor</description>
+<gates>
+<gate name="G$1" symbol="TGS5042" x="40.64" y="2.54"/>
+</gates>
+<devices>
+<device name="" package="TGS5042">
+<connects>
+<connect gate="G$1" pin="CE" pad="P$2 P$3"/>
+<connect gate="G$1" pin="WE" pad="P$1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="3-ELECTRODE-GAS-SENSOR" prefix="X">
+<description>3 electrode electrochemical sensors</description>
+<gates>
+<gate name="G$1" symbol="3E" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="3-ELECTRODE">
+<connects>
+<connect gate="G$1" pin="C" pad="C"/>
+<connect gate="G$1" pin="R" pad="R"/>
+<connect gate="G$1" pin="W" pad="W"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="MANUFACTURER" value="Wearnes Cambion" constant="no"/>
+<attribute name="MANUFACTURER#" value="450-3326" constant="no"/>
+<attribute name="QTY-PER-DEVICE" value="3" constant="no"/>
+</technology>
+</technologies>
+</device>
+<device name="INSETRS" package="3-ELECTRODE_INSERTS">
+<connects>
+<connect gate="G$1" pin="C" pad="C"/>
+<connect gate="G$1" pin="R" pad="R"/>
+<connect gate="G$1" pin="W" pad="W"/>
+</connects>
+<technologies>
+<technology name=""/>
 </technologies>
 </device>
 </devices>
