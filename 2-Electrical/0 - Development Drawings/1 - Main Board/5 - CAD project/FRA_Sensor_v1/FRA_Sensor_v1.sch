@@ -17696,7 +17696,7 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CRCW060310K0JNEAC"/>
 </part>
 <part name="C16" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
-<attribute name="PARTNO" value="C0603C102M5RACTU"/>
+<attribute name="PARTNO" value="CC0603KRX7R8BB104"/>
 </part>
 <part name="SUPPLY26" library="supply2" deviceset="GND" device=""/>
 <part name="FRAME2" library="SparkFun-Aesthetics" deviceset="FRAME-A4L" device=""/>
@@ -17724,13 +17724,13 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="GRM188R61A106KE69J"/>
 </part>
 <part name="SUPPLY45" library="supply2" deviceset="GND" device=""/>
-<part name="Y3" library="SparkFun-Clocks" deviceset="CRYSTAL-32.768KHZ" device="SMD-3.2X1.5" value="32.768kHz">
+<part name="Y3" library="SparkFun-Clocks" deviceset="CRYSTAL-32.768KHZ" device="SMD-3.2X1.5" value="DNI">
 <attribute name="PARTNO" value="FC-135 32.7680KA-A3"/>
 </part>
-<part name="C29" library="resistor" deviceset="C-EU" device="C0402" value="22p">
+<part name="C29" library="resistor" deviceset="C-EU" device="C0402" value="DNI">
 <attribute name="PARTNO" value="C0402C220J5GAC7411"/>
 </part>
-<part name="C30" library="resistor" deviceset="C-EU" device="C0402" value="22p">
+<part name="C30" library="resistor" deviceset="C-EU" device="C0402" value="DNI">
 <attribute name="PARTNO" value="C0402C220J5GAC7411"/>
 </part>
 <part name="SUPPLY51" library="supply2" deviceset="GND" device=""/>
@@ -17753,10 +17753,10 @@ Source: PCA9555_5.pdf</description>
 <part name="D2" library="diode" deviceset="PESD1CAN" device="">
 <attribute name="PARTNO" value="PESD1CAN-UX"/>
 </part>
-<part name="JTAG1" library="microbuilder" deviceset="JTAG-CORTEXM3" device="">
+<part name="JTAG1" library="microbuilder" deviceset="JTAG-CORTEXM3" device="" value="DNI">
 <attribute name="PARTNO" value="M50-3600542R"/>
 </part>
-<part name="U$2" library="FRA_eagle_lib" deviceset="HEADER_3X6P_ESPPROG" device="">
+<part name="U$2" library="FRA_eagle_lib" deviceset="HEADER_3X6P_ESPPROG" device="" value="DNI">
 <attribute name="PARTNO" value="HTMS-103-03-T-D-SM"/>
 </part>
 <part name="SUPPLY10" library="supply2" deviceset="GND" device=""/>
@@ -17944,7 +17944,7 @@ Source: PCA9555_5.pdf</description>
 <part name="SUPPLY83" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY99" library="supply2" deviceset="GND" device=""/>
 <part name="S1" library="adafruit" deviceset="31-XX" device="">
-<attribute name="PARTNO" value="B3F-3120"/>
+<attribute name="PARTNO" value="FSMRA5JH"/>
 </part>
 <part name="SUPPLY100" library="SparkFun-PowerSymbols" deviceset="3.3V" device=""/>
 <part name="R68" library="resistor" deviceset="R-EU_" device="R0603" value="10k">
@@ -18242,10 +18242,10 @@ Source: PCA9555_5.pdf</description>
 <part name="SUPPLY147" library="supply2" deviceset="AGND" device=""/>
 <part name="SUPPLY90" library="supply2" deviceset="+5V/1" device="" value="5V_F"/>
 <part name="R81" library="resistor" deviceset="R-EU_" device="R0603" value="2k2">
-<attribute name="PARTNO" value="CRGCQ0603F2K2"/>
+<attribute name="PARTNO" value="RCS06032K20JNEA"/>
 </part>
 <part name="R82" library="resistor" deviceset="R-EU_" device="R0603" value="2k2">
-<attribute name="PARTNO" value="CRGCQ0603F2K2"/>
+<attribute name="PARTNO" value="RCS06032K20JNEA"/>
 </part>
 <part name="SUPPLY101" library="supply2" deviceset="+5V/1" device="" value="5V_F"/>
 <part name="SUPPLY112" library="supply2" deviceset="+5V/1" device="" value="5V_F"/>
@@ -18377,7 +18377,7 @@ Source: PCA9555_5.pdf</description>
 <part name="SUPPLY97" library="supply2" deviceset="AGND" device=""/>
 <part name="SUPPLY98" library="supply2" deviceset="+5V/1" device="" value="5V_F"/>
 <part name="R35" library="resistor" deviceset="R-EU_" device="R0603" value="0">
-<attribute name="PARTNO" value="CRCW0603330RFKEAC"/>
+<attribute name="PARTNO" value="CRCW06030000Z0EAC"/>
 </part>
 <part name="R36" library="resistor" deviceset="R-EU_" device="R0603" value="DNI">
 <attribute name="PARTNO" value="CRCW0603330RFKEAC"/>
@@ -19444,7 +19444,7 @@ IO25 SDcard
 IO26 ADC</text>
 <text x="205.74" y="170.18" size="1.778" layer="97">MicroSD slot</text>
 <text x="223.52" y="91.44" size="1.778" layer="97">SD slot</text>
-<text x="35.56" y="134.62" size="1.778" layer="97">JTAG connection verified</text>
+<text x="35.56" y="132.08" size="1.778" layer="97">JTAG connection verified</text>
 <text x="63.5" y="7.62" size="1.778" layer="97">IO34-39 only INPUT</text>
 <text x="162.56" y="73.66" size="1.778" layer="97">place on BOT in schematics.
 placed on top in assembly</text>
