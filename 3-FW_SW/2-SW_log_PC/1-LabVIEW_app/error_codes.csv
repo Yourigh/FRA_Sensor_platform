@@ -12,3 +12,6 @@
 11,ADC1 readout failed - timeout
 12,ADC2 readout failed - timeout
 13,ADC3 readout failed - timeout
+14,SD card - failed to create file
+15,SD card - failed to write data
+16,Time sent from master not accepted - set the clock

@@ -75,6 +75,7 @@ const int dstPort PROGMEM = 65511;
 const int srcPort PROGMEM = 65500;
 uint8_t destIp[] = { 192,168,0,5 }; // UDP unicast or broadcast, this ip does not matter, will be broadcast on given IP network by DHCP
 uint8_t sendUDP_Buffer[100]; //send function limited to 220
+uint8_t sendUDP_len; //length of data is going always along the array
 uint8_t receiveUDP_Buffer[100]; 
 uint8_t error_code[50]; //error flag, 0 at index 0 means no error
 
@@ -85,13 +86,13 @@ bool BTN1_flag = 0;
 //functions
 uint8_t sd_create_file();
 uint8_t sd_format_header();
-uint8_t sd_write_sample();
+uint8_t sd_write_sample(uint32_t sample_num);
 uint8_t ioexp_init();
 uint8_t ioexp_out_set(uint8_t port0,uint8_t port1);
 uint8_t adc_init();
 void udpReceiveProcess(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len);
 uint8_t setup_time();
-void insert_time_to_send_buffer();
+void insert_to_send_buffer_header(uint32_t val);
 uint8_t ioexp_read(uint8_t *port0,uint8_t *port1);
 void IRAM_ATTR ISR_BTN1(){BTN1_flag = 1;}
 void log_error_code(uint8_t ec);
@@ -202,6 +203,7 @@ void loop(){
   uint32_t adc_period_ms = 1000; //every X ms 
   uint8_t adc_PGA_setting[3][4]; //ADC is first index, ch second
   uint16_t adc_result_raw[3][4]; //ADC is first index
+  uint32_t meas_sample_number = 0; //0 is measurement not active, from 1 on - sample number
   
   enum states {
       s0_START,
@@ -213,8 +215,8 @@ void loop(){
       s6_set_active_channel,
       s7_trigger_and_wait,
       s8_send_meas_to_UDP,
-      s9_write_meas_to_SD,
-      s200_debug_OK = 200,
+      s9_create_log_file,
+      s10_write_meas_to_SD,
     } state;
   state = s0_START;
 
@@ -225,9 +227,10 @@ void loop(){
         state = s1_send_announcement;     
         break;
       case s1_send_announcement:
-        insert_time_to_send_buffer();
+        insert_to_send_buffer_header(now());
         sendUDP_Buffer[4] = 0x04; //Announcement
-        ether.sendUdp((char *)sendUDP_Buffer, 5, srcPort, destIp, dstPort ); //broadcast
+        sendUDP_len = 5;
+        ether.sendUdp((char *)sendUDP_Buffer, sendUDP_len, srcPort, destIp, dstPort ); //broadcast
         ether.packetLoop(ether.packetReceive()); //reduntant but just to be safe
         timer1 = millis();
         state = s2_wait_for_ACK;
@@ -255,8 +258,10 @@ void loop(){
         }
         break;
       case s3_IDLE:
-        if (error_code[0] != 0)
+        if (error_code[0] != 0){
           state = s4_report_error;
+          break;
+        }
         if (UDP_read_flag){
           switch (receiveUDP_Buffer[4]){//master is commanding!, commands start at 5
             case 1://acknowledgement
@@ -266,6 +271,22 @@ void loop(){
             case 2://reset unit
               hard_restart();
               //ESP.restart(); - does not restart completely
+              UDP_read_flag = 0;
+              break;
+            case 3: //Measurement trigger start
+              meas_sample_number = 1; //start sampling
+              if (receiveUDP_Buffer[5])//not equal 0
+                adc_period_ms = receiveUDP_Buffer[5]*100; //sample period setting in ms, received in 0.1s units
+              if (use_sd) state = s9_create_log_file;
+              UDP_read_flag = 0;
+              //otherwise stay in idle
+              break;
+            case 4: //measurement trigger stop
+              meas_sample_number = 0; //stop sampling
+              if (use_sd) 
+                logfile.close();
+              //stay in idle
+              UDP_read_flag = 0;
               break;
             case 5://Sensor power control
               PRINTDEBUG("Received power setting [5-6] %02x:%02x\n",receiveUDP_Buffer[5],receiveUDP_Buffer[6]);
@@ -282,34 +303,43 @@ void loop(){
                 log_error_code(8);//not matching
                 PRINTDEBUG("setting is not matching\n");
               }
-              insert_time_to_send_buffer();
+              insert_to_send_buffer_header(now());
               sendUDP_Buffer[4] = 0x05; //Power report send to master
               sendUDP_Buffer[5] = ether.myip[3];
               sendUDP_Buffer[6] = ~port0_check;
               sendUDP_Buffer[7] = ~port1_check;
-              ether.sendUdp((char *)sendUDP_Buffer, 8, srcPort, destIp, dstPort );
+              sendUDP_len = 8;
+              ether.sendUdp((char *)sendUDP_Buffer, sendUDP_len, srcPort, destIp, dstPort );
               ether.packetLoop(ether.packetReceive()); //reduntant but just to be safe
               UDP_read_flag = 0;
               break;
+            default:
+              PRINTDEBUG("Unknown command from master\n");
             }//if  command end
           UDP_read_flag = 0;
+          break;
         }
-        if ((adc_last_measurement_ms + adc_period_ms) < millis()){
+        if (meas_sample_number){ //non zero value indicates active measurement
+          if ((adc_last_measurement_ms + adc_period_ms) < millis()){
           //time ot measure a sample
-          adc_last_measurement_ms = millis();
-          adc_active_channel = 0;
-          state = s5_set_PGA;
+            adc_last_measurement_ms = millis();
+            adc_active_channel = 0;
+            state = s5_set_PGA;
+            meas_sample_number++;  //first sample sent will be #2
+            break;
+          }  
         }
         break;
       case s4_report_error:
         for (uint8_t q=0;(q<254)&(error_code[q]!=0);q++){
           PRINTDEBUG("Sending error report code %d\n",error_code[q]);
-          insert_time_to_send_buffer();
+          insert_to_send_buffer_header(now());
           sendUDP_Buffer[4] = 0x03; //error message type
           sendUDP_Buffer[5] = ether.myip[3]; //unit number as well as last byte of IP
           //must be sent because some routers strip source IP address when coming from ethernet to wifi on same network
           sendUDP_Buffer[6] = error_code[q]; //error message type
-          ether.sendUdp((char *)sendUDP_Buffer, 7, srcPort, destIp, dstPort ); //unicast to master
+          sendUDP_len = 7;
+          ether.sendUdp((char *)sendUDP_Buffer, sendUDP_len, srcPort, destIp, dstPort ); //unicast to master
           ether.packetLoop(ether.packetReceive());
           delay(1);
         }
@@ -353,36 +383,59 @@ void loop(){
         adc_result_raw[2][adc_active_channel] = adc3.getConversion(false);
         adc_active_channel++;
         if (adc_active_channel == 4){
-          adc_active_channel == 0;
-          state = s8_send_meas_to_UDP; //measurement done on all 4 channels
+          adc_active_channel = 0;
+          insert_to_send_buffer_header(meas_sample_number); //instead of time
+          sendUDP_Buffer[4] = 0x02; //Measurement sample type message
+          sendUDP_Buffer[5] = ether.myip[3];
+          for (uint8_t adcn=0;adcn<3;adcn++){
+            for (uint8_t chn=0;chn<4;chn++){
+              //range goes to 6, 9, 12, 15, adc2 18, 21, 24, 27 adc3 30 
+              sendUDP_len = 6+(adcn*12)+chn*3; //defines range field
+              sendUDP_Buffer[sendUDP_len]=adc_PGA_setting[adcn][chn];
+              //ADC result goes to 7..8, 10..11, 
+              sendUDP_Buffer[++sendUDP_len]=adc_result_raw[adcn][chn]>>8;
+              sendUDP_Buffer[++sendUDP_len]=adc_result_raw[adcn][chn]&0xFF;
+            }
+            sendUDP_Buffer[++sendUDP_len] = 0xFF; //end byte
+            sendUDP_len++;
+          }
+          if (use_sd)
+            state = s10_write_meas_to_SD; //measurement done on all 4 channels SD, then UDP
+          else
+            state = s8_send_meas_to_UDP;
           break;
         }
         state = s5_set_PGA;
         break;
       case s8_send_meas_to_UDP:
-        insert_time_to_send_buffer();
-        sendUDP_Buffer[4] = 0x02; //Measurement sample type message
-        sendUDP_Buffer[5] = ether.myip[3];
-        for (uint8_t adcn=0;adcn<3;adcn++){
-          for (uint8_t chn=0;chn<4;chn++){
-            //range goes to 6, 9, 12, 15, adc2 18, 21, 24, 27 adc3 30 
-            uint8_t index_sample_datagram = 6+(adcn*12)+chn*3; //defines range field
-            sendUDP_Buffer[index_sample_datagram]=adc_PGA_setting[adcn][chn];
-            //ADC result goes to 7..8, 10..11, 
-            sendUDP_Buffer[index_sample_datagram+1]=adc_result_raw[adcn][chn]>>8;
-            sendUDP_Buffer[index_sample_datagram+2]=adc_result_raw[adcn][chn]&0xFF;
-          }
-        }
-        ether.sendUdp((char *)sendUDP_Buffer, 41, srcPort, destIp, dstPort ); //unicast to master
+        ether.sendUdp((char *)sendUDP_Buffer, sendUDP_len, srcPort, destIp, dstPort ); //unicast to master
         ether.packetLoop(ether.packetReceive());
-        if (use_sd){
-          state = s9_write_meas_to_SD;
+        state = s3_IDLE;
+        break;
+      case s9_create_log_file:
+        if (!sd_create_file()){
+          PRINTDEBUG("SD card - failed to create file\n");
+          log_error_code(14);
+          use_sd = 0;
+          break;
+        } 
+        if(!sd_format_header()){
+          PRINTDEBUG("SD write data failed\n");
+          log_error_code(15);
+          use_sd = 0;
         }
         state = s3_IDLE;
         break;
-      case s200_debug_OK:
-        
+      case s10_write_meas_to_SD:
+        if(!sd_write_sample(meas_sample_number)){
+          PRINTDEBUG("SD write data failed\n");
+          log_error_code(15);
+          use_sd = 0;
+        }
+        state = s8_send_meas_to_UDP;
         break;
+      default:
+        PRINTDEBUG("Uknown FSM state %d",state);
     }//FSM end
 
     //this must be called for ethercard functions to work. 
@@ -401,11 +454,12 @@ void loop(){
       if (BTN1_flag){PRINTDEBUG("Button pressed!\n");BTN1_flag = 0;}
       if (millis()>(bl+10000)){ //every 1s
         bl=millis();
-        Serial.printf("t: %d\t st:%d\n",now(),(int)state);
+        PRINTDEBUG("t: %d\t st:%d\n",now(),(int)state);
       }
     #endif
   }
 }
+
 /* 
  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄        ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄  ▄▄▄▄▄▄▄▄▄▄▄ 
 ▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░▌      ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░▌      ▐░▌▐░░░░░░░░░░░▌
@@ -421,7 +475,7 @@ void loop(){
 */
 uint8_t sd_create_file(){
     // create a new file in root, the current working directory
-  char name[] = "logger0000.csv";
+  char name[] = "FRAlog0000.csv";
 
   for (uint16_t i = 0; i < 10000; i++) {
     name[6] = i/1000 + '0';
@@ -437,19 +491,34 @@ uint8_t sd_create_file(){
   if (!logfile.is_open()) {
     return 0;
   }
-  Serial.printf("Log file: %s\n",name);
+  PRINTDEBUG("Log file: %s\n",name);
   return 1; //success
 }
+
 uint8_t sd_format_header(){
     // format header in buffer
   obufstream bout(SDbuf, sizeof(SDbuf));
-  bout << F("Time ,");
-  bout << F("Sample ");
+  char chbuf[64]; //max characters
+  bout << F("File created :");
+  snprintf(chbuf,64,"%d",now());
+  bout << chbuf;
+  bout << F("s (epoch time)\n");
+  bout << F("Unit #");
+  char name[] = "0000";
+  name[0] = ether.myip[3]/1000 + '0';
+  name[1] = (ether.myip[3]/100)%10 + '0';
+  name[2] = (ether.myip[3]/10)%10 + '0';
+  name[3] = ether.myip[3]%10 + '0';
+  bout << name;//log unit number
+  bout << F("\nSample#");
 
-  //TODO real header
   for (uint8_t i = 0; i < 12; i++) {
-    bout << F(",sens") << int(i);
+    bout << F(",PGA_") << int(i);
+    bout << F(",AI_") << int(i);
   }
+
+  //TODO other sensors header
+
   logfile << SDbuf << endl;
   // check for error
   if (!logfile) {
@@ -457,20 +526,26 @@ uint8_t sd_format_header(){
   }
   return 1;
 }
-uint8_t sd_write_sample(){
+uint8_t sd_write_sample(uint32_t sample_num){
   obufstream bout(SDbuf, sizeof(SDbuf));
   //check if logfile is open
   if (!logfile.is_open()) {
     return 0;
   }
-
-  //last row write time was:
-  bout << now() << ","; //log current time
-  // log sample number - TODO sample number variable
-  bout << 1;
-
-  for (uint8_t ia = 0; ia < 3; ia++) {
-    bout << ',' << ia; //TODO result array writing
+  bout << "\n";
+  bout << int(sample_num); //log current sample #
+  // log sample number - sample number variable
+  
+  char chbuf[64]; //max characters
+  //for (uint8_t o=0;o<sendUDP_len;o++)
+  //  {PRINTDEBUG("%02x:",sendUDP_Buffer[o]);}
+  //PRINTDEBUG(" Data send buffer\n");
+  uint8_t ia = 6;
+  while (ia<(sendUDP_len-1) & (ia < 150)) { //150 to be safe, prevent infinite loop in case of some bug
+    snprintf(chbuf,64,"%d",(uint8_t)sendUDP_Buffer[ia++]);
+    bout << ',' << chbuf; //range or sensor type
+    snprintf(chbuf,64,"%d",(((uint16_t)sendUDP_Buffer[ia++]) << 8) | ((uint16_t)sendUDP_Buffer[ia++]));
+    bout << ',' << chbuf; //value MSB and LSB
   }
   //flush = write to SD
   logfile << SDbuf << flush;
@@ -480,7 +555,6 @@ uint8_t sd_write_sample(){
   }
   return 1;
 }
-
 //io expander initialization, Wire must be already on, puts all outputs to HIGH
 uint8_t ioexp_init(){
   uint8_t error_ioexp;
@@ -576,7 +650,7 @@ void udpReceiveProcess(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_
   //callback is executed only if data received from 65500
   memcpy(receiveUDP_Buffer, data, len);
   for (uint8_t o=0;o<len;o++)
-    PRINTDEBUG("%02x:",receiveUDP_Buffer[o]);
+    {PRINTDEBUG("%02x:",receiveUDP_Buffer[o]);}
   PRINTDEBUG(" Data read buffer\n");
   if (receiveUDP_Buffer[4] == 0x01){
     destIp[3] = src_ip[3];
@@ -595,16 +669,15 @@ uint8_t setup_time(){
     PRINTDEBUG("Epoch time accepted: %d\n",epoch_time);
   } else {
     return 0;
+    log_error_code(16);
   }
   return 1;
 }
-void insert_time_to_send_buffer(){
-  uint32_t timenow = 0;
-  timenow = now();
-  sendUDP_Buffer[0] = timenow >> 24;
-  sendUDP_Buffer[1] = timenow >> 16;
-  sendUDP_Buffer[2] = timenow >> 8;
-  sendUDP_Buffer[3] = timenow;
+void insert_to_send_buffer_header(uint32_t val){
+  sendUDP_Buffer[0] = val >> 24;
+  sendUDP_Buffer[1] = val >> 16;
+  sendUDP_Buffer[2] = val >> 8;
+  sendUDP_Buffer[3] = val;
   return;
 }
 void log_error_code(uint8_t ec){
@@ -747,7 +820,7 @@ void debug_sd_log(){
       error("write data failed");
   }
   if (use_sd) {
-    if(!sd_write_sample())
+    if(!sd_write_sample(1))
       error("write data failed");
   }
   if (use_sd) {

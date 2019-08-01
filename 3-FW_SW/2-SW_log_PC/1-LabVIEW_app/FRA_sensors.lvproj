@@ -18,8 +18,11 @@
 		<Item Name="FRA_UDP_get_timestamp_msg_type.vi" Type="VI" URL="../subVIs/FRA_UDP_get_timestamp_msg_type.vi"/>
 		<Item Name="FRA_UDP_send_ACK.vi" Type="VI" URL="../subVIs/FRA_UDP_send_ACK.vi"/>
 		<Item Name="loop error, restart vi.vi" Type="VI" URL="../subVIs/loop error, restart vi.vi"/>
+		<Item Name="loop error, restart vi_err_cluster.vi" Type="VI" URL="../subVIs/loop error, restart vi_err_cluster.vi"/>
+		<Item Name="loop error, restart vi_polymorphic.vi" Type="VI" URL="../subVIs/loop error, restart vi_polymorphic.vi"/>
 		<Item Name="Power_ctrl_to_ioEXPSET.vi" Type="VI" URL="../subVIs/Power_ctrl_to_ioEXPSET.vi"/>
 		<Item Name="Results_cluster.ctl" Type="VI" URL="../subVIs/Results_cluster.ctl"/>
+		<Item Name="Send_simple_command.vi" Type="VI" URL="../subVIs/Send_simple_command.vi"/>
 		<Item Name="Sensor_power_ctrl.ctl" Type="VI" URL="../subVIs/Sensor_power_ctrl.ctl"/>
 		<Item Name="Status send Error cluster.vi" Type="VI" URL="../subVIs/Status send Error cluster.vi"/>
 		<Item Name="UDP_read_datagram.ctl" Type="VI" URL="../subVIs/UDP_read_datagram.ctl"/>
