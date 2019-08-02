@@ -12,6 +12,7 @@
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="00_FRA_sensors_main.vi" Type="VI" URL="../00_FRA_sensors_main.vi"/>
 		<Item Name="ADCdata_to_mV.vi" Type="VI" URL="../subVIs/ADCdata_to_mV.vi"/>
+		<Item Name="Add to array if not in array.vi" Type="VI" URL="../subVIs/Add to array if not in array.vi"/>
 		<Item Name="Add_row_to_string_indicator.vi" Type="VI" URL="../subVIs/Add_row_to_string_indicator.vi"/>
 		<Item Name="error_codes.csv" Type="Document" URL="../error_codes.csv"/>
 		<Item Name="FRA_UDP_get_time.vi" Type="VI" URL="../subVIs/FRA_UDP_get_time.vi"/>
@@ -27,6 +28,7 @@
 		<Item Name="Status send Error cluster.vi" Type="VI" URL="../subVIs/Status send Error cluster.vi"/>
 		<Item Name="UDP_read_datagram.ctl" Type="VI" URL="../subVIs/UDP_read_datagram.ctl"/>
 		<Item Name="UI_states.ctl" Type="VI" URL="../subVIs/UI_states.ctl"/>
+		<Item Name="Write_data_to_file_time_sender_dtgn.vi" Type="VI" URL="../subVIs/Write_data_to_file_time_sender_dtgn.vi"/>
 		<Item Name="Write_error_to_error_indicator.vi" Type="VI" URL="../subVIs/Write_error_to_error_indicator.vi"/>
 		<Item Name="Write_sensor_power.vi" Type="VI" URL="../subVIs/Write_sensor_power.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">

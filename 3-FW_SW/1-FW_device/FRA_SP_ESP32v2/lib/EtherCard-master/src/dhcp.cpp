@@ -31,6 +31,7 @@
 #define DHCP_NAK 6
 #define DHCP_RELEASE 7
 #define DHCP_TIMEOUT 60000 //in ms
+#define PIN_LED 16 //added JR
 
 // DHCP States for access in applications (ref RFC 2131)
 enum {
@@ -356,9 +357,24 @@ bool EtherCard::dhcpSetup (const char *hname, bool fromRam) {
 
     dhcpState = DHCP_STATE_INIT;
     uint16_t start = millis();
+    uint16_t LED_timing = millis();
 
     while (dhcpState != DHCP_STATE_BOUND && uint16_t(millis()) - start < DHCP_TIMEOUT) {
         if (isLinkUp()) DhcpStateMachine(packetReceive());
+        //indication LED
+        if (digitalRead(PIN_LED)){
+            //if in 1 , led is OFF wait 800ms
+            if (uint16_t(millis()) > (LED_timing + 800)){
+                LED_timing = uint16_t(millis());
+                digitalWrite(PIN_LED,0); //shine LED
+            }
+        } else {
+            //if in 0 , led is ON wait 200ms
+            if (uint16_t(millis()) > (LED_timing + 200)){
+                LED_timing = uint16_t(millis());
+                digitalWrite(PIN_LED,1); //shine LED
+            }
+        }       
     }
     updateBroadcastAddress();
     delaycnt = 0;

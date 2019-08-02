@@ -14,4 +14,6 @@
 13,ADC3 readout failed - timeout
 14,SD card - failed to create file
 15,SD card - failed to write data
-16,Time sent from master not accepted - set the clock
+16,Time sent from master not accepted - set the clock (redundant to 7)
+17,SD card not used in this measurement
+18,VEML7700 light sensor not found - continue without

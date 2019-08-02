@@ -41,6 +41,18 @@
 #include <Wire.h>
 #define IOEXP_ADDR 0x20 //0x75 debug board, 0x20 final
 
+//debug macro
+#define DEBUG 1 //UART logs
+#if DEBUG == 1
+  #define PRINTDEBUG Serial.printf
+#else
+  #define PRINTDEBUG
+#endif 
+
+#include "Adafruit_VEML7700.h"
+
+Adafruit_VEML7700 veml = Adafruit_VEML7700();
+
 //ADC
 #include "ADS1115.h"
 
@@ -81,6 +93,7 @@ uint8_t error_code[50]; //error flag, 0 at index 0 means no error
 
 //Globals
 bool use_sd=1;
+bool use_veml=1;//light sensor VEML7700
 bool UDP_read_flag = 0;
 bool BTN1_flag = 0;
 //functions
@@ -102,14 +115,8 @@ void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_
 void debug_sd_log();
 void debug_GPIOexp();
 uint8_t debug_adc();
-//debug macro
-#define DEBUG 1 //UART logs
 
-#if DEBUG == 1
-  #define PRINTDEBUG Serial.printf
-#else
-  #define PRINTDEBUG
-#endif 
+
 
 void setup(){
   error_code[0] = 0;
@@ -173,6 +180,13 @@ void setup(){
   if (!ioexp_init()){
     error("failed to init GPIO expander");
     log_error_code(5);
+  } else {
+    uint8_t port0_check;
+    uint8_t port1_check;
+    ioexp_read(&port0_check,&port1_check);
+    if (!((port0_check == 0x00)&&(port1_check == 0x00))){
+      log_error_code(8); //setting not matching
+    }
   }
   //debug_GPIOexp();
 
@@ -180,6 +194,14 @@ void setup(){
    error("failed to init ADC");
    log_error_code(6);
   }
+
+  if (!veml.begin()) {
+    log_error_code(18);
+    error("VEML init error\n");
+    use_veml = 0;
+  }
+  //if(use_veml)
+      //PRINTDEBUG("Lux,White,ALS: %f\t%f\t%d\n",veml.readLux(),veml.readWhite(),veml.readALS());
 }
 /*
  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄ 
@@ -204,8 +226,8 @@ void loop(){
   uint8_t adc_PGA_setting[3][4]; //ADC is first index, ch second
   uint16_t adc_result_raw[3][4]; //ADC is first index
   uint32_t meas_sample_number = 0; //0 is measurement not active, from 1 on - sample number
-  
-  enum states {
+  //FSM states
+  enum states { //FSM states
       s0_START,
       s1_send_announcement,
       s2_wait_for_ACK,
@@ -217,10 +239,13 @@ void loop(){
       s8_send_meas_to_UDP,
       s9_create_log_file,
       s10_write_meas_to_SD,
+      s11_start_measurement,
+      s12_save_data,
     } state;
   state = s0_START;
 
   while(1){
+    yield(); //CPU housekeeping,also resets WDT
     switch(state) {
       case s0_START:
         PRINTDEBUG("FSM start\n");
@@ -240,10 +265,7 @@ void loop(){
           if (receiveUDP_Buffer[4] == 0x01){
             //set IP for next sending to be IP of master (one who sent ACK) - done in udpReceiveProcess
             PRINTDEBUG("Destination IP changed: %d.%d.%d.%d\n",destIp[0],destIp[1],destIp[2],destIp[3]);
-            if (!setup_time()){
-              error("error in setting time, time is from the past, ignoring");
-              log_error_code(7);
-            }
+            setup_time();
             UDP_read_flag = 0; //done with data - processed
             state = s3_IDLE;
             break;
@@ -274,12 +296,11 @@ void loop(){
               UDP_read_flag = 0;
               break;
             case 3: //Measurement trigger start
-              meas_sample_number = 1; //start sampling
+              setup_time(); //update time from master
               if (receiveUDP_Buffer[5])//not equal 0
                 adc_period_ms = receiveUDP_Buffer[5]*100; //sample period setting in ms, received in 0.1s units
-              if (use_sd) state = s9_create_log_file;
+              state = s11_start_measurement;
               UDP_read_flag = 0;
-              //otherwise stay in idle
               break;
             case 4: //measurement trigger stop
               meas_sample_number = 0; //stop sampling
@@ -384,25 +405,7 @@ void loop(){
         adc_active_channel++;
         if (adc_active_channel == 4){
           adc_active_channel = 0;
-          insert_to_send_buffer_header(meas_sample_number); //instead of time
-          sendUDP_Buffer[4] = 0x02; //Measurement sample type message
-          sendUDP_Buffer[5] = ether.myip[3];
-          for (uint8_t adcn=0;adcn<3;adcn++){
-            for (uint8_t chn=0;chn<4;chn++){
-              //range goes to 6, 9, 12, 15, adc2 18, 21, 24, 27 adc3 30 
-              sendUDP_len = 6+(adcn*12)+chn*3; //defines range field
-              sendUDP_Buffer[sendUDP_len]=adc_PGA_setting[adcn][chn];
-              //ADC result goes to 7..8, 10..11, 
-              sendUDP_Buffer[++sendUDP_len]=adc_result_raw[adcn][chn]>>8;
-              sendUDP_Buffer[++sendUDP_len]=adc_result_raw[adcn][chn]&0xFF;
-            }
-            sendUDP_Buffer[++sendUDP_len] = 0xFF; //end byte
-            sendUDP_len++;
-          }
-          if (use_sd)
-            state = s10_write_meas_to_SD; //measurement done on all 4 channels SD, then UDP
-          else
-            state = s8_send_meas_to_UDP;
+          state = s12_save_data;
           break;
         }
         state = s5_set_PGA;
@@ -417,6 +420,7 @@ void loop(){
           PRINTDEBUG("SD card - failed to create file\n");
           log_error_code(14);
           use_sd = 0;
+          state = s3_IDLE;
           break;
         } 
         if(!sd_format_header()){
@@ -433,6 +437,51 @@ void loop(){
           use_sd = 0;
         }
         state = s8_send_meas_to_UDP;
+        break;
+      case s11_start_measurement:
+        if (meas_sample_number > 0){
+          //already running, do not create SD file again
+          if (!use_sd) 
+            log_error_code(17); //SD not used in this measurement
+          state = s3_IDLE;
+        } else { //was stopped or unit powered and is starting
+          meas_sample_number = 1; //start sampling
+          if (use_sd)
+            state = s9_create_log_file;
+          else{
+            state = s5_set_PGA;
+            log_error_code(17);
+          }
+        }
+        break;
+      case s12_save_data:
+        insert_to_send_buffer_header(meas_sample_number); //instead of time
+        sendUDP_Buffer[4] = 0x02; //Measurement sample type message
+        sendUDP_Buffer[5] = ether.myip[3];
+        for (uint8_t adcn=0;adcn<3;adcn++){
+          for (uint8_t chn=0;chn<4;chn++){
+            //range goes to 6, 9, 12, 15, adc2 18, 21, 24, 27 adc3 30 
+            sendUDP_len = 6+(adcn*12)+chn*3; //defines range field
+            sendUDP_Buffer[sendUDP_len]=adc_PGA_setting[adcn][chn];
+            //ADC result goes to 7..8, 10..11, 
+            sendUDP_Buffer[++sendUDP_len]=adc_result_raw[adcn][chn]>>8;
+            sendUDP_Buffer[++sendUDP_len]=adc_result_raw[adcn][chn]&0xFF;
+          }
+        }
+        if(use_veml){
+          sendUDP_Buffer[++sendUDP_len]=(veml.getGain() | 0x10);
+          static uint16_t ALSreading;
+          ALSreading = veml.readALS();
+          PRINTDEBUG("Lux %f\n",veml.readLux());
+          sendUDP_Buffer[++sendUDP_len]=(ALSreading >> 8);
+          sendUDP_Buffer[++sendUDP_len]=(ALSreading & 0xFF);
+        }
+        sendUDP_Buffer[++sendUDP_len] = 0xFF; //end byte
+        sendUDP_len++;
+        if (use_sd)
+          state = s10_write_meas_to_SD; //measurement done on all 4 channels SD, then UDP
+        else
+          state = s8_send_meas_to_UDP;
         break;
       default:
         PRINTDEBUG("Uknown FSM state %d",state);
@@ -451,14 +500,50 @@ void loop(){
     #ifdef DEBUG
       //toogle PIN LED on every iteration - scope check
       digitalWrite(PIN_LED, !digitalRead(PIN_LED));
-      if (BTN1_flag){PRINTDEBUG("Button pressed!\n");BTN1_flag = 0;}
+      if (BTN1_flag){
+        BTN1_flag = 0;
+        static uint32_t startms;
+        startms = millis();
+        PRINTDEBUG("Button pressed\n");
+        delay(20); //debounce
+        uint32_t LED_timing = 0;
+        static uint16_t ton = 80;
+        while (1){
+          if (millis() > (LED_timing + ton)){
+              LED_timing = millis();
+              digitalWrite(PIN_LED,!digitalRead(PIN_LED)); //toogle LED
+          } 
+          if (uint16_t(millis()) > (startms + 30000)){break;}  //30s timeout
+          
+          if (digitalRead(PIN_BTN1)){break;} //released button
+          
+          if (millis()-startms < 1000){
+            //PRINTDEBUG("Pressed under 1s, nothing happens\n");
+          } else if (millis()-startms < 10000) {
+            //1-10 s start measurement
+            //PRINTDEBUG("Pressed under 1-9.99s, starting measuremnt\n");
+            ton = 750;
+          } else if (millis()-startms < 15000){
+            //PRINTDEBUG("Pressed under 10-15s, reset\n");
+            ton = 100;
+          } else if (millis()-startms > 15000){
+            break;
+          }
+          delay(10);
+        }
+        if (ton==750) {
+          state = s11_start_measurement;
+          PRINTDEBUG("Starting measurement on button request\n");
+        }
+        if (ton==100) hard_restart();
+      }
       if (millis()>(bl+10000)){ //every 1s
         bl=millis();
         PRINTDEBUG("t: %d\t st:%d\n",now(),(int)state);
       }
     #endif
-  }
-}
+  }//while 1
+}//loop
 
 /* 
  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄        ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄  ▄▄▄▄▄▄▄▄▄▄▄ 
@@ -541,7 +626,7 @@ uint8_t sd_write_sample(uint32_t sample_num){
   //  {PRINTDEBUG("%02x:",sendUDP_Buffer[o]);}
   //PRINTDEBUG(" Data send buffer\n");
   uint8_t ia = 6;
-  while (ia<(sendUDP_len-1) & (ia < 150)) { //150 to be safe, prevent infinite loop in case of some bug
+  while ((ia<(sendUDP_len-1)) & (ia < 150)) { //150 to be safe, prevent infinite loop in case of some bug
     snprintf(chbuf,64,"%d",(uint8_t)sendUDP_Buffer[ia++]);
     bout << ',' << chbuf; //range or sensor type
     snprintf(chbuf,64,"%d",(((uint16_t)sendUDP_Buffer[ia++]) << 8) | ((uint16_t)sendUDP_Buffer[ia++]));
@@ -555,7 +640,7 @@ uint8_t sd_write_sample(uint32_t sample_num){
   }
   return 1;
 }
-//io expander initialization, Wire must be already on, puts all outputs to HIGH
+//io expander initialization, Wire must be already on, puts all outputs to LOW
 uint8_t ioexp_init(){
   uint8_t error_ioexp;
   Wire.beginTransmission(IOEXP_ADDR);
@@ -578,8 +663,8 @@ uint8_t ioexp_init(){
   delay(1);
   Wire.beginTransmission(IOEXP_ADDR);
   Wire.write(0x02); //output reg
-  Wire.write(0xFF); //all outputs high
-  Wire.write(0xFF); 
+  Wire.write(0x00); //all outputs LOW - 5V is ON
+  Wire.write(0x00); 
   error_ioexp = Wire.endTransmission(); 
   if (error_ioexp){
     return 0;
@@ -662,14 +747,13 @@ void udpReceiveProcess(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_
 uint8_t setup_time(){
   uint32_t epoch_time = 0;
   epoch_time = ((uint32_t)receiveUDP_Buffer[0]<<24) | ((uint32_t)receiveUDP_Buffer[1]<<16) | ((uint32_t)receiveUDP_Buffer[2]<<8) | ((uint32_t)receiveUDP_Buffer[3]);
-  PRINTDEBUG("Epoch time received: %d\n",epoch_time);
 
   if (epoch_time > 1558883838){ //sanity check, if pc is sending time from past May 26 2019, ignore
     setTime(epoch_time);
-    PRINTDEBUG("Epoch time accepted: %d\n",epoch_time);
+    PRINTDEBUG("Time updated: %d\n",epoch_time);
   } else {
+    log_error_code(7);
     return 0;
-    log_error_code(16);
   }
   return 1;
 }
