@@ -1,0 +1,23 @@
+01Log2019_08_03-09_50_57.csv
+08/03/2019    09:50:57.521, VI started
+08/03/2019    09:50:57.626, ERROR: Not logging to file, hit start trigger!
+08/03/2019    09:51:03.825, Stop sent to #14
+08/03/2019    09:51:04.326, ERROR: Not logging to file, hit start trigger!
+08/03/2019    09:51:04.326, ERROR: Measurement was not logged to file.
+08/03/2019    09:51:06.664, Stop sent to #14
+08/03/2019    09:51:07.165, ERROR: Not logging to file, hit start trigger!
+08/03/2019    09:51:07.165, ERROR: Measurement was not logged to file.
+08/03/2019    09:51:12.514, Stop sent to #255
+08/03/2019    09:51:13.015, ERROR: Measurement was not logged to file.
+08/03/2019    09:51:19.906, Stop sent to #255
+08/03/2019    09:51:20.406, ERROR: Measurement was not logged to file.
+08/03/2019    09:51:26.971, Reset sent to #255
+08/03/2019    09:51:28.512, Announcement from #14
+08/03/2019    09:51:28.525, Announcement from #13
+08/03/2019    09:51:37.377, Logging to: 2019_08_03-09_51_37_Data.csv
+08/03/2019    09:51:37.377, Trigger sent to #255, T=500ms
+08/03/2019    09:54:20.916, Trigger sent to #14, T=500ms
+08/03/2019    09:54:26.467, Announcement from #14
+08/03/2019    09:54:49.031, Trigger sent to #14, T=500ms
+08/03/2019    10:42:48.784, Stop sent to #14
+08/03/2019    10:42:49.357, ERROR: Not logging to file, hit start trigger!

@@ -11,7 +11,6 @@
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="00_FRA_sensors_main.vi" Type="VI" URL="../00_FRA_sensors_main.vi"/>
-		<Item Name="ADCdata_to_mV.vi" Type="VI" URL="../subVIs/ADCdata_to_mV.vi"/>
 		<Item Name="Add to array if not in array.vi" Type="VI" URL="../subVIs/Add to array if not in array.vi"/>
 		<Item Name="Add_row_to_string_indicator.vi" Type="VI" URL="../subVIs/Add_row_to_string_indicator.vi"/>
 		<Item Name="error_codes.csv" Type="Document" URL="../error_codes.csv"/>
@@ -21,10 +20,13 @@
 		<Item Name="loop error, restart vi.vi" Type="VI" URL="../subVIs/loop error, restart vi.vi"/>
 		<Item Name="loop error, restart vi_err_cluster.vi" Type="VI" URL="../subVIs/loop error, restart vi_err_cluster.vi"/>
 		<Item Name="loop error, restart vi_polymorphic.vi" Type="VI" URL="../subVIs/loop error, restart vi_polymorphic.vi"/>
+		<Item Name="Name plot legend from array.vi" Type="VI" URL="../subVIs/Name plot legend from array.vi"/>
 		<Item Name="Power_ctrl_to_ioEXPSET.vi" Type="VI" URL="../subVIs/Power_ctrl_to_ioEXPSET.vi"/>
 		<Item Name="Results_cluster.ctl" Type="VI" URL="../subVIs/Results_cluster.ctl"/>
 		<Item Name="Send_simple_command.vi" Type="VI" URL="../subVIs/Send_simple_command.vi"/>
+		<Item Name="Sensor_data_to_value.vi" Type="VI" URL="../subVIs/Sensor_data_to_value.vi"/>
 		<Item Name="Sensor_power_ctrl.ctl" Type="VI" URL="../subVIs/Sensor_power_ctrl.ctl"/>
+		<Item Name="Split number byte.vi" Type="VI" URL="../subVIs/Split number byte.vi"/>
 		<Item Name="Status send Error cluster.vi" Type="VI" URL="../subVIs/Status send Error cluster.vi"/>
 		<Item Name="UDP_read_datagram.ctl" Type="VI" URL="../subVIs/UDP_read_datagram.ctl"/>
 		<Item Name="UI_states.ctl" Type="VI" URL="../subVIs/UI_states.ctl"/>

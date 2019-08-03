@@ -50,8 +50,9 @@
 #endif 
 
 #include "Adafruit_VEML7700.h"
-
 Adafruit_VEML7700 veml = Adafruit_VEML7700();
+#include "Adafruit_Si7021.h"
+Adafruit_Si7021 Si7021 = Adafruit_Si7021();
 
 //ADC
 #include "ADS1115.h"
@@ -94,6 +95,7 @@ uint8_t error_code[50]; //error flag, 0 at index 0 means no error
 //Globals
 bool use_sd=1;
 bool use_veml=1;//light sensor VEML7700
+bool use_Si7021=1;//Temperature and RH sensor
 bool UDP_read_flag = 0;
 bool BTN1_flag = 0;
 //functions
@@ -115,6 +117,7 @@ void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_
 void debug_sd_log();
 void debug_GPIOexp();
 uint8_t debug_adc();
+void debug_Si7021();
 
 
 
@@ -200,8 +203,13 @@ void setup(){
     error("VEML init error\n");
     use_veml = 0;
   }
-  //if(use_veml)
-      //PRINTDEBUG("Lux,White,ALS: %f\t%f\t%d\n",veml.readLux(),veml.readWhite(),veml.readALS());
+  //if(use_veml) PRINTDEBUG("Lux,White,ALS: %f\t%f\t%d\n",veml.readLux(),veml.readWhite(),veml.readALS());
+  if (!Si7021.begin()) {
+    log_error_code(20);
+    error("Si7021 init error\n");
+    use_Si7021 = 0;
+  }
+  //debug_Si7021();
 }
 /*
  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄ 
@@ -241,6 +249,7 @@ void loop(){
       s10_write_meas_to_SD,
       s11_start_measurement,
       s12_save_data,
+      s13_start_sample,
     } state;
   state = s0_START;
 
@@ -345,7 +354,7 @@ void loop(){
           //time ot measure a sample
             adc_last_measurement_ms = millis();
             adc_active_channel = 0;
-            state = s5_set_PGA;
+            state = s13_start_sample;
             meas_sample_number++;  //first sample sent will be #2
             break;
           }  
@@ -449,7 +458,7 @@ void loop(){
           if (use_sd)
             state = s9_create_log_file;
           else{
-            state = s5_set_PGA;
+            state = s13_start_sample;
             log_error_code(17);
           }
         }
@@ -462,19 +471,33 @@ void loop(){
           for (uint8_t chn=0;chn<4;chn++){
             //range goes to 6, 9, 12, 15, adc2 18, 21, 24, 27 adc3 30 
             sendUDP_len = 6+(adcn*12)+chn*3; //defines range field
-            sendUDP_Buffer[sendUDP_len]=adc_PGA_setting[adcn][chn];
+            sendUDP_Buffer[sendUDP_len]=adc_PGA_setting[adcn][chn] | (0xF0 & (((adcn*4)+chn)<<4)); //first 4 bits is ADC input number, second 4 bits is PGA setting
             //ADC result goes to 7..8, 10..11, 
             sendUDP_Buffer[++sendUDP_len]=adc_result_raw[adcn][chn]>>8;
             sendUDP_Buffer[++sendUDP_len]=adc_result_raw[adcn][chn]&0xFF;
           }
         }
         if(use_veml){
-          sendUDP_Buffer[++sendUDP_len]=(veml.getGain() | 0x10);
+          sendUDP_Buffer[++sendUDP_len]=(veml.getGain() | 0xF0);
           static uint16_t ALSreading;
-          ALSreading = veml.readALS();
-          PRINTDEBUG("Lux %f\n",veml.readLux());
+          ALSreading = veml.readALS(); //todo error checking
           sendUDP_Buffer[++sendUDP_len]=(ALSreading >> 8);
           sendUDP_Buffer[++sendUDP_len]=(ALSreading & 0xFF);
+        }
+        if(use_Si7021){
+          static uint16_t Sit = 0b11;
+          static uint16_t SiRH = 0b11;
+          if(!Si7021.read_requested(&Sit,&SiRH)){
+            use_Si7021 = 0;
+            log_error_code(21);
+            PRINTDEBUG("Si7021 not reponsing to read requested - did you leave enouch time from request?\n");
+          }
+          sendUDP_Buffer[++sendUDP_len]=0xFD; //temperature
+          sendUDP_Buffer[++sendUDP_len]=(Sit >> 8);
+          sendUDP_Buffer[++sendUDP_len]=(Sit & 0xFF);
+          sendUDP_Buffer[++sendUDP_len]=0xFE; //RH
+          sendUDP_Buffer[++sendUDP_len]=(SiRH >> 8);
+          sendUDP_Buffer[++sendUDP_len]=(SiRH & 0xFF);
         }
         sendUDP_Buffer[++sendUDP_len] = 0xFF; //end byte
         sendUDP_len++;
@@ -483,8 +506,18 @@ void loop(){
         else
           state = s8_send_meas_to_UDP;
         break;
+      case s13_start_sample:
+        if(use_Si7021)
+          if(!Si7021.RHrequest_measurement()){ //will be available for reading in 23ms
+            log_error_code(21);
+            PRINTDEBUG("Si7021 not responding to request\n");
+            use_Si7021 = 0;
+          }
+        state = s5_set_PGA;
+        break;
       default:
         PRINTDEBUG("Uknown FSM state %d",state);
+        log_error_code(19);
     }//FSM end
 
     //this must be called for ethercard functions to work. 
@@ -539,7 +572,7 @@ void loop(){
       }
       if (millis()>(bl+10000)){ //every 1s
         bl=millis();
-        PRINTDEBUG("t: %d\t st:%d\n",now(),(int)state);
+        PRINTDEBUG("t:%d\t st:%d\n",now(),(int)state);
       }
     #endif
   }//while 1
@@ -597,10 +630,11 @@ uint8_t sd_format_header(){
   bout << name;//log unit number
   bout << F("\nSample#");
 
-  for (uint8_t i = 0; i < 12; i++) {
-    bout << F(",PGA_") << int(i);
-    bout << F(",AI_") << int(i);
+  for (uint8_t i = 0; i < 2; i++) { //just example how it goes, exact number of columns is not known at this time
+    bout << F(",sensor_type_") << int(i);
+    bout << F(",value_") << int(i);
   }
+  bout << F(",..."); //and so on
 
   //TODO other sensors header
 
@@ -909,6 +943,38 @@ void debug_sd_log(){
   }
   if (use_sd) {
     logfile.close();
+  }
+}
+void debug_Si7021(){
+  uint16_t t;
+  uint16_t rh;
+  if(use_Si7021){
+    uint32_t startms = millis();
+    for (int wee=0;wee<150;wee++) {
+      delay(1000);
+      startms = millis();
+      PRINTDEBUG("%06d\tAdafruit reading start\n",millis()-startms);
+      PRINTDEBUG("%06d\tAdafuit fuctions reading - Temp,RH: \t%f\t%f\n",millis()-startms,Si7021.readTemperature(),Si7021.readHumidity());
+      PRINTDEBUG("%06d\tRequest start\n",millis()-startms);
+      if(!Si7021.RHrequest_measurement())
+        PRINTDEBUG("%06d\tRequest failed\n",millis()-startms);
+      while(1){
+      if (use_veml){
+        PRINTDEBUG("%06d\tMeantime read light %f Lux\n",millis()-startms,veml.readLux());
+        PRINTDEBUG("%06d\tMeantime read ended\n",millis()-startms);
+      }
+      delay(150);
+      if(!Si7021.read_requested(&t,&rh))
+        PRINTDEBUG("%06d\tReadout failed\n",millis()-startms);
+      else{
+        PRINTDEBUG("%06d\tMy fuctions reading - Temp,RH: \t%d\t%d\n",millis()-startms,t,rh);
+        break;
+      }
+      }
+    }
+
+  }else{
+    PRINTDEBUG("No SI7021 debug, use_Si7021 is false\n");
   }
 }
 

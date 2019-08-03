@@ -1,0 +1,15 @@
+01Log2019_08_03-09_41_49.csv
+08/03/2019    09:41:49.171, VI started
+08/03/2019    09:41:52.345, Reset sent to #255
+08/03/2019    09:41:53.883, Announcement from #14
+08/03/2019    09:41:53.895, Announcement from #13
+08/03/2019    09:41:55.882, Logging to: 2019_08_03-09_41_55_Data.csv
+08/03/2019    09:41:55.883, Trigger sent to #255, T=500ms
+08/03/2019    09:43:25.740, Logging to: 2019_08_03-09_43_25_Data.csv
+08/03/2019    09:43:25.741, Trigger sent to #14, T=500ms
+08/03/2019    09:43:25.837, Announcement from #14
+08/03/2019    09:43:25.838, Announcement from #14
+08/03/2019    09:43:43.694, Logging to: 2019_08_03-09_43_43_Data.csv
+08/03/2019    09:43:43.695, Trigger sent to #14, T=500ms
+08/03/2019    09:44:05.913, Stop sent to #14
+08/03/2019    09:44:06.828, ERROR: Not logging to file, hit start trigger!

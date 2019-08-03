@@ -1,0 +1,71 @@
+01Log2019_08_02-08_46_40.csv
+08/02/2019    08:46:40.646, VI started
+08/02/2019    08:46:41.653, Announcement from #13
+08/02/2019    08:48:17.828, Announcement from #13
+08/02/2019    08:49:33.772, Announcement from #14
+08/02/2019    08:49:33.816, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    08:49:33.816, ERROR from #14 : 
+08/02/2019    08:49:50.856, Reset sent to #255
+08/02/2019    08:50:12.754, Announcement from #13
+08/02/2019    08:50:17.487, Announcement from #14
+08/02/2019    08:50:17.489, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    08:50:17.493, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    08:51:02.291, Logging to: 2019_08_02-08_51_02_Data.csv
+08/02/2019    08:51:02.292, Trigger sent to #255, T=1000ms
+08/02/2019    08:52:07.779, Stop sent to #255
+08/02/2019    08:59:46.456, Reset sent to #255
+08/02/2019    09:00:03.086, Announcement from #14
+08/02/2019    09:00:03.091, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    09:00:03.092, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    09:00:07.506, Announcement from #13
+08/02/2019    09:00:14.133, Reset sent to #255
+08/02/2019    09:00:30.765, Announcement from #14
+08/02/2019    09:00:30.768, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    09:00:30.772, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    09:00:35.183, Announcement from #13
+08/02/2019    09:02:44.810, Reset sent to #255
+08/02/2019    09:03:01.434, Announcement from #14
+08/02/2019    09:03:01.440, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    09:03:01.441, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    09:03:05.852, Announcement from #13
+08/02/2019    09:03:41.451, Reset sent to #255
+08/02/2019    09:03:58.076, Announcement from #14
+08/02/2019    09:03:58.082, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    09:03:58.084, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    09:04:02.498, Announcement from #13
+08/02/2019    09:26:04.149, Announcement from #13
+08/02/2019    09:44:27.826, Announcement from #13
+08/02/2019    10:38:05.075, Announcement from #13
+08/02/2019    10:41:25.262, Announcement from #14
+08/02/2019    10:41:25.270, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    10:41:25.271, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    10:43:18.349, Announcement from #13
+08/02/2019    10:46:36.285, Announcement from #14
+08/02/2019    10:46:36.292, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    10:46:36.294, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    10:48:51.920, Announcement from #13
+08/02/2019    10:53:30.240, Announcement from #14
+08/02/2019    10:53:30.247, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    10:53:30.249, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    10:53:47.926, Announcement from #14
+08/02/2019    10:53:47.934, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    10:53:47.937, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    10:55:43.066, Announcement from #14
+08/02/2019    10:55:43.073, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    10:55:43.074, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    10:57:52.427, Announcement from #13
+08/02/2019    11:00:23.128, Announcement from #14
+08/02/2019    11:00:23.134, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    11:00:23.137, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    11:02:53.667, Announcement from #13
+08/02/2019    11:04:39.178, Announcement from #14
+08/02/2019    11:04:39.185, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    11:04:39.187, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    11:07:22.687, Announcement from #13
+08/02/2019    11:08:29.045, Announcement from #14
+08/02/2019    11:08:29.052, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    11:08:29.054, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    11:08:36.253, Announcement from #14
+08/02/2019    11:08:36.260, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    11:08:36.262, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    11:10:59.986, Announcement from #13

@@ -1,0 +1,22 @@
+01Log2019_08_02-11_47_49.csv
+08/02/2019    11:47:49.267, VI started
+08/02/2019    11:51:31.713, Announcement from #13
+08/02/2019    11:52:00.741, Announcement from #14
+08/02/2019    11:52:00.747, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/02/2019    11:52:00.749, ERROR from #14 : Si7021 RH T sensor not found - continue without
+08/02/2019    11:52:37.799, Logging to: 2019_08_02-11_52_37_Data.csv
+08/02/2019    11:52:37.800, Trigger sent to #255, T=500ms
+08/02/2019    12:09:11.319, ERROR from #13 : 
+08/02/2019    12:10:02.113, Stop sent to #255
+08/02/2019    12:10:04.499, Logging to: 2019_08_02-12_10_04_Data.csv
+08/02/2019    12:10:04.500, Trigger sent to #255, T=500ms
+08/02/2019    12:10:28.940, Reset sent to #13
+08/02/2019    12:10:51.220, Announcement from #13
+08/02/2019    12:10:51.224, ERROR from #13 : VEML7700 light sensor not found - continue without
+08/02/2019    12:10:51.226, ERROR from #13 : Si7021 RH T sensor not found at initalization - continue without
+08/02/2019    12:11:01.261, Reset sent to #13
+08/02/2019    12:11:02.796, Announcement from #13
+08/02/2019    12:11:02.800, ERROR from #13 : VEML7700 light sensor not found - continue without
+08/02/2019    12:11:07.328, Logging to: 2019_08_02-12_11_07_Data.csv
+08/02/2019    12:11:07.329, Trigger sent to #13, T=500ms
+08/02/2019    12:35:48.761, Stop sent to #255

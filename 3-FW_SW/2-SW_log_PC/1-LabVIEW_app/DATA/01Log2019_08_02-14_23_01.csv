@@ -1,0 +1,20 @@
+01Log2019_08_02-14_23_01.csv
+08/02/2019    14:23:01.113, VI started
+08/02/2019    14:23:02.096, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:03.101, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:04.099, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:05.101, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:06.103, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:07.103, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:08.102, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:09.104, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:10.107, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:11.107, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:12.105, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:13.109, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:14.108, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:15.113, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:16.110, ERROR: Not logging to file, hit start trigger!
+08/02/2019    14:23:17.044, Logging to: 2019_08_02-14_23_17_Data.csv
+08/02/2019    14:23:17.045, Trigger sent to #255, T=500ms
+08/02/2019    14:24:50.362, Stop sent to #255
