@@ -17639,7 +17639,7 @@ Source: PCA9555_5.pdf</description>
 </libraries>
 <attributes>
 <attribute name="CNAME" value="FRA Sensor Unit"/>
-<attribute name="CREVISION" value="03"/>
+<attribute name="CREVISION" value="04"/>
 </attributes>
 <variantdefs>
 </variantdefs>
@@ -18232,7 +18232,6 @@ Source: PCA9555_5.pdf</description>
 <attribute name="PARTNO" value="CC0603KRX7R8BB104"/>
 </part>
 <part name="SUPPLY143" library="supply2" deviceset="AGND" device=""/>
-<part name="SUPPLY144" library="supply2" deviceset="AGND" device=""/>
 <part name="SUPPLY145" library="supply2" deviceset="+5V/1" device="" value="5V_F"/>
 <part name="SUPPLY146" library="supply2" deviceset="AGND" device=""/>
 <part name="SUPPLY128" library="supply2" deviceset="+5V/1" device="" value="5V_F"/>
@@ -20479,6 +20478,7 @@ addr:0x40</text>
 <text x="116.84" y="134.62" size="1.778" layer="97">ADC2</text>
 <text x="116.84" y="104.14" size="1.778" layer="97">ADC3</text>
 <text x="114.3" y="63.5" size="1.778" layer="97">A3.0,A3.3</text>
+<text x="104.14" y="154.94" size="1.778" layer="97">v4 change: ADDR to SDA, not GND</text>
 </plain>
 <instances>
 <instance part="FRAME5" gate="G$1" x="2.54" y="2.54"/>
@@ -20558,7 +20558,6 @@ addr:0x40</text>
 <attribute name="PARTNO" x="152.4" y="160.02" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="SUPPLY143" gate="G$1" x="88.9" y="165.1" rot="R270"/>
-<instance part="SUPPLY144" gate="G$1" x="93.98" y="170.18" rot="R270"/>
 <instance part="SUPPLY145" gate="G$1" x="93.98" y="134.62"/>
 <instance part="SUPPLY146" gate="G$1" x="55.88" y="12.7"/>
 <instance part="SUPPLY128" gate="G$1" x="55.88" y="76.2"/>
@@ -20851,8 +20850,15 @@ addr:0x40</text>
 </segment>
 <segment>
 <pinref part="IC5" gate="G$1" pin="SDA"/>
-<wire x1="137.16" y1="167.64" x2="149.86" y2="167.64" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="167.64" x2="139.7" y2="167.64" width="0.1524" layer="91"/>
 <label x="139.7" y="167.64" size="1.778" layer="95"/>
+<pinref part="IC5" gate="G$1" pin="ADDR"/>
+<wire x1="139.7" y1="167.64" x2="149.86" y2="167.64" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="170.18" x2="99.06" y2="170.18" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="170.18" x2="99.06" y2="180.34" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="180.34" x2="139.7" y2="180.34" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="180.34" x2="139.7" y2="167.64" width="0.1524" layer="91"/>
+<junction x="139.7" y="167.64"/>
 </segment>
 <segment>
 <pinref part="IC8" gate="G$1" pin="SDA"/>
@@ -20952,11 +20958,6 @@ addr:0x40</text>
 <pinref part="SUPPLY143" gate="G$1" pin="AGND"/>
 <pinref part="IC5" gate="G$1" pin="GND"/>
 <wire x1="91.44" y1="165.1" x2="101.6" y2="165.1" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="SUPPLY144" gate="G$1" pin="AGND"/>
-<pinref part="IC5" gate="G$1" pin="ADDR"/>
-<wire x1="96.52" y1="170.18" x2="101.6" y2="170.18" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="IC8" gate="G$1" pin="VSS"/>

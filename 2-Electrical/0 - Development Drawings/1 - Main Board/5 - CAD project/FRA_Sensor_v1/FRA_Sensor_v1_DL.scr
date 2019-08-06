@@ -1,5 +1,5 @@
 OPEN 'D:/PROJECTS/01_GIT_REPOS/FRA_Sensor_platform/2-Electrical/0 - Development Drawings/1 - Main Board/5 - CAD project/FRA_Sensor_v1/drilegend.lbr';
-Rename drilegend.pac dl64178637.pac
+Rename drilegend.pac dl65125383.pac
 Edit drilegend.pac
 LAYER 144 DrillLegend;
 Display none;
@@ -31,6 +31,7 @@ Layer 44  Drills;
 Layer 45  Holes;
 Layer 51  tDocu;
 Layer 52  bDocu;
+Layer 200  200bmp;
 Layer 144  DrillLegend;
 Change layer 144;
 Change Size 70.0000;
@@ -71,7 +72,7 @@ Text '0.40' R0 (726 -208);
 Wire 4 (690 -230) (1000 -230) (1000 115);
 Text '16' R0 (476 -208);
 Wire 4 (380 -230) (690 -230) (690 115);
-Text '331' R0 (1026 -208);
+Text '333' R0 (1026 -208);
 Wire 4 (1000 -230) (1230 -230) (1230 115);
 Text 'YES' R0 (1371 -208);
 Wire 4 (1230 -230) (1690 -230) (1690 115);
@@ -1130,6 +1131,12 @@ MARK (637.0000 2401.0000);
 Wire 4 (R-20 20) (R20 -20);
 Wire 4 (R20 20) (R-20 -20);
 MARK (1310.7500 2339.7500);
+Wire 4 (R-20 20) (R20 -20);
+Wire 4 (R20 20) (R-20 -20);
+MARK (1126.2992 2499.5276);
+Wire 4 (R-20 20) (R20 -20);
+Wire 4 (R20 20) (R-20 -20);
+MARK (771.0236 2503.3071);
 Wire 4 (R-20 20) (R20 -20);
 Wire 4 (R20 20) (R-20 -20);
 MARK (563.5000 3809.7500);

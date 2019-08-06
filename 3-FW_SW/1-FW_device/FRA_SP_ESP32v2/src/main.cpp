@@ -36,6 +36,7 @@
 #define PIN_TP6 39
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
+#define LMP91000_ADR 0b1001000 //check with scanner
 
 //GPIO expander
 #include <Wire.h>
@@ -57,7 +58,7 @@ Adafruit_Si7021 Si7021 = Adafruit_Si7021();
 //ADC
 #include "ADS1115.h"
 
-ADS1115 adc1(ADS1115_ADDRESS_ADDR_GND);
+ADS1115 adc1(ADS1115_ADDRESS_ADDR_SDA);//chan
 ADS1115 adc2(ADS1115_ADDRESS_ADDR_VDD);
 ADS1115 adc3(ADS1115_ADDRESS_ADDR_SCL);
 
@@ -96,13 +97,14 @@ uint8_t error_code[50]; //error flag, 0 at index 0 means no error
 bool use_sd=1;
 bool use_veml=1;//light sensor VEML7700
 bool use_Si7021=1;//Temperature and RH sensor
+bool use_tgs24444=0; //amonia sensor
 bool UDP_read_flag = 0;
 bool BTN1_flag = 0;
 //functions
 uint8_t sd_create_file();
 uint8_t sd_format_header();
 uint8_t sd_write_sample(uint32_t sample_num);
-uint8_t ioexp_init();
+uint8_t ioexp_init(uint8_t port1,uint8_t port2);
 uint8_t ioexp_out_set(uint8_t port0,uint8_t port1);
 uint8_t adc_init();
 void udpReceiveProcess(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len);
@@ -112,12 +114,15 @@ uint8_t ioexp_read(uint8_t *port0,uint8_t *port1);
 void IRAM_ATTR ISR_BTN1(){BTN1_flag = 1;}
 void log_error_code(uint8_t ec);
 void hard_restart();
+uint8_t adc_PGA_autorange(uint8_t old_PGA,int16_t last_reading);
+uint8_t ioexp_out_set_AIport(uint8_t AIport, bool statepin);
 //debug functions
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len);
 void debug_sd_log();
 void debug_GPIOexp();
 uint8_t debug_adc();
 void debug_Si7021();
+void debug_ioexp_AIport();
 
 
 
@@ -180,14 +185,14 @@ void setup(){
   if(!Wire.begin(PIN_SDA,PIN_SCL,400000UL))
     log_error_code(4);
   
-  if (!ioexp_init()){
+  if (!ioexp_init(0x01,0x3F)){ //unrouted expander outputs low, used low (5V on) except A3.2 is high (5V off).
     error("failed to init GPIO expander");
     log_error_code(5);
   } else {
     uint8_t port0_check;
     uint8_t port1_check;
     ioexp_read(&port0_check,&port1_check);
-    if (!((port0_check == 0x00)&&(port1_check == 0x00))){
+    if (!((port0_check == 0x01)&&(port1_check == 0x3F))){
       log_error_code(8); //setting not matching
     }
   }
@@ -210,6 +215,23 @@ void setup(){
     use_Si7021 = 0;
   }
   //debug_Si7021();
+  //debug_ioexp_AIport();
+
+  /*
+  //while(1){
+    delay(200);
+    PRINTDEBUG("LMPtest\n");
+    Wire.beginTransmission(LMP91000_ADR);
+    Wire.write(0x11);
+    if (Wire.endTransmission()) PRINTDEBUG("Error read\n");
+    Wire.beginTransmission(LMP91000_ADR);
+    Wire.requestFrom(LMP91000_ADR,1);
+    if (Wire.available()){
+      PRINTDEBUG("Read:%02x\n",Wire.read());
+    }
+    if (Wire.endTransmission()) PRINTDEBUG("Error read\n");
+
+  //}*/
 }
 /*
  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄ 
@@ -232,8 +254,10 @@ void loop(){
   uint32_t adc_last_measurement_ms = 0; //millis of last measurement
   uint32_t adc_period_ms = 1000; //every X ms 
   uint8_t adc_PGA_setting[3][4]; //ADC is first index, ch second
-  uint16_t adc_result_raw[3][4]; //ADC is first index
+  int16_t adc_result_raw[3][4]; //result [ADC][channel]
   uint32_t meas_sample_number = 0; //0 is measurement not active, from 1 on - sample number
+  uint8_t port0_check;
+  uint8_t port1_check;
   //FSM states
   enum states { //FSM states
       s0_START,
@@ -250,6 +274,8 @@ void loop(){
       s11_start_measurement,
       s12_save_data,
       s13_start_sample,
+      s14_get_amonia,
+      s15_setup_lmp91000,
     } state;
   state = s0_START;
 
@@ -308,6 +334,12 @@ void loop(){
               setup_time(); //update time from master
               if (receiveUDP_Buffer[5])//not equal 0
                 adc_period_ms = receiveUDP_Buffer[5]*100; //sample period setting in ms, received in 0.1s units
+              if (receiveUDP_Buffer[6] & 0b01) {use_tgs24444 = 1; adc_period_ms = 250;PRINTDEBUG("Amonia will be used\n");}
+              if (receiveUDP_Buffer[6] & 0b10) {
+                state = s15_setup_lmp91000; //will continue to s11 after this state
+                UDP_read_flag = 0;
+                break;
+              }
               state = s11_start_measurement;
               UDP_read_flag = 0;
               break;
@@ -322,8 +354,7 @@ void loop(){
               PRINTDEBUG("Received power setting [5-6] %02x:%02x\n",receiveUDP_Buffer[5],receiveUDP_Buffer[6]);
               ioexp_out_set(~receiveUDP_Buffer[5] & 0xFF,~receiveUDP_Buffer[6] & 0xFF);
               PRINTDEBUG("sent to ioexp [5-6] %02x:%02x\n",~receiveUDP_Buffer[5] & 0xFF,~receiveUDP_Buffer[6] & 0xFF);
-              uint8_t port0_check;
-              uint8_t port1_check;
+              
               if(!ioexp_read(&port0_check,&port1_check)){
                 PRINTDEBUG("failed to read IO exp status\n");
                 log_error_code(9);
@@ -377,10 +408,17 @@ void loop(){
         state = s3_IDLE;
         break;
       case s5_set_PGA:
-        adc_PGA_setting[0][adc_active_channel] = ADS1115_PGA_6P144;
-        adc_PGA_setting[1][adc_active_channel] = ADS1115_PGA_6P144;
-        adc_PGA_setting[2][adc_active_channel] = ADS1115_PGA_6P144;
-        //todo autoranging, now all ADCs are on max scale
+        for (uint8_t adcn=0;adcn<3;adcn++){ 
+          if (meas_sample_number < 10){ //begin at max range, till buffer fills
+            adc_PGA_setting[adcn][adc_active_channel] = ADS1115_PGA_6P144;
+          } else {
+            //if (adcn == 0 & adc_active_channel == 0)
+            //  PRINTDEBUG("PGA:%d,last:%d,newPGA:",adc_PGA_setting[adcn][adc_active_channel],adc_result_raw[adcn][adc_active_channel]);
+            adc_PGA_setting[adcn][adc_active_channel] = adc_PGA_autorange(adc_PGA_setting[adcn][adc_active_channel],adc_result_raw[adcn][adc_active_channel]);
+            //if (adcn == 0 & adc_active_channel == 0)
+            //  PRINTDEBUG("%d\n",adc_PGA_setting[adcn][adc_active_channel]);
+          }
+        }
         adc1.setGain(adc_PGA_setting[0][adc_active_channel]);
         adc2.setGain(adc_PGA_setting[1][adc_active_channel]); 
         adc3.setGain(adc_PGA_setting[2][adc_active_channel]); 
@@ -414,7 +452,10 @@ void loop(){
         adc_active_channel++;
         if (adc_active_channel == 4){
           adc_active_channel = 0;
-          state = s12_save_data;
+          if (use_tgs24444)
+            state = s14_get_amonia;
+          else
+            state = s12_save_data;
           break;
         }
         state = s5_set_PGA;
@@ -515,6 +556,48 @@ void loop(){
           }
         state = s5_set_PGA;
         break;
+      case s14_get_amonia:
+        //prepare ADC
+        adc3.setGain(ADS1115_PGA_6P144);
+        adc3.setMultiplexer(ADS1115_MUX_P0_NG + 2); //A3.2
+        adc3.setMode(ADS1115_MODE_CONTINUOUS);
+        adc3.setRate(ADS1115_RATE_860); 
+        //14ms pulse on power
+        //5ms pulse low on SDA, 2ms after power pulse. - low pass is on sensor board.
+        if(!ioexp_read(&port0_check,&port1_check)){
+            PRINTDEBUG("failed to read IO exp status\n");
+            log_error_code(9);
+          }
+        delay(1);//wait for SDA to rise after lowpass
+        ioexp_out_set(port0_check & 0b11111110,port1_check); //turn on A3.2 5V
+        ets_delay_us(1870);
+
+        if(!Wire.begin(PIN_TP8,PIN_SCL,400000UL)) //reinit to fake SDA
+          log_error_code(4);
+
+        pinMode(PIN_SDA,OUTPUT);
+        digitalWrite(PIN_SDA,0); //make pulse for sensor
+        ets_delay_us(4380);
+        if(!Wire.begin(PIN_SDA,PIN_SCL,400000UL)) //init back to real SDA
+          log_error_code(4);
+
+        adc_PGA_setting[2][2] = 0xA0; //A3.2  (6), range 6.44v (0)
+        adc_result_raw[2][2] = adc3.getConversion(false);
+        
+        ets_delay_us(7000);
+        ioexp_out_set(port0_check | 0b00000001,port1_check); //turn off A3.2 5V
+        //recover ADC settings as before
+        adc3.setMode(ADS1115_MODE_SINGLESHOT);
+        adc3.setRate(ADS1115_RATE_64); 
+        state = s12_save_data;
+        break;
+      /*case s15_setup_lmp91000:
+        //index is AI input, value is register value
+        const uint8_t tiacn[] =    {0x18,0x18,0x18,0x19,0x15,0x14,0x12,0x0C,0x09,0x09}; //4:2 tia gain, 1:0 rload
+        const uint8_t refcn[] =    {0x00,0x00,0x00,0x00,0x40,0x00,0x00,0x00,0x27,0x00};
+        const uint8_t modecn[] =   {0x01,0x03,0x03,0x03,0x03,0x03,0x01,0x03,0x03,0x03};
+        state = s11_start_measurement;
+        break;*/
       default:
         PRINTDEBUG("Uknown FSM state %d",state);
         log_error_code(19);
@@ -570,7 +653,7 @@ void loop(){
         }
         if (ton==100) hard_restart();
       }
-      if (millis()>(bl+10000)){ //every 1s
+      if (millis()>(bl+1000)){ //every 1s
         bl=millis();
         PRINTDEBUG("t:%d\t st:%d\n",now(),(int)state);
       }
@@ -675,7 +758,7 @@ uint8_t sd_write_sample(uint32_t sample_num){
   return 1;
 }
 //io expander initialization, Wire must be already on, puts all outputs to LOW
-uint8_t ioexp_init(){
+uint8_t ioexp_init(uint8_t port1,uint8_t port2){
   uint8_t error_ioexp;
   Wire.beginTransmission(IOEXP_ADDR);
   Wire.write(0x06); //conf reg
@@ -697,8 +780,8 @@ uint8_t ioexp_init(){
   delay(1);
   Wire.beginTransmission(IOEXP_ADDR);
   Wire.write(0x02); //output reg
-  Wire.write(0x00); //all outputs LOW - 5V is ON
-  Wire.write(0x00); 
+  Wire.write(port1); //inverted to sensor ports
+  Wire.write(port2); 
   error_ioexp = Wire.endTransmission(); 
   if (error_ioexp){
     return 0;
@@ -724,7 +807,7 @@ uint8_t ioexp_read(uint8_t *port0,uint8_t *port1){
   Wire.beginTransmission(IOEXP_ADDR);
   Wire.requestFrom(IOEXP_ADDR, 2);
   uint32_t timeout_ioexp;
-  timeout_ioexp = millis();
+  timeout_ioexp = millis();//no loop?
   if (Wire.available()){
     *port0 = (uint8_t)Wire.read();
     *port1 = (uint8_t)Wire.read();
@@ -735,6 +818,55 @@ uint8_t ioexp_read(uint8_t *port0,uint8_t *port1){
   error_ioexp = Wire.endTransmission(); 
   if (error_ioexp){
     return 0;
+  }
+  return 1;
+}
+
+uint8_t ioexp_out_set_AIport(uint8_t AIport, bool statepin){
+  static uint8_t p0,p1,p0ch,p1ch,mask0,mask1; 
+  //must be static because ioexp read does not work when not static (some funny thing with addresses)
+  if(!ioexp_read(&p0,&p1)){
+      PRINTDEBUG("failed to read IO exp status\n");
+      log_error_code(9);
+      return 0;
+    }
+  //PRINTDEBUG("//p0r: %02x\t",p0);
+  //PRINTDEBUG("//p1r: %02x\t",p1);
+  switch (AIport){
+    case 0: mask0 = 0b00001000; mask1 = 0b00000000; break;
+    case 1: mask0 = 0b00000100; mask1 = 0b00000000; break;
+    case 2: mask0 = 0b01000000; mask1 = 0b00000000; break;
+    case 3: mask0 = 0b10000000; mask1 = 0b00000000; break;
+    case 4: mask0 = 0b00000000; mask1 = 0b01000000; break;
+    case 5: mask0 = 0b00000000; mask1 = 0b10000000; break;
+    case 6: mask0 = 0b00010000; mask1 = 0b00000000; break;
+    case 7: mask0 = 0b00100000; mask1 = 0b00000000; break;
+    case 8: mask0 = 0b00000010; mask1 = 0b00000000; break;
+    case 9: mask0 = 0b00000001; mask1 = 0b00000000; break;
+    default : mask0 = 0b00000000; mask1 = 0b00000000;
+  }
+  if (statepin){
+    //putting AI port high (5V), IO exp putput is low
+    p0 &= (~mask0);
+    p1 &= (~mask1);
+  }else{
+    //putting AI port low (0V), IO exp output is high
+    p0 |= mask0;
+    p1 |= mask1;
+  }
+  //PRINTDEBUG("p0s: %02x//\t",p0);
+  //PRINTDEBUG("p1s: %02x//\t",p1);
+  ioexp_out_set(p0,p1);
+
+  if(!ioexp_read(&p0ch,&p1ch)){
+      PRINTDEBUG("failed to read IO exp status\n");
+      log_error_code(9);
+      return 0;
+    }
+
+  if ((p0!=p0ch) | (p1!=p1ch)){
+    return 0;
+    log_error_code(8);//not matching
   }
   return 1;
 }
@@ -812,6 +944,33 @@ void hard_restart() {
   esp_task_wdt_add(NULL);
   while(true);
 }
+
+uint8_t adc_PGA_autorange(uint8_t old_PGA,int16_t last_reading){
+  #define SWITCH_LOW 12000
+  #define SWITCH_HIGH 24000
+
+  if (last_reading < 0)
+    last_reading *= -1;
+
+  uint8_t new_PGA;
+
+  if (old_PGA > 0){ //not max range
+    if (last_reading > SWITCH_HIGH){
+      new_PGA = ADS1115_PGA_6P144;//0x00
+      return new_PGA;
+    }
+  }
+
+  if (old_PGA < 5){ //not the lowest range
+    if (last_reading < SWITCH_LOW){
+      new_PGA = old_PGA + 1;
+      return new_PGA;
+    }
+  } 
+
+  return old_PGA;
+}
+
 ////////////////////////////DEBUG FUNCTIONS
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
   IPAddress src(src_ip[0],src_ip[1],src_ip[2],src_ip[3]);
@@ -884,7 +1043,7 @@ uint8_t debug_adc(){
 void debug_GPIOexp(){
   while(1){
 
-  if (!ioexp_init()) //puts all high
+  if (!ioexp_init(0xFF,0xFF)) //puts all high
     error("failed to init GPIO expander");
   delay(500);
   if (!ioexp_out_set(0x00,0x00))
@@ -975,6 +1134,22 @@ void debug_Si7021(){
 
   }else{
     PRINTDEBUG("No SI7021 debug, use_Si7021 is false\n");
+  }
+}
+
+void debug_ioexp_AIport(){
+  
+  if(!ioexp_out_set(0x00,0x00)) PRINTDEBUG("err\n");
+  PRINTDEBUG("set all AI to high\n");
+  delay(2000);
+
+  for (int qui=0;qui<10;qui++){
+    if(!ioexp_out_set_AIport(qui,0)) PRINTDEBUG("err2");
+    PRINTDEBUG("AI %d low ...",qui);
+    delay(1000);
+    if(!ioexp_out_set_AIport(qui,1)) PRINTDEBUG("err3");
+    PRINTDEBUG(" high\n");
+    delay(10000);
   }
 }
 

@@ -1,0 +1,6 @@
+01Log2019_08_06-18_53_07.csv
+08/06/2019    18:53:07.931, VI started
+08/06/2019    18:53:40.795, Announcement from #14
+08/06/2019    18:53:40.801, ERROR from #14 : failed to initalize ADC
+08/06/2019    18:54:18.498, Announcement from #13
+08/06/2019    18:54:18.503, ERROR from #13 : Si7021 RH T sensor not found at initalization - continue without

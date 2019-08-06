@@ -1,0 +1,11 @@
+01Log2019_08_05-18_09_39.csv
+08/05/2019    18:09:40.125, VI started
+08/05/2019    18:09:40.580, Announcement from #14
+08/05/2019    18:09:40.852, Announcement from #12
+08/05/2019    18:09:40.858, ERROR from #12 : failed to initalize IO Expander 
+08/05/2019    18:09:40.858, ERROR from #12 : failed to initalize ADC
+08/05/2019    18:09:40.861, ERROR from #12 : VEML7700 light sensor not found - continue without
+08/05/2019    18:09:40.864, ERROR from #12 : Si7021 RH T sensor not found at initalization - continue without
+08/05/2019    18:09:42.494, Logging to: 2019_08_05-18_09_42_Data.csv
+08/05/2019    18:09:42.494, Trigger sent to #14, T=4000ms
+08/05/2019    18:11:17.065, Stop sent to #14
