@@ -58,7 +58,7 @@ Adafruit_Si7021 Si7021 = Adafruit_Si7021();
 //ADC
 #include "ADS1115.h"
 
-ADS1115 adc1(ADS1115_ADDRESS_ADDR_SDA);//chan
+ADS1115 adc1(ADS1115_ADDRESS_ADDR_SDA);//change on V4, was GND
 ADS1115 adc2(ADS1115_ADDRESS_ADDR_VDD);
 ADS1115 adc3(ADS1115_ADDRESS_ADDR_SCL);
 
@@ -116,6 +116,7 @@ void log_error_code(uint8_t ec);
 void hard_restart();
 uint8_t adc_PGA_autorange(uint8_t old_PGA,int16_t last_reading);
 uint8_t ioexp_out_set_AIport(uint8_t AIport, bool statepin);
+uint8_t is_sensor_out_signed(uint8_t sensor_type);
 //debug functions
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len);
 void debug_sd_log();
@@ -591,13 +592,14 @@ void loop(){
         adc3.setRate(ADS1115_RATE_64); 
         state = s12_save_data;
         break;
-      /*case s15_setup_lmp91000:
+      case s15_setup_lmp91000:{
         //index is AI input, value is register value
-        const uint8_t tiacn[] =    {0x18,0x18,0x18,0x19,0x15,0x14,0x12,0x0C,0x09,0x09}; //4:2 tia gain, 1:0 rload
-        const uint8_t refcn[] =    {0x00,0x00,0x00,0x00,0x40,0x00,0x00,0x00,0x27,0x00};
-        const uint8_t modecn[] =   {0x01,0x03,0x03,0x03,0x03,0x03,0x01,0x03,0x03,0x03};
+        const uint8_t tiacn[10] =    {0x18,0x18,0x18,0x19,0x15,0x14,0x12,0x0C,0x09,0x09}; //4:2 tia gain, 1:0 rload
+        const uint8_t refcn[10] =    {0x00,0x00,0x00,0x00,0x40,0x00,0x00,0x00,0x27,0x00};
+        const uint8_t modecn[10] =   {0x01,0x03,0x03,0x03,0x03,0x03,0x01,0x03,0x03,0x03};
         state = s11_start_measurement;
-        break;*/
+        } //case setup amonia end
+        break;
       default:
         PRINTDEBUG("Uknown FSM state %d",state);
         log_error_code(19);
@@ -635,9 +637,9 @@ void loop(){
           
           if (millis()-startms < 1000){
             //PRINTDEBUG("Pressed under 1s, nothing happens\n");
-          } else if (millis()-startms < 10000) {
+          } else if (millis()-startms < 4000) {
             //1-10 s start measurement
-            //PRINTDEBUG("Pressed under 1-9.99s, starting measuremnt\n");
+            //PRINTDEBUG("Pressed under 1-3.99s, starting measuremnt\n");
             ton = 750;
           } else if (millis()-startms < 15000){
             //PRINTDEBUG("Pressed under 10-15s, reset\n");
@@ -655,7 +657,7 @@ void loop(){
       }
       if (millis()>(bl+1000)){ //every 1s
         bl=millis();
-        PRINTDEBUG("t:%d\t st:%d\n",now(),(int)state);
+        PRINTDEBUG("t:%u\t st:%d\n",(uint32_t)now(),(int)state);
       }
     #endif
   }//while 1
@@ -701,7 +703,7 @@ uint8_t sd_format_header(){
   obufstream bout(SDbuf, sizeof(SDbuf));
   char chbuf[64]; //max characters
   bout << F("File created :");
-  snprintf(chbuf,64,"%d",now());
+  snprintf(chbuf,64,"%u",(uint32_t)now());
   bout << chbuf;
   bout << F("s (epoch time)\n");
   bout << F("Unit #");
@@ -743,10 +745,16 @@ uint8_t sd_write_sample(uint32_t sample_num){
   //  {PRINTDEBUG("%02x:",sendUDP_Buffer[o]);}
   //PRINTDEBUG(" Data send buffer\n");
   uint8_t ia = 6;
+  uint8_t sensor_type;
   while ((ia<(sendUDP_len-1)) & (ia < 150)) { //150 to be safe, prevent infinite loop in case of some bug
-    snprintf(chbuf,64,"%d",(uint8_t)sendUDP_Buffer[ia++]);
+    sensor_type = (uint8_t)sendUDP_Buffer[ia++];
+    snprintf(chbuf,64,"%u",sensor_type);
     bout << ',' << chbuf; //range or sensor type
-    snprintf(chbuf,64,"%d",(((uint16_t)sendUDP_Buffer[ia++]) << 8) | ((uint16_t)sendUDP_Buffer[ia++]));
+    if (is_sensor_out_signed(sensor_type))
+      snprintf(chbuf,64,"%d",(int16_t)((((uint16_t)sendUDP_Buffer[ia]) << 8) | ((uint16_t)sendUDP_Buffer[ia+1])));
+    else
+      snprintf(chbuf,64,"%u",(((uint16_t)sendUDP_Buffer[ia]) << 8) | ((uint16_t)sendUDP_Buffer[ia+1]));
+    ia +=2;
     bout << ',' << chbuf; //value MSB and LSB
   }
   //flush = write to SD
@@ -970,7 +978,13 @@ uint8_t adc_PGA_autorange(uint8_t old_PGA,int16_t last_reading){
 
   return old_PGA;
 }
-
+//new sensor integration - follow this
+uint8_t is_sensor_out_signed(uint8_t sensor_type){
+  if (((sensor_type & 0x0F) < 0x8) & ((sensor_type >> 4) < 0xC))
+    return 1; //yes is signed, all ADCs are
+  else
+    return 0;
+}
 ////////////////////////////DEBUG FUNCTIONS
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
   IPAddress src(src_ip[0],src_ip[1],src_ip[2],src_ip[3]);
@@ -1112,21 +1126,21 @@ void debug_Si7021(){
     for (int wee=0;wee<150;wee++) {
       delay(1000);
       startms = millis();
-      PRINTDEBUG("%06d\tAdafruit reading start\n",millis()-startms);
-      PRINTDEBUG("%06d\tAdafuit fuctions reading - Temp,RH: \t%f\t%f\n",millis()-startms,Si7021.readTemperature(),Si7021.readHumidity());
-      PRINTDEBUG("%06d\tRequest start\n",millis()-startms);
+      PRINTDEBUG("%06u\tAdafruit reading start\n",millis()-startms);
+      PRINTDEBUG("%06u\tAdafuit fuctions reading - Temp,RH: \t%f\t%f\n",millis()-startms,Si7021.readTemperature(),Si7021.readHumidity());
+      PRINTDEBUG("%06u\tRequest start\n",millis()-startms);
       if(!Si7021.RHrequest_measurement())
-        PRINTDEBUG("%06d\tRequest failed\n",millis()-startms);
+        PRINTDEBUG("%06u\tRequest failed\n",millis()-startms);
       while(1){
       if (use_veml){
-        PRINTDEBUG("%06d\tMeantime read light %f Lux\n",millis()-startms,veml.readLux());
-        PRINTDEBUG("%06d\tMeantime read ended\n",millis()-startms);
+        PRINTDEBUG("%06u\tMeantime read light %f Lux\n",millis()-startms,veml.readLux());
+        PRINTDEBUG("%06u\tMeantime read ended\n",millis()-startms);
       }
       delay(150);
       if(!Si7021.read_requested(&t,&rh))
-        PRINTDEBUG("%06d\tReadout failed\n",millis()-startms);
+        PRINTDEBUG("%06u\tReadout failed\n",millis()-startms);
       else{
-        PRINTDEBUG("%06d\tMy fuctions reading - Temp,RH: \t%d\t%d\n",millis()-startms,t,rh);
+        PRINTDEBUG("%06u\tMy fuctions reading - Temp,RH: \t%u\t%u\n",millis()-startms,t,rh);
         break;
       }
       }

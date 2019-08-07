@@ -7,8 +7,8 @@
 #VScode
 .pioenvs/
 .vscode/
-“.pioenvs
-.piolibdeps”
+ï¿½.pioenvs
+.piolibdepsï¿½
 
 # Object files
 *.o
@@ -135,3 +135,4 @@ Desktop.ini
 *.aliases
 *.lvlps
 .cache/
+*.csv

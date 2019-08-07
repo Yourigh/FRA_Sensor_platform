@@ -4,3 +4,11 @@
 08/06/2019    18:53:40.801, ERROR from #14 : failed to initalize ADC
 08/06/2019    18:54:18.498, Announcement from #13
 08/06/2019    18:54:18.503, ERROR from #13 : Si7021 RH T sensor not found at initalization - continue without
+08/06/2019    20:21:44.198, Announcement from #14
+08/06/2019    20:21:44.205, ERROR from #14 : VEML7700 light sensor not found - continue without
+08/06/2019    20:22:10.425, Reset sent to #255
+08/06/2019    20:22:11.961, Announcement from #14
+08/06/2019    20:22:11.976, Announcement from #13
+08/06/2019    20:23:01.498, Logging to: 2019_08_06-20_23_01_Data.csv
+08/06/2019    20:23:01.753, Trigger sent to #255, T=2000ms
+08/06/2019    20:46:34.751, Stop sent to #255
