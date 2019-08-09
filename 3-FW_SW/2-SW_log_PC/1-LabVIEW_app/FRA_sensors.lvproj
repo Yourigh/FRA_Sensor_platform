@@ -24,6 +24,7 @@
 		<Item Name="Power_ctrl_to_ioEXPSET.vi" Type="VI" URL="../subVIs/Power_ctrl_to_ioEXPSET.vi"/>
 		<Item Name="Results_cluster.ctl" Type="VI" URL="../subVIs/Results_cluster.ctl"/>
 		<Item Name="Send_simple_command.vi" Type="VI" URL="../subVIs/Send_simple_command.vi"/>
+		<Item Name="Sensor_data_signed_unsigned_conv.vi" Type="VI" URL="../subVIs/Sensor_data_signed_unsigned_conv.vi"/>
 		<Item Name="Sensor_data_to_value.vi" Type="VI" URL="../subVIs/Sensor_data_to_value.vi"/>
 		<Item Name="Sensor_power_ctrl.ctl" Type="VI" URL="../subVIs/Sensor_power_ctrl.ctl"/>
 		<Item Name="Split number byte.vi" Type="VI" URL="../subVIs/Split number byte.vi"/>

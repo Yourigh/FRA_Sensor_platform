@@ -29,14 +29,14 @@
 #define PIN_SCL 22
 #define PIN_ETH_CS 23
 #define PIN_FAN 25
-#define PIN_TP8 26
+#define PIN_TP8 26 //used as fake SDA for real SDA line manipulation
 #define PIN_TP9 27
 #define PIN_BTN1 34
 #define PIN_TP7 36
 #define PIN_TP6 39
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
-#define LMP91000_ADR 0b1001000 //check with scanner
+#define LMP91000_ADR 0x48 //checked with scanner
 
 //GPIO expander
 #include <Wire.h>
@@ -100,9 +100,12 @@ bool use_Si7021=1;//Temperature and RH sensor
 bool use_tgs24444=0; //amonia sensor
 bool UDP_read_flag = 0;
 bool BTN1_flag = 0;
+  uint8_t LMPreg_TIACN = 0xFF;
+  uint8_t LMPreg_REFCN = 0xFF;
+  uint8_t LMPreg_MODECN = 0xFF;
 //functions
 uint8_t sd_create_file();
-uint8_t sd_format_header();
+uint8_t sd_format_header(uint32_t adc_period_ms);
 uint8_t sd_write_sample(uint32_t sample_num);
 uint8_t ioexp_init(uint8_t port1,uint8_t port2);
 uint8_t ioexp_out_set(uint8_t port0,uint8_t port1);
@@ -117,6 +120,7 @@ void hard_restart();
 uint8_t adc_PGA_autorange(uint8_t old_PGA,int16_t last_reading);
 uint8_t ioexp_out_set_AIport(uint8_t AIport, bool statepin);
 uint8_t is_sensor_out_signed(uint8_t sensor_type);
+void LMP91000_setup(uint8_t configuration_set);
 //debug functions
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len);
 void debug_sd_log();
@@ -124,6 +128,7 @@ void debug_GPIOexp();
 uint8_t debug_adc();
 void debug_Si7021();
 void debug_ioexp_AIport();
+void debug_lmp91000();
 
 
 
@@ -217,22 +222,7 @@ void setup(){
   }
   //debug_Si7021();
   //debug_ioexp_AIport();
-
-  /*
-  //while(1){
-    delay(200);
-    PRINTDEBUG("LMPtest\n");
-    Wire.beginTransmission(LMP91000_ADR);
-    Wire.write(0x11);
-    if (Wire.endTransmission()) PRINTDEBUG("Error read\n");
-    Wire.beginTransmission(LMP91000_ADR);
-    Wire.requestFrom(LMP91000_ADR,1);
-    if (Wire.available()){
-      PRINTDEBUG("Read:%02x\n",Wire.read());
-    }
-    if (Wire.endTransmission()) PRINTDEBUG("Error read\n");
-
-  //}*/
+  //debug_lmp91000();
 }
 /*
  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄ 
@@ -259,6 +249,8 @@ void loop(){
   uint32_t meas_sample_number = 0; //0 is measurement not active, from 1 on - sample number
   uint8_t port0_check;
   uint8_t port1_check;
+  uint8_t conf_set = 0;
+
   //FSM states
   enum states { //FSM states
       s0_START,
@@ -338,6 +330,12 @@ void loop(){
               if (receiveUDP_Buffer[6] & 0b01) {use_tgs24444 = 1; adc_period_ms = 250;PRINTDEBUG("Amonia will be used\n");}
               if (receiveUDP_Buffer[6] & 0b10) {
                 state = s15_setup_lmp91000; //will continue to s11 after this state
+                conf_set = receiveUDP_Buffer[6];
+                if (conf_set & 0b100){ //debug sending registers 
+                  LMPreg_TIACN = receiveUDP_Buffer[7]; 
+                  LMPreg_REFCN = receiveUDP_Buffer[8]; 
+                  LMPreg_MODECN = receiveUDP_Buffer[9]; 
+                }
                 UDP_read_flag = 0;
                 break;
               }
@@ -474,7 +472,7 @@ void loop(){
           state = s3_IDLE;
           break;
         } 
-        if(!sd_format_header()){
+        if(!sd_format_header(adc_period_ms)){
           PRINTDEBUG("SD write data failed\n");
           log_error_code(15);
           use_sd = 0;
@@ -559,10 +557,13 @@ void loop(){
         break;
       case s14_get_amonia:
         //prepare ADC
+        adc3.initialize(); // initialize ADS1115 16 bit A/D chip
         adc3.setGain(ADS1115_PGA_6P144);
-        adc3.setMultiplexer(ADS1115_MUX_P0_NG + 2); //A3.2
-        adc3.setMode(ADS1115_MODE_CONTINUOUS);
+        adc3.setMultiplexer(ADS1115_MUX_P2_NG); //A3.2
         adc3.setRate(ADS1115_RATE_860); 
+        adc3.setMode(ADS1115_MODE_CONTINUOUS);
+        ets_delay_us(500);
+        adc3.triggerConversion();
         //14ms pulse on power
         //5ms pulse low on SDA, 2ms after power pulse. - low pass is on sensor board.
         if(!ioexp_read(&port0_check,&port1_check)){
@@ -571,21 +572,17 @@ void loop(){
           }
         delay(1);//wait for SDA to rise after lowpass
         ioexp_out_set(port0_check & 0b11111110,port1_check); //turn on A3.2 5V
-        ets_delay_us(1870);
-
+        ets_delay_us(1870);//tuned value
         if(!Wire.begin(PIN_TP8,PIN_SCL,400000UL)) //reinit to fake SDA
           log_error_code(4);
-
         pinMode(PIN_SDA,OUTPUT);
         digitalWrite(PIN_SDA,0); //make pulse for sensor
-        ets_delay_us(4380);
+        ets_delay_us(4380); //tuned value
         if(!Wire.begin(PIN_SDA,PIN_SCL,400000UL)) //init back to real SDA
           log_error_code(4);
-
         adc_PGA_setting[2][2] = 0xA0; //A3.2  (6), range 6.44v (0)
         adc_result_raw[2][2] = adc3.getConversion(false);
-        
-        ets_delay_us(7000);
+        ets_delay_us(7000); //tuned value
         ioexp_out_set(port0_check | 0b00000001,port1_check); //turn off A3.2 5V
         //recover ADC settings as before
         adc3.setMode(ADS1115_MODE_SINGLESHOT);
@@ -593,10 +590,7 @@ void loop(){
         state = s12_save_data;
         break;
       case s15_setup_lmp91000:{
-        //index is AI input, value is register value
-        const uint8_t tiacn[10] =    {0x18,0x18,0x18,0x19,0x15,0x14,0x12,0x0C,0x09,0x09}; //4:2 tia gain, 1:0 rload
-        const uint8_t refcn[10] =    {0x00,0x00,0x00,0x00,0x40,0x00,0x00,0x00,0x27,0x00};
-        const uint8_t modecn[10] =   {0x01,0x03,0x03,0x03,0x03,0x03,0x01,0x03,0x03,0x03};
+        LMP91000_setup(conf_set);
         state = s11_start_measurement;
         } //case setup amonia end
         break;
@@ -655,10 +649,11 @@ void loop(){
         }
         if (ton==100) hard_restart();
       }
+      /*
       if (millis()>(bl+1000)){ //every 1s
         bl=millis();
         PRINTDEBUG("t:%u\t st:%d\n",(uint32_t)now(),(int)state);
-      }
+      }*/
     #endif
   }//while 1
 }//loop
@@ -698,7 +693,7 @@ uint8_t sd_create_file(){
   return 1; //success
 }
 
-uint8_t sd_format_header(){
+uint8_t sd_format_header(uint32_t adc_period_ms){
     // format header in buffer
   obufstream bout(SDbuf, sizeof(SDbuf));
   char chbuf[64]; //max characters
@@ -706,6 +701,10 @@ uint8_t sd_format_header(){
   snprintf(chbuf,64,"%u",(uint32_t)now());
   bout << chbuf;
   bout << F("s (epoch time)\n");
+  snprintf(chbuf,64,"%u",(uint32_t)adc_period_ms);
+  bout << F("Sample Period :");
+  bout << chbuf;
+  bout << F("ms\n");
   bout << F("Unit #");
   char name[] = "0000";
   name[0] = ether.myip[3]/1000 + '0';
@@ -713,15 +712,13 @@ uint8_t sd_format_header(){
   name[2] = (ether.myip[3]/10)%10 + '0';
   name[3] = ether.myip[3]%10 + '0';
   bout << name;//log unit number
-  bout << F("\nSample#");
+  bout << F("\nTime,Sample#");
 
   for (uint8_t i = 0; i < 2; i++) { //just example how it goes, exact number of columns is not known at this time
     bout << F(",sensor_type_") << int(i);
     bout << F(",value_") << int(i);
   }
   bout << F(",..."); //and so on
-
-  //TODO other sensors header
 
   logfile << SDbuf << endl;
   // check for error
@@ -732,15 +729,18 @@ uint8_t sd_format_header(){
 }
 uint8_t sd_write_sample(uint32_t sample_num){
   obufstream bout(SDbuf, sizeof(SDbuf));
+  char chbuf[64]; //max characters
   //check if logfile is open
   if (!logfile.is_open()) {
     return 0;
   }
   bout << "\n";
-  bout << int(sample_num); //log current sample #
+  snprintf(chbuf,64,"%u,",(uint32_t)now());
+  bout << chbuf; //log current time
+  snprintf(chbuf,64,"%u",(uint32_t)sample_num);
+  bout << chbuf; //log current sample #
   // log sample number - sample number variable
-  
-  char chbuf[64]; //max characters
+
   //for (uint8_t o=0;o<sendUDP_len;o++)
   //  {PRINTDEBUG("%02x:",sendUDP_Buffer[o]);}
   //PRINTDEBUG(" Data send buffer\n");
@@ -886,21 +886,21 @@ uint8_t adc_init(){
   adc1.setMode(ADS1115_MODE_SINGLESHOT);
   adc1.setRate(ADS1115_RATE_64);
   adc1.setGain(ADS1115_PGA_6P144); //6.144V range
-  adc1.setMultiplexer(ADS1115_MUX_P1_NG); //channel 0 single ended
+  adc1.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
   if (!adc2.testConnection())
     return 0;
   adc2.initialize(); // initialize ADS1115 16 bit A/D chip
   adc2.setMode(ADS1115_MODE_SINGLESHOT);
   adc2.setRate(ADS1115_RATE_64); 
   adc2.setGain(ADS1115_PGA_6P144); //6.144V range
-  adc2.setMultiplexer(ADS1115_MUX_P1_NG); //channel 0 single ended
+  adc2.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
   if (!adc2.testConnection())
     return 0;
   adc3.initialize(); // initialize ADS1115 16 bit A/D chip
   adc3.setMode(ADS1115_MODE_SINGLESHOT);
   adc3.setRate(ADS1115_RATE_64); 
   adc3.setGain(ADS1115_PGA_6P144); //6.144V range
-  adc3.setMultiplexer(ADS1115_MUX_P1_NG); //channel 0 single ended
+  adc3.setMultiplexer(ADS1115_MUX_P0_NG); //channel 0 single ended
   return 1;
 }
 //callback that prints received packets to the serial port
@@ -984,6 +984,114 @@ uint8_t is_sensor_out_signed(uint8_t sensor_type){
     return 1; //yes is signed, all ADCs are
   else
     return 0;
+}
+
+void LMP91000_setup(uint8_t configuration_set){
+  #define LMP_STATUS_REG 0x00
+  #define LMP_LOCK_REG 0x01
+  #define LMP_TIACN_REG 0x10
+  #define LMP_REFCN_REG 0x11
+  #define LMP_MODECN_REG 0x12
+  uint8_t LMPenable[10]=  {1,1,1,1,1,1,1,1,1,1};
+  uint8_t tiacn[10] ={0x18,0x18,0x18,0x19,0x15,0x14,0x12,0x0C,0x09,0x09};//4:2 tia gain, 1:0 rload
+  uint8_t refcn[10] ={0x00,0x00,0x00,0x00,0x40,0x00,0x00,0x00,0x27,0x00};
+  uint8_t modecn[10]={0x03,0x03,0x03,0x03,0x03,0x03,0x03,0x03,0x03,0x03};
+
+  uint8_t LMPsett;
+  LMPsett = ((configuration_set & 0b00011110)>>1);
+  if (LMPsett == 0b0001){
+    //index is AI input, value is register value
+    //use initialized values
+  }
+  if (LMPsett == 0b0011){
+    for (uint8_t boo;boo<10;boo++){
+      LMPenable[boo] = 1;
+      tiacn[boo] = LMPreg_TIACN;
+      refcn[boo] = LMPreg_REFCN;
+      modecn[boo] = LMPreg_MODECN;
+    }
+  }
+
+  //read ioexp so it can be put to original state should be done here
+  
+  //this is only copy from debug function.. TODO better..
+  uint8_t statusLMP;
+  if(!ioexp_out_set(0x00,0x00)) PRINTDEBUG("err\n");
+  PRINTDEBUG("set all AI to high\n");
+  //to avoid 2 active LMPs on I2C bus
+  for (int qui=0;qui<10;qui++){ //scan channels
+    if(LMPenable[qui]){
+      if(!ioexp_out_set_AIport(qui,0)) PRINTDEBUG("err2");
+      PRINTDEBUG("AI %d low ...",qui);
+      
+      //check if LMP is there
+      Wire.beginTransmission(LMP91000_ADR);
+      Wire.write(LMP_STATUS_REG);//status register
+      if (Wire.endTransmission()) {
+        PRINTDEBUG("no LMP");
+        if(!ioexp_out_set_AIport(qui,1)) PRINTDEBUG("err3");
+        PRINTDEBUG(".. back to high\n");
+        continue;
+      }
+      Wire.beginTransmission(LMP91000_ADR);
+      Wire.requestFrom(LMP91000_ADR,1);
+      if (Wire.available()){
+        statusLMP = Wire.read();
+        if (statusLMP) {
+          PRINTDEBUG("LMP Ready\n");
+          Wire.write(LMP_LOCK_REG);//0x11
+          Wire.write(0x00);//disable write protection
+          if (Wire.endTransmission()) PRINTDEBUG("Err r");
+          //lock disabled
+          //Write TIA
+          Wire.beginTransmission(LMP91000_ADR);
+          Wire.write(LMP_TIACN_REG);//0x10
+          Wire.write(tiacn[qui]);//0x18 for A1.1
+          if (Wire.endTransmission()) PRINTDEBUG("Err r");
+          //Write REF
+          Wire.beginTransmission(LMP91000_ADR);
+          Wire.write(LMP_REFCN_REG);//0x11
+          Wire.write(refcn[qui]);
+          if (Wire.endTransmission()) PRINTDEBUG("Err r");
+          //Write MODECN
+          Wire.beginTransmission(LMP91000_ADR);
+          Wire.write(LMP_MODECN_REG);//0x12
+          Wire.write(modecn[qui]);
+          //Wire.write(0b111);//temperature
+          if (Wire.endTransmission()) PRINTDEBUG("Err r");
+          //readback TIA
+          Wire.beginTransmission(LMP91000_ADR);
+          Wire.write(LMP_TIACN_REG);//0x10
+          if (Wire.endTransmission()) PRINTDEBUG("Err r");
+          Wire.beginTransmission(LMP91000_ADR);
+          Wire.requestFrom(LMP91000_ADR,1);
+          PRINTDEBUG("TIAREG was set: 0x%02x\n",Wire.read());
+          if (Wire.endTransmission()) PRINTDEBUG("Err r");
+          //readback REFCN
+          Wire.beginTransmission(LMP91000_ADR);
+          Wire.write(LMP_REFCN_REG);//0x11
+          if (Wire.endTransmission()) PRINTDEBUG("Err r");
+          Wire.beginTransmission(LMP91000_ADR);
+          Wire.requestFrom(LMP91000_ADR,1);
+          PRINTDEBUG("REFCN was set: 0x%02x\n",Wire.read());
+          if (Wire.endTransmission()) PRINTDEBUG("Err r");
+          //readback MODECN
+          Wire.beginTransmission(LMP91000_ADR);
+          Wire.write(LMP_MODECN_REG);//0x12
+          if (Wire.endTransmission()) PRINTDEBUG("Err r");
+          Wire.beginTransmission(LMP91000_ADR);
+          Wire.requestFrom(LMP91000_ADR,1);
+          PRINTDEBUG("MODECN was set: 0x%02x\n",Wire.read());
+        }
+        else
+          PRINTDEBUG("LMP not Ready");
+      }
+      if (Wire.endTransmission()) PRINTDEBUG("Err r");
+      
+      if(!ioexp_out_set_AIport(qui,1)) PRINTDEBUG("err3");
+      PRINTDEBUG(".. back to high\n");
+    }
+  }
 }
 ////////////////////////////DEBUG FUNCTIONS
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
@@ -1107,7 +1215,7 @@ void debug_sd_log(){
     }
   }
   if (use_sd) {
-    if(!sd_format_header())
+    if(!sd_format_header(100))
       error("write data failed");
   }
   if (use_sd) {
@@ -1164,6 +1272,93 @@ void debug_ioexp_AIport(){
     if(!ioexp_out_set_AIport(qui,1)) PRINTDEBUG("err3");
     PRINTDEBUG(" high\n");
     delay(10000);
+  }
+}
+void debug_lmp91000(){
+  #define LMP_STATUS_REG 0x00
+  #define LMP_LOCK_REG 0x01
+  #define LMP_TIACN_REG 0x10
+  #define LMP_REFCN_REG 0x11
+  #define LMP_MODECN_REG 0x12
+  const uint8_t tiacn[10] =    {0x18,0x18,0x18,0x19,0x09,0x14,0x12,0x0C,0x09,0x09}; //4:2 tia gain, 1:0 rload
+  const uint8_t refcn[10] =    {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x27,0x00};
+  const uint8_t modecn[10] =   {0x01,0x03,0x03,0x03,0x03,0x03,0x01,0x03,0x03,0x03};
+        
+  //read ioexp so it can be put to original state should be done here
+  uint8_t statusLMP;
+  if(!ioexp_out_set(0x00,0x00)) PRINTDEBUG("err\n");
+  PRINTDEBUG("set all AI to high\n");
+  //to avoid 2 active LMPs on I2C bus
+  for (int qui=0;qui<10;qui++){ //scan channels
+    if(!ioexp_out_set_AIport(qui,0)) PRINTDEBUG("err2");
+    PRINTDEBUG("AI %d low ...",qui);
+    
+    //check if LMP is there
+    Wire.beginTransmission(LMP91000_ADR);
+    Wire.write(LMP_STATUS_REG);//status register
+    if (Wire.endTransmission()) {
+      PRINTDEBUG("no LMP");
+      if(!ioexp_out_set_AIport(qui,1)) PRINTDEBUG("err3");
+      PRINTDEBUG(".. back to high\n");
+      continue;
+    }
+    Wire.beginTransmission(LMP91000_ADR);
+    Wire.requestFrom(LMP91000_ADR,1);
+    if (Wire.available()){
+      statusLMP = Wire.read();
+      if (statusLMP) {
+        PRINTDEBUG("LMP Ready\n");
+        Wire.write(LMP_LOCK_REG);//0x11
+        Wire.write(0x00);//disable write protection
+        if (Wire.endTransmission()) PRINTDEBUG("Err r");
+        //lock disabled
+        //Write TIA
+        Wire.beginTransmission(LMP91000_ADR);
+        Wire.write(LMP_TIACN_REG);//0x10
+        Wire.write(tiacn[qui]);//0x18 for A1.1
+        if (Wire.endTransmission()) PRINTDEBUG("Err r");
+        //Write REF
+        Wire.beginTransmission(LMP91000_ADR);
+        Wire.write(LMP_REFCN_REG);//0x11
+        Wire.write(refcn[qui]);
+        if (Wire.endTransmission()) PRINTDEBUG("Err r");
+        //Write MODECN
+        Wire.beginTransmission(LMP91000_ADR);
+        Wire.write(LMP_MODECN_REG);//0x12
+        Wire.write(modecn[qui]);
+        //Wire.write(0b111);//temperature
+        if (Wire.endTransmission()) PRINTDEBUG("Err r");
+        //readback TIA
+        Wire.beginTransmission(LMP91000_ADR);
+        Wire.write(LMP_TIACN_REG);//0x10
+        if (Wire.endTransmission()) PRINTDEBUG("Err r");
+        Wire.beginTransmission(LMP91000_ADR);
+        Wire.requestFrom(LMP91000_ADR,1);
+        PRINTDEBUG("TIAREG was set: %02x\n",Wire.read());
+        if (Wire.endTransmission()) PRINTDEBUG("Err r");
+        //readback REFCN
+        Wire.beginTransmission(LMP91000_ADR);
+        Wire.write(LMP_REFCN_REG);//0x11
+        if (Wire.endTransmission()) PRINTDEBUG("Err r");
+        Wire.beginTransmission(LMP91000_ADR);
+        Wire.requestFrom(LMP91000_ADR,1);
+        PRINTDEBUG("REFCN was set: %02x\n",Wire.read());
+        if (Wire.endTransmission()) PRINTDEBUG("Err r");
+        //readback MODECN
+        Wire.beginTransmission(LMP91000_ADR);
+        Wire.write(LMP_MODECN_REG);//0x12
+        if (Wire.endTransmission()) PRINTDEBUG("Err r");
+        Wire.beginTransmission(LMP91000_ADR);
+        Wire.requestFrom(LMP91000_ADR,1);
+        PRINTDEBUG("MODECN was set: %02x\n",Wire.read());
+      }
+      else
+        PRINTDEBUG("LMP not Ready");
+    }
+    if (Wire.endTransmission()) PRINTDEBUG("Err r");
+    
+    if(!ioexp_out_set_AIport(qui,1)) PRINTDEBUG("err3");
+    PRINTDEBUG(".. back to high\n");
   }
 }
 
