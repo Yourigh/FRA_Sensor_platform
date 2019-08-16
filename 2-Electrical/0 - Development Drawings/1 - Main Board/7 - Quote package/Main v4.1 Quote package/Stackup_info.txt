@@ -1,0 +1,6 @@
+Board Size: 100x100mm
+stackup thickness: 1.6mm
+2 layers
+single side SMT assembly + single side TH assembly
+Legend (silkscreen) - only from TOP side
+HAL surface is OK.

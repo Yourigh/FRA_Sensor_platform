@@ -1,0 +1,11 @@
+Board Size: 100x100mm
+stackup thickness: 1.6mm
+2 layers
+single side SMT assembly + single side TH assembly
+Legend (silkscreen) - only from TOP side
+HAL surface is OK.
+
+Chnage list:
+V3.2	original version
+V4.1	C19 changed to DNI
+V5	D1,D2,D4,D6 package fixed to SC70 (was SOT23)
