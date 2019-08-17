@@ -6816,7 +6816,7 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 <attribute name="CREVISION" value="01"/>
 </attributes>
 <variantdefs>
-<variantdef name="TGS26xx" current="yes"/>
+<variantdef name="TGS26xx"/>
 <variantdef name="TGS2444"/>
 <variantdef name="CO2"/>
 </variantdefs>
@@ -6827,23 +6827,32 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 <parts>
 <part name="FRAME1" library="SparkFun-Aesthetics" deviceset="FRAME-A4L" device=""/>
 <part name="R4" library="resistor" deviceset="R-EU_" device="R0603" value="5.1k">
+<attribute name="PARTNO" value="CRCW06035K10FKEA"/>
 <variant name="CO2" value="0"/>
 </part>
 <part name="R10" library="resistor" deviceset="R-EU_" device="R0603" value="10">
+<attribute name="PARTNO" value="CRCW060310R0FKEA"/>
 <variant name="CO2" populate="no"/>
 </part>
 <part name="C1" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
+<attribute name="PARTNO" value="GRM188R71C104KA01D"/>
 <variant name="TGS2444" populate="no"/>
 <variant name="CO2" populate="no"/>
 </part>
 <part name="IC3" library="SamacSys_Parts" deviceset="LMV796MF_NOPB" device="">
+<attribute name="PARTNO" value="LMV796MF"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="TGS2444" populate="no"/>
 </part>
-<part name="J1" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device=""/>
-<part name="C2" library="resistor" deviceset="C-EU" device="C0603K" value="100n"/>
+<part name="J1" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="" value="CONN_03X2">
+<attribute name="PARTNO" value="30306-6002HB"/>
+</part>
+<part name="C2" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
+<attribute name="PARTNO" value="GRM188R71C104KA01D"/>
+</part>
 <part name="SUPPLY13" library="supply2" deviceset="GND" device=""/>
 <part name="R11" library="resistor" deviceset="R-EU_" device="R0603" value="10">
+<attribute name="PARTNO" value="CRCW060310R0FKEA"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="TGS2444" populate="no"/>
 </part>
@@ -6856,6 +6865,7 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 <part name="SUPPLY17" library="supply2" deviceset="AGND" device=""/>
 <part name="SUPPLY19" library="supply2" deviceset="GND" device=""/>
 <part name="R13" library="resistor" deviceset="R-EU_" device="R0603" value="0">
+<attribute name="PARTNO" value="CRCW06030000Z0EA"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="TGS2444" populate="no"/>
 </part>
@@ -6867,21 +6877,26 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 <part name="SUPPLY8" library="supply2" deviceset="AGND" device=""/>
 <part name="SUPPLY15" library="supply2" deviceset="AGND" device=""/>
 <part name="Q3" library="adafruit" deviceset="MOSFET-N" device="REFLOW" value="Si2300DS">
+<attribute name="PARTNO" value="SI2300DS-T1-GE3"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="CO2" populate="no"/>
 </part>
 <part name="R23" library="resistor" deviceset="R-EU_" device="R0603" value="0">
+<attribute name="PARTNO" value="CRCW06030000Z0EA"/>
 <variant name="TGS2444" populate="no"/>
 </part>
 <part name="IC6" library="SamacSys_Parts" deviceset="MCP6541T-I_OT" device="">
+<attribute name="PARTNO" value="MCP6541T-I/OT"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="CO2" populate="no"/>
 </part>
 <part name="C10" library="resistor" deviceset="C-EU" device="C0603K" value="1n">
+<attribute name="PARTNO" value="GRM188R71H102KA01D"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="CO2" populate="no"/>
 </part>
 <part name="R25" library="resistor" deviceset="R-EU_" device="R0603" value="100k">
+<attribute name="PARTNO" value="CRCW0603100KFKEA"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="CO2" populate="no"/>
 </part>
@@ -6889,10 +6904,12 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 <part name="SUPPLY32" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
 <part name="SUPPLY33" library="supply2" deviceset="GND" device=""/>
 <part name="R26" library="resistor" deviceset="R-EU_" device="R0603" value="5.1k">
+<attribute name="PARTNO" value="CRCW06035K10FKEA"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="CO2" populate="no"/>
 </part>
 <part name="R27" library="resistor" deviceset="R-EU_" device="R0603" value="100k">
+<attribute name="PARTNO" value="CRCW0603100KFKEA"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="CO2" populate="no"/>
 </part>
@@ -6901,35 +6918,44 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 <part name="SUPPLY37" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY38" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
 <part name="R1" library="resistor" deviceset="R-EU_" device="R0603" value="100k">
+<attribute name="PARTNO" value="CRCW0603100KFKEA"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="CO2" populate="no"/>
 </part>
 <part name="SUPPLY2" library="supply2" deviceset="AGND" device=""/>
 <part name="C9" library="resistor" deviceset="C-EU" device="C0603K" value="1n">
+<attribute name="PARTNO" value="GRM188R71H102KA01D"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="CO2" value="100n"/>
 </part>
 <part name="SUPPLY35" library="supply2" deviceset="AGND" device=""/>
 <part name="R19" library="resistor" deviceset="R-EU_" device="R0603" value="10k">
+<attribute name="PARTNO" value="CRCW060310K0FKEA"/>
 <variant name="TGS26xx" populate="no"/>
 </part>
-<part name="C13" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
+<part name="C13" library="resistor" deviceset="C-EU" device="C0603K" value="1n">
+<attribute name="PARTNO" value="GRM188R71H102KA01D"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="CO2" populate="no"/>
 </part>
 <part name="SUPPLY41" library="supply2" deviceset="AGND" device=""/>
-<part name="U2" library="FRA_eagle_lib" deviceset="FIGARO_SR-7" device=""/>
+<part name="U2" library="FRA_eagle_lib" deviceset="FIGARO_SR-7" device="">
+<attribute name="PARTNO" value="installed_by_customer"/>
+</part>
 <part name="SUPPLY1" library="supply2" deviceset="GND" device=""/>
 <part name="R2" library="resistor" deviceset="R-EU_" device="R0603" value="0">
+<attribute name="PARTNO" value="CRCW06030000Z0EA"/>
 <variant name="CO2" populate="no"/>
 </part>
 <part name="SUPPLY4" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
 <part name="R3" library="resistor" deviceset="R-EU_" device="R0603" value="0">
+<attribute name="PARTNO" value="CRCW06030000Z0EA"/>
 <variant name="TGS26xx" populate="no"/>
 <variant name="TGS2444" populate="no"/>
 </part>
 <part name="SUPPLY5" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
 <part name="C3" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
+<attribute name="PARTNO" value="GRM188R71C104KA01D"/>
 <variant name="TGS26xx" populate="no"/>
 </part>
 <part name="SUPPLY7" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
@@ -6959,17 +6985,30 @@ TGS4161 inserted with tab between 2 and 3 pins</text>
 </plain>
 <instances>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
-<instance part="R4" gate="G$1" x="91.44" y="78.74" rot="R270"/>
-<instance part="R10" gate="G$1" x="127" y="86.36"/>
-<instance part="C1" gate="G$1" x="116.84" y="81.28"/>
-<instance part="IC3" gate="G$1" x="195.58" y="48.26"/>
+<instance part="R4" gate="G$1" x="91.44" y="78.74" rot="R270">
+<attribute name="PARTNO" x="91.44" y="78.74" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="R10" gate="G$1" x="127" y="86.36">
+<attribute name="PARTNO" x="127" y="86.36" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="C1" gate="G$1" x="116.84" y="81.28">
+<attribute name="PARTNO" x="116.84" y="81.28" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="IC3" gate="G$1" x="195.58" y="48.26">
+<attribute name="PARTNO" x="195.58" y="48.26" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="J1" gate="G$1" x="38.1" y="154.94" smashed="yes">
 <attribute name="NAME" x="34.544" y="160.528" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="22.098" y="149.098" size="1.778" layer="96" font="vector" align="top-left"/>
+<attribute name="PARTNO" x="38.1" y="154.94" size="1.778" layer="96" display="off"/>
 </instance>
-<instance part="C2" gate="G$1" x="15.24" y="147.32"/>
+<instance part="C2" gate="G$1" x="15.24" y="147.32">
+<attribute name="PARTNO" x="15.24" y="147.32" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY13" gate="GND" x="15.24" y="139.7"/>
-<instance part="R11" gate="G$1" x="238.76" y="68.58"/>
+<instance part="R11" gate="G$1" x="238.76" y="68.58">
+<attribute name="PARTNO" x="238.76" y="68.58" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="FB9" gate="G$1" x="190.5" y="165.1">
 <attribute name="PARTNO" x="190.5" y="165.1" size="1.778" layer="96" display="off"/>
 </instance>
@@ -6978,41 +7017,73 @@ TGS4161 inserted with tab between 2 and 3 pins</text>
 <instance part="FID4" gate="G$1" x="261.62" y="172.72"/>
 <instance part="SUPPLY17" gate="G$1" x="198.12" y="160.02"/>
 <instance part="SUPPLY19" gate="GND" x="180.34" y="160.02"/>
-<instance part="R13" gate="G$1" x="182.88" y="43.18" rot="R180"/>
+<instance part="R13" gate="G$1" x="182.88" y="43.18" rot="R180">
+<attribute name="PARTNO" x="182.88" y="43.18" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="FB1" gate="G$1" x="86.36" y="109.22">
 <attribute name="PARTNO" x="86.36" y="109.22" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="SUPPLY6" gate="G$1" x="91.44" y="48.26"/>
 <instance part="SUPPLY8" gate="G$1" x="116.84" y="71.12"/>
 <instance part="SUPPLY15" gate="G$1" x="190.5" y="38.1"/>
-<instance part="Q3" gate="G$1" x="88.9" y="66.04"/>
-<instance part="R23" gate="G$1" x="106.68" y="68.58" rot="R270"/>
-<instance part="IC6" gate="G$1" x="63.5" y="30.48"/>
-<instance part="C10" gate="G$1" x="101.6" y="25.4"/>
-<instance part="R25" gate="G$1" x="114.3" y="30.48" rot="R180"/>
+<instance part="Q3" gate="G$1" x="88.9" y="66.04">
+<attribute name="PARTNO" x="88.9" y="66.04" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="R23" gate="G$1" x="106.68" y="68.58" rot="R270">
+<attribute name="PARTNO" x="106.68" y="68.58" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="IC6" gate="G$1" x="63.5" y="30.48">
+<attribute name="PARTNO" x="63.5" y="30.48" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="C10" gate="G$1" x="101.6" y="25.4">
+<attribute name="PARTNO" x="101.6" y="25.4" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="R25" gate="G$1" x="114.3" y="30.48" rot="R180">
+<attribute name="PARTNO" x="114.3" y="30.48" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY30" gate="GND" x="101.6" y="17.78"/>
 <instance part="SUPPLY32" gate="G$1" x="96.52" y="38.1"/>
 <instance part="SUPPLY33" gate="GND" x="55.88" y="27.94" rot="R270"/>
-<instance part="R26" gate="G$1" x="33.02" y="17.78" rot="R180"/>
-<instance part="R27" gate="G$1" x="17.78" y="17.78" rot="R180"/>
+<instance part="R26" gate="G$1" x="33.02" y="17.78" rot="R180">
+<attribute name="PARTNO" x="33.02" y="17.78" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="R27" gate="G$1" x="17.78" y="17.78" rot="R180">
+<attribute name="PARTNO" x="17.78" y="17.78" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY34" gate="GND" x="10.16" y="17.78" rot="R270"/>
 <instance part="SUPPLY36" gate="G$1" x="38.1" y="17.78" rot="R270"/>
 <instance part="SUPPLY37" gate="GND" x="22.86" y="157.48" rot="R270"/>
 <instance part="SUPPLY38" gate="G$1" x="68.58" y="167.64"/>
-<instance part="R1" gate="G$1" x="22.86" y="30.48" rot="R180"/>
+<instance part="R1" gate="G$1" x="22.86" y="30.48" rot="R180">
+<attribute name="PARTNO" x="22.86" y="30.48" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY2" gate="G$1" x="10.16" y="30.48" rot="R270"/>
-<instance part="C9" gate="G$1" x="58.42" y="162.56" rot="R180"/>
+<instance part="C9" gate="G$1" x="58.42" y="162.56" rot="R180">
+<attribute name="PARTNO" x="58.42" y="162.56" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY35" gate="G$1" x="58.42" y="170.18" rot="R180"/>
-<instance part="R19" gate="G$1" x="68.58" y="63.5" rot="R180"/>
-<instance part="C13" gate="G$1" x="78.74" y="60.96"/>
+<instance part="R19" gate="G$1" x="68.58" y="63.5" rot="R180">
+<attribute name="PARTNO" x="68.58" y="63.5" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="C13" gate="G$1" x="78.74" y="60.96">
+<attribute name="PARTNO" x="78.74" y="60.96" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY41" gate="G$1" x="78.74" y="48.26"/>
-<instance part="U2" gate="G$1" x="124.46" y="160.02"/>
+<instance part="U2" gate="G$1" x="124.46" y="160.02">
+<attribute name="PARTNO" x="124.46" y="160.02" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY1" gate="GND" x="86.36" y="160.02"/>
-<instance part="R2" gate="G$1" x="81.28" y="96.52" rot="R180"/>
+<instance part="R2" gate="G$1" x="81.28" y="96.52" rot="R180">
+<attribute name="PARTNO" x="81.28" y="96.52" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY4" gate="G$1" x="91.44" y="99.06"/>
-<instance part="R3" gate="G$1" x="210.82" y="81.28" rot="R180"/>
+<instance part="R3" gate="G$1" x="210.82" y="81.28" rot="R180">
+<attribute name="PARTNO" x="210.82" y="81.28" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY5" gate="G$1" x="220.98" y="83.82"/>
-<instance part="C3" gate="G$1" x="58.42" y="12.7"/>
+<instance part="C3" gate="G$1" x="58.42" y="12.7">
+<attribute name="PARTNO" x="58.42" y="12.7" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY7" gate="G$1" x="58.42" y="15.24"/>
 <instance part="SUPPLY9" gate="GND" x="58.42" y="5.08"/>
 </instances>

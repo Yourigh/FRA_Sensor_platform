@@ -557,13 +557,12 @@ void loop(){
         break;
       case s14_get_amonia:
         //prepare ADC
+        #define FAKE_ADDR 0x01 //I2C address only for purpose to keep up communication
         adc3.initialize(); // initialize ADS1115 16 bit A/D chip
-        adc3.setGain(ADS1115_PGA_6P144);
+        adc3.setGain(ADS1115_PGA_6P144);//to adjust for reasonable range
         adc3.setMultiplexer(ADS1115_MUX_P2_NG); //A3.2
-        adc3.setRate(ADS1115_RATE_860); 
-        adc3.setMode(ADS1115_MODE_CONTINUOUS);
-        ets_delay_us(500);
-        adc3.triggerConversion();
+        adc3.setRate(ADS1115_RATE_860);
+        delayMicroseconds(500);
         //14ms pulse on power
         //5ms pulse low on SDA, 2ms after power pulse. - low pass is on sensor board.
         if(!ioexp_read(&port0_check,&port1_check)){
@@ -572,18 +571,38 @@ void loop(){
           }
         delay(1);//wait for SDA to rise after lowpass
         ioexp_out_set(port0_check & 0b11111110,port1_check); //turn on A3.2 5V
-        ets_delay_us(1870);//tuned value
+        delayMicroseconds(1850);//tuned value kinda
+        
+        //does mor matter much if I begin sooner, because comparator
+        //does react on changes only after 2.2ms after powerup
+        //keep some dummy communication on I2C so SDA is not high
+        //low pass and comparator will keep the high pulse on FET
+        for (uint16_t quee=0;quee<34;quee++){//110us one iteration
+          Wire.beginTransmission(FAKE_ADDR);
+          Wire.endTransmission();
+          delayMicroseconds(1);
+        }
+
+        /*
         if(!Wire.begin(PIN_TP8,PIN_SCL,400000UL)) //reinit to fake SDA
           log_error_code(4);
         pinMode(PIN_SDA,OUTPUT);
-        digitalWrite(PIN_SDA,0); //make pulse for sensor
-        ets_delay_us(4380); //tuned value
+        digitalWrite(PIN_SDA,0); //make pulse for sensor, bring to low
+        ets_delay_us(2380); //tuned value
         if(!Wire.begin(PIN_SDA,PIN_SCL,400000UL)) //init back to real SDA
-          log_error_code(4);
-        adc_PGA_setting[2][2] = 0xA0; //A3.2  (6), range 6.44v (0)
-        adc_result_raw[2][2] = adc3.getConversion(false);
-        ets_delay_us(7000); //tuned value
+          log_error_code(4);*/
+
+
+        adc3.triggerConversion();
+        if(!adc3.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT)){delayMicroseconds(1);};
+        //puse to FET ends automatically after about 200us
+        ets_delay_us(6800); //tuned value - 
+        //need to wait to turn off power to sensor. only after ADC can be read via I2C
         ioexp_out_set(port0_check | 0b00000001,port1_check); //turn off A3.2 5V
+        delayMicroseconds(500);
+        //if(!adc1.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT)){delayMicroseconds(1);};
+        adc_result_raw[2][2] = adc3.getConversion(0);//do not poll
+        adc_PGA_setting[2][2] = 0xA0; //A3.2  (6), range 6.44v (0)
         //recover ADC settings as before
         adc3.setMode(ADS1115_MODE_SINGLESHOT);
         adc3.setRate(ADS1115_RATE_64); 

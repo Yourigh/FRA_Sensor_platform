@@ -8,7 +8,7 @@
 </settings>
 <grid distance="0.1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.0635" altunitdist="mm" altunit="mm"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="1" name="Top" color="4" fill="1" visible="no" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
 <layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
 <layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
@@ -23,20 +23,20 @@
 <layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
 <layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
 <layer number="15" name="Route15" color="4" fill="6" visible="no" active="no"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="yes"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
-<layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
 <layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
@@ -44,7 +44,7 @@
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
 <layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="yes"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="yes"/>
@@ -59,7 +59,7 @@
 <layer number="49" name="Reference" color="7" fill="1" visible="no" active="yes"/>
 <layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
 <layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="yes"/>
 <layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
 <layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
 <layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
@@ -111,8 +111,8 @@
 <layer number="130" name="SMDSTROOK" color="7" fill="1" visible="no" active="yes"/>
 <layer number="131" name="tAdjust" color="7" fill="1" visible="no" active="no"/>
 <layer number="132" name="bAdjust" color="7" fill="1" visible="no" active="no"/>
-<layer number="144" name="DrillLegend" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="145" name="DrillLegend_01-16" color="2" fill="9" visible="yes" active="yes"/>
+<layer number="144" name="DrillLegend" color="7" fill="1" visible="no" active="yes"/>
+<layer number="145" name="DrillLegend_01-16" color="2" fill="9" visible="no" active="yes"/>
 <layer number="146" name="DrillLegend_01-20" color="3" fill="9" visible="yes" active="yes"/>
 <layer number="150" name="Notes" color="7" fill="1" visible="no" active="no"/>
 <layer number="151" name="HeatSink" color="7" fill="1" visible="no" active="no"/>
@@ -121,7 +121,7 @@
 <layer number="154" name="FabDoc2" color="7" fill="1" visible="no" active="no"/>
 <layer number="155" name="FabDoc3" color="7" fill="1" visible="no" active="no"/>
 <layer number="199" name="Contour" color="7" fill="1" visible="no" active="no"/>
-<layer number="200" name="200bmp" color="61" fill="10" visible="yes" active="yes"/>
+<layer number="200" name="200bmp" color="61" fill="10" visible="no" active="yes"/>
 <layer number="201" name="201bmp" color="2" fill="10" visible="no" active="no"/>
 <layer number="202" name="202bmp" color="3" fill="10" visible="no" active="no"/>
 <layer number="203" name="203bmp" color="4" fill="10" visible="no" active="no"/>
@@ -1693,7 +1693,7 @@ Metric Code Size 1608</description>
 <attributes>
 </attributes>
 <variantdefs>
-<variantdef name="TGS26xx" current="yes"/>
+<variantdef name="TGS26xx"/>
 <variantdef name="TGS2444"/>
 <variantdef name="CO2"/>
 </variantdefs>
@@ -1884,16 +1884,19 @@ design rules under a new name.</description>
 <element name="R4" library="resistor" package="R0603" value="5.1k" x="18.535" y="18.734" smashed="yes" rot="R270">
 <attribute name="NAME" x="16.981" y="19.537" size="0.8128" layer="25" rot="R270"/>
 <attribute name="VALUE" x="16.63" y="19.369" size="1.27" layer="27" rot="R270"/>
+<attribute name="PARTNO" value="CRCW06035K10FKEA" x="18.535" y="18.734" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="R10" library="resistor" package="R0603" value="10" x="18.038" y="6.487" smashed="yes" rot="R270">
 <attribute name="NAME" x="17.362" y="5.098" size="0.8128" layer="25" rot="R90"/>
 <attribute name="VALUE" x="16.133" y="7.122" size="1.27" layer="27" rot="R270"/>
+<attribute name="PARTNO" value="CRCW060310R0FKEA" x="18.038" y="6.487" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="C1" library="resistor" package="C0603K" value="100n" x="15.355" y="28.544" smashed="yes" rot="R180">
 <attribute name="NAME" x="17.055" y="27.694" size="0.8128" layer="25" rot="R180"/>
 <attribute name="VALUE" x="16.155" y="30.194" size="1.016" layer="27" rot="R180"/>
+<attribute name="PARTNO" value="GRM188R71C104KA01D" x="15.355" y="28.544" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="IC3" library="SamacSys_Parts" package="SOT95P280X145-5N" value="LMV796MF_NOPB" x="6.66" y="26.326" populate="no" smashed="yes" rot="R270">
+<element name="IC3" library="SamacSys_Parts" package="SOT95P280X145-5N" value="LMV796MF_NOPB" x="6.66" y="26.326" smashed="yes" rot="R270">
 <attribute name="MANUFACTURER_PART_NUMBER" value="LMV796MF/NOPB" x="6.66" y="26.326" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MOUSER_PART_NUMBER" value="926-LMV796MF/NOPB" x="6.66" y="26.326" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="DESCRIPTION" value="Single 17 MHz, low noise, CMOS input, 1.8V operational amplifier" x="6.66" y="26.326" size="1.778" layer="27" rot="R270" display="off"/>
@@ -1902,18 +1905,22 @@ design rules under a new name.</description>
 <attribute name="HEIGHT" value="1.45mm" x="6.66" y="26.326" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="NAME" x="6.752" y="28.912" size="0.8128" layer="25" align="center"/>
 <attribute name="VALUE" x="9.2" y="26.326" size="1.27" layer="27" rot="R270" align="center"/>
+<attribute name="PARTNO" value="LMV796MF" x="6.66" y="26.326" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="J1" library="FRA_eagle_lib" package="WE_61200621621" value="CONN_03X2_WE_61200621621" x="7.136" y="5.278" smashed="yes" rot="R270">
+<element name="J1" library="FRA_eagle_lib" package="WE_61200621621" value="CONN_03X2" x="7.136" y="5.278" smashed="yes" rot="R270">
 <attribute name="NAME" x="2.258" y="2.121" size="0.8128" layer="25" font="vector" ratio="20"/>
 <attribute name="VALUE" x="-0.23" y="9.342" size="0.6096" layer="27" font="vector" ratio="20" rot="R270"/>
+<attribute name="PARTNO" value="30306-6002HB" x="7.136" y="5.278" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="C2" library="resistor" package="C0603K" value="100n" x="8.385" y="11.022" smashed="yes">
 <attribute name="NAME" x="7.285" y="11.772" size="0.8128" layer="25"/>
 <attribute name="VALUE" x="7.585" y="9.372" size="1.016" layer="27"/>
+<attribute name="PARTNO" value="GRM188R71C104KA01D" x="8.385" y="11.022" size="1.778" layer="27" display="off"/>
 </element>
-<element name="R11" library="resistor" package="R0603" value="10" x="15.694" y="6.487" populate="no" smashed="yes" rot="R270">
+<element name="R11" library="resistor" package="R0603" value="10" x="15.694" y="6.487" smashed="yes" rot="R270">
 <attribute name="NAME" x="14.862" y="5.197" size="0.8128" layer="25" rot="R90"/>
 <attribute name="VALUE" x="13.789" y="7.122" size="1.27" layer="27" rot="R270"/>
+<attribute name="PARTNO" value="CRCW060310R0FKEA" x="15.694" y="6.487" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
 <element name="FB9" library="microbuilder" package="0603" value="" x="10.409" y="13.299" smashed="yes">
 <attribute name="PARTNO" value="BLM18PG121SN1D" x="10.409" y="13.299" size="1.778" layer="27" display="off"/>
@@ -1923,24 +1930,27 @@ design rules under a new name.</description>
 <element name="FID1" library="microbuilder" package="FIDUCIAL_1MM" value="FIDUCIAL&quot;&quot;" x="14.59" y="1.355" smashed="yes"/>
 <element name="FID2" library="microbuilder" package="FIDUCIAL_1MM" value="FIDUCIAL&quot;&quot;" x="3.11" y="24.92" smashed="yes"/>
 <element name="FID4" library="microbuilder" package="FIDUCIAL_1MM" value="FIDUCIAL&quot;&quot;" x="18.925" y="28.94" smashed="yes"/>
-<element name="R13" library="resistor" package="R0603" value="0" x="11.68" y="28.564" populate="no" smashed="yes">
+<element name="R13" library="resistor" package="R0603" value="0" x="11.68" y="28.564" smashed="yes">
 <attribute name="NAME" x="10.456" y="26.726" size="0.8128" layer="25"/>
 <attribute name="VALUE" x="11.045" y="26.659" size="1.27" layer="27"/>
+<attribute name="PARTNO" value="CRCW06030000Z0EA" x="11.68" y="28.564" size="1.778" layer="27" display="off"/>
 </element>
 <element name="FB1" library="microbuilder" package="0603" value="" x="11.22" y="17.452" smashed="yes" rot="R180">
 <attribute name="PARTNO" value="BLM18PG121SN1D" x="11.22" y="17.452" size="1.778" layer="27" rot="R180" display="off"/>
 <attribute name="NAME" x="11.833" y="19.336" size="0.8128" layer="25" font="vector" ratio="18" rot="R180"/>
 <attribute name="VALUE" x="9.442" y="18.214" size="0.4064" layer="27" font="vector" ratio="10" rot="R180"/>
 </element>
-<element name="Q3" library="adafruit" package="SOT23" value="Si2300DS" x="15.754" y="15.895" populate="no" smashed="yes">
+<element name="Q3" library="adafruit" package="SOT23" value="Si2300DS" x="15.754" y="15.895" smashed="yes">
 <attribute name="NAME" x="13.657" y="16.908" size="0.8128" layer="25"/>
 <attribute name="VALUE" x="13.849" y="12.72" size="1.27" layer="27"/>
+<attribute name="PARTNO" value="SI2300DS-T1-GE3" x="15.754" y="15.895" size="1.778" layer="27" display="off"/>
 </element>
 <element name="R23" library="resistor" package="R0603" value="0" x="18.569" y="14.186" smashed="yes" rot="R270">
 <attribute name="NAME" x="18.261" y="12.635" size="0.8128" layer="25" rot="R270"/>
 <attribute name="VALUE" x="16.664" y="14.821" size="1.27" layer="27" rot="R270"/>
+<attribute name="PARTNO" value="CRCW06030000Z0EA" x="18.569" y="14.186" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="IC6" library="SamacSys_Parts" package="SOT95P270X145-5N" value="MCP6541T-I_OT" x="4.277" y="17.317" populate="no" smashed="yes" rot="R270">
+<element name="IC6" library="SamacSys_Parts" package="SOT95P270X145-5N" value="MCP6541T-I_OT" x="4.277" y="17.317" smashed="yes" rot="R270">
 <attribute name="MANUFACTURER_PART_NUMBER" value="MCP6541T-I/OT" x="4.277" y="17.317" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MOUSER_PART_NUMBER" value="579-MCP6541T-I/OT" x="4.277" y="17.317" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="DESCRIPTION" value="Comparator Push-Pull RRIO 1.6V SOT23-5" x="4.277" y="17.317" size="1.778" layer="27" rot="R270" display="off"/>
@@ -1949,54 +1959,67 @@ design rules under a new name.</description>
 <attribute name="HEIGHT" value="1.45mm" x="4.277" y="17.317" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="NAME" x="4.693" y="20.05" size="0.8128" layer="25" align="center"/>
 <attribute name="VALUE" x="4.277" y="17.317" size="1.27" layer="27" rot="R270" align="center"/>
+<attribute name="PARTNO" value="MCP6541T-I/OT" x="4.277" y="17.317" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="C10" library="resistor" package="C0603K" value="1n" x="3.983" y="12.292" populate="no" smashed="yes" rot="R270">
+<element name="C10" library="resistor" package="C0603K" value="1n" x="3.983" y="12.292" smashed="yes" rot="R270">
 <attribute name="NAME" x="4.72" y="12.8" size="0.8128" layer="25" rot="R270"/>
 <attribute name="VALUE" x="2.333" y="13.092" size="1.016" layer="27" rot="R270"/>
+<attribute name="PARTNO" value="GRM188R71H102KA01D" x="3.983" y="12.292" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="R25" library="resistor" package="R0603" value="100k" x="1.724" y="12.329" populate="no" smashed="yes" rot="R90">
+<element name="R25" library="resistor" package="R0603" value="100k" x="1.724" y="12.329" smashed="yes" rot="R90">
 <attribute name="NAME" x="3.283" y="10.889" size="0.8128" layer="25" rot="R90"/>
 <attribute name="VALUE" x="3.629" y="11.694" size="1.27" layer="27" rot="R90"/>
+<attribute name="PARTNO" value="CRCW0603100KFKEA" x="1.724" y="12.329" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="R26" library="resistor" package="R0603" value="5.1k" x="1.184" y="17.285" populate="no" smashed="yes" rot="R90">
+<element name="R26" library="resistor" package="R0603" value="5.1k" x="1.184" y="17.285" smashed="yes" rot="R90">
 <attribute name="NAME" x="2.668" y="16.188" size="0.8128" layer="25" rot="R90"/>
 <attribute name="VALUE" x="3.089" y="16.65" size="1.27" layer="27" rot="R90"/>
+<attribute name="PARTNO" value="CRCW06035K10FKEA" x="1.184" y="17.285" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="R27" library="resistor" package="R0603" value="100k" x="2.076" y="20.731" populate="no" smashed="yes">
+<element name="R27" library="resistor" package="R0603" value="100k" x="2.076" y="20.731" smashed="yes">
 <attribute name="NAME" x="0.679" y="21.62" size="0.8128" layer="25"/>
 <attribute name="VALUE" x="1.441" y="18.826" size="1.27" layer="27"/>
+<attribute name="PARTNO" value="CRCW0603100KFKEA" x="2.076" y="20.731" size="1.778" layer="27" display="off"/>
 </element>
-<element name="R1" library="resistor" package="R0603" value="100k" x="6.738" y="21.313" populate="no" smashed="yes" rot="R180">
+<element name="R1" library="resistor" package="R0603" value="100k" x="6.738" y="21.313" smashed="yes" rot="R180">
 <attribute name="NAME" x="7.373" y="20.678" size="0.8128" layer="25" rot="R180"/>
 <attribute name="VALUE" x="7.373" y="23.218" size="1.27" layer="27" rot="R180"/>
+<attribute name="PARTNO" value="CRCW0603100KFKEA" x="6.738" y="21.313" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="C9" library="resistor" package="C0603K" value="1n" x="12.417" y="11.033" populate="no" smashed="yes" rot="R180">
+<element name="C9" library="resistor" package="C0603K" value="1n" x="12.417" y="11.033" smashed="yes" rot="R180">
 <attribute name="NAME" x="12.723" y="12.499" size="0.8128" layer="25" rot="R180"/>
 <attribute name="VALUE" x="13.217" y="12.683" size="1.016" layer="27" rot="R180"/>
+<attribute name="PARTNO" value="GRM188R71H102KA01D" x="12.417" y="11.033" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="R19" library="resistor" package="R0603" value="10k" x="7.695" y="18.405" populate="no" smashed="yes" rot="R90">
+<element name="R19" library="resistor" package="R0603" value="10k" x="7.695" y="18.405" smashed="yes" rot="R90">
 <attribute name="NAME" x="6.96" y="16.67" size="0.8128" layer="25" rot="R90"/>
 <attribute name="VALUE" x="9.6" y="17.77" size="1.27" layer="27" rot="R90"/>
+<attribute name="PARTNO" value="CRCW060310K0FKEA" x="7.695" y="18.405" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="C13" library="resistor" package="C0603K" value="100n" x="15.75" y="12.555" populate="no" smashed="yes">
+<element name="C13" library="resistor" package="C0603K" value="1n" x="15.75" y="12.555" smashed="yes">
 <attribute name="NAME" x="14.95" y="13.205" size="0.8128" layer="25"/>
 <attribute name="VALUE" x="14.95" y="10.905" size="1.016" layer="27"/>
+<attribute name="PARTNO" value="GRM188R71H102KA01D" x="15.75" y="12.555" size="1.778" layer="27" display="off"/>
 </element>
 <element name="U2" library="FRA_eagle_lib" package="FIGARO-SR7" value="FIGARO_SR-7" x="14.535" y="23.175" smashed="yes" rot="MR0">
 <attribute name="NAME" x="19.495" y="17.455" size="1.27" layer="26" rot="MR0"/>
 <attribute name="VALUE" x="11.995" y="18.095" size="1.27" layer="28" rot="MR0"/>
+<attribute name="PARTNO" value="installed_by_customer" x="14.535" y="23.175" size="1.778" layer="28" rot="MR0" display="off"/>
 </element>
 <element name="R2" library="resistor" package="R0603" value="0" x="10.035" y="24.885" smashed="yes" rot="R90">
 <attribute name="NAME" x="11.6" y="23.55" size="0.8128" layer="25" rot="R90"/>
 <attribute name="VALUE" x="11.94" y="24.25" size="1.27" layer="27" rot="R90"/>
+<attribute name="PARTNO" value="CRCW06030000Z0EA" x="10.035" y="24.885" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="R3" library="resistor" package="R0603" value="0" x="10.035" y="21.465" populate="no" smashed="yes" rot="R270">
+<element name="R3" library="resistor" package="R0603" value="0" x="10.035" y="21.465" smashed="yes" rot="R270">
 <attribute name="NAME" x="10.87" y="23.1" size="0.8128" layer="25" rot="R270"/>
 <attribute name="VALUE" x="8.13" y="22.1" size="1.27" layer="27" rot="R270"/>
+<attribute name="PARTNO" value="CRCW06030000Z0EA" x="10.035" y="21.465" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="C3" library="resistor" package="C0603K" value="100n" x="2.115" y="23.265" populate="no" smashed="yes">
+<element name="C3" library="resistor" package="C0603K" value="100n" x="2.115" y="23.265" smashed="yes">
 <attribute name="NAME" x="3.715" y="22.815" size="0.8128" layer="25"/>
 <attribute name="VALUE" x="1.315" y="21.615" size="1.016" layer="27"/>
+<attribute name="PARTNO" value="GRM188R71C104KA01D" x="2.115" y="23.265" size="1.778" layer="27" display="off"/>
 </element>
 <element name="DRILEGEND" library="drilegend" package="DRILEGEND" value="" x="-0.737996875" y="-8.14268125"/>
 </elements>
