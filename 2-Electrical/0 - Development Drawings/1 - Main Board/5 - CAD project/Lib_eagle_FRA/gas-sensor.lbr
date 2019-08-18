@@ -299,6 +299,14 @@
 <smd name="W" x="0" y="6.75" dx="3.7" dy="3.7" layer="1" roundness="100"/>
 <smd name="C" x="6.75" y="0" dx="3.7" dy="3.7" layer="1" roundness="100"/>
 </package>
+<package name="3-ELE_SOCKET_ANDON">
+<circle x="0" y="0" radius="10.2" width="0.127" layer="21"/>
+<pad name="W" x="0" y="6.73" drill="2" diameter="3.81"/>
+<pad name="C" x="6.73" y="0" drill="2" diameter="3.81"/>
+<pad name="R" x="-6.73" y="0" drill="2" diameter="3.81"/>
+<circle x="0" y="0" radius="9" width="0.127" layer="21"/>
+<text x="-2.54" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+</package>
 </packages>
 <symbols>
 <symbol name="3E">
@@ -332,6 +340,16 @@
 </technologies>
 </device>
 <device name="INS" package="3-ELECTRODE_INSETRS">
+<connects>
+<connect gate="G$1" pin="C" pad="C"/>
+<connect gate="G$1" pin="R" pad="R"/>
+<connect gate="G$1" pin="W" pad="W"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="_SOCKET" package="3-ELE_SOCKET_ANDON">
 <connects>
 <connect gate="G$1" pin="C" pad="C"/>
 <connect gate="G$1" pin="R" pad="R"/>
