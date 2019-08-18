@@ -1694,7 +1694,7 @@ Metric Code Size 1608</description>
 </attributes>
 <variantdefs>
 <variantdef name="TGS26xx"/>
-<variantdef name="TGS2444"/>
+<variantdef name="TGS2444" current="yes"/>
 <variantdef name="CO2"/>
 </variantdefs>
 <classes>
@@ -1891,12 +1891,12 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="16.133" y="7.122" size="1.27" layer="27" rot="R270"/>
 <attribute name="PARTNO" value="CRCW060310R0FKEA" x="18.038" y="6.487" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="C1" library="resistor" package="C0603K" value="100n" x="15.355" y="28.544" smashed="yes" rot="R180">
+<element name="C1" library="resistor" package="C0603K" value="100n" x="15.355" y="28.544" populate="no" smashed="yes" rot="R180">
 <attribute name="NAME" x="17.055" y="27.694" size="0.8128" layer="25" rot="R180"/>
 <attribute name="VALUE" x="16.155" y="30.194" size="1.016" layer="27" rot="R180"/>
 <attribute name="PARTNO" value="GRM188R71C104KA01D" x="15.355" y="28.544" size="1.778" layer="27" rot="R180" display="off"/>
 </element>
-<element name="IC3" library="SamacSys_Parts" package="SOT95P280X145-5N" value="LMV796MF_NOPB" x="6.66" y="26.326" smashed="yes" rot="R270">
+<element name="IC3" library="SamacSys_Parts" package="SOT95P280X145-5N" value="LMV796MF_NOPB" x="6.66" y="26.326" populate="no" smashed="yes" rot="R270">
 <attribute name="MANUFACTURER_PART_NUMBER" value="LMV796MF/NOPB" x="6.66" y="26.326" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MOUSER_PART_NUMBER" value="926-LMV796MF/NOPB" x="6.66" y="26.326" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="DESCRIPTION" value="Single 17 MHz, low noise, CMOS input, 1.8V operational amplifier" x="6.66" y="26.326" size="1.778" layer="27" rot="R270" display="off"/>
@@ -1917,7 +1917,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="7.585" y="9.372" size="1.016" layer="27"/>
 <attribute name="PARTNO" value="GRM188R71C104KA01D" x="8.385" y="11.022" size="1.778" layer="27" display="off"/>
 </element>
-<element name="R11" library="resistor" package="R0603" value="10" x="15.694" y="6.487" smashed="yes" rot="R270">
+<element name="R11" library="resistor" package="R0603" value="10" x="15.694" y="6.487" populate="no" smashed="yes" rot="R270">
 <attribute name="NAME" x="14.862" y="5.197" size="0.8128" layer="25" rot="R90"/>
 <attribute name="VALUE" x="13.789" y="7.122" size="1.27" layer="27" rot="R270"/>
 <attribute name="PARTNO" value="CRCW060310R0FKEA" x="15.694" y="6.487" size="1.778" layer="27" rot="R270" display="off"/>
@@ -1930,7 +1930,7 @@ design rules under a new name.</description>
 <element name="FID1" library="microbuilder" package="FIDUCIAL_1MM" value="FIDUCIAL&quot;&quot;" x="14.59" y="1.355" smashed="yes"/>
 <element name="FID2" library="microbuilder" package="FIDUCIAL_1MM" value="FIDUCIAL&quot;&quot;" x="3.11" y="24.92" smashed="yes"/>
 <element name="FID4" library="microbuilder" package="FIDUCIAL_1MM" value="FIDUCIAL&quot;&quot;" x="18.925" y="28.94" smashed="yes"/>
-<element name="R13" library="resistor" package="R0603" value="0" x="11.68" y="28.564" smashed="yes">
+<element name="R13" library="resistor" package="R0603" value="0" x="11.68" y="28.564" populate="no" smashed="yes">
 <attribute name="NAME" x="10.456" y="26.726" size="0.8128" layer="25"/>
 <attribute name="VALUE" x="11.045" y="26.659" size="1.27" layer="27"/>
 <attribute name="PARTNO" value="CRCW06030000Z0EA" x="11.68" y="28.564" size="1.778" layer="27" display="off"/>
@@ -1945,7 +1945,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="13.849" y="12.72" size="1.27" layer="27"/>
 <attribute name="PARTNO" value="SI2300DS-T1-GE3" x="15.754" y="15.895" size="1.778" layer="27" display="off"/>
 </element>
-<element name="R23" library="resistor" package="R0603" value="0" x="18.569" y="14.186" smashed="yes" rot="R270">
+<element name="R23" library="resistor" package="R0603" value="0" x="18.569" y="14.186" populate="no" smashed="yes" rot="R270">
 <attribute name="NAME" x="18.261" y="12.635" size="0.8128" layer="25" rot="R270"/>
 <attribute name="VALUE" x="16.664" y="14.821" size="1.27" layer="27" rot="R270"/>
 <attribute name="PARTNO" value="CRCW06030000Z0EA" x="18.569" y="14.186" size="1.778" layer="27" rot="R270" display="off"/>
@@ -2011,7 +2011,7 @@ design rules under a new name.</description>
 <attribute name="VALUE" x="11.94" y="24.25" size="1.27" layer="27" rot="R90"/>
 <attribute name="PARTNO" value="CRCW06030000Z0EA" x="10.035" y="24.885" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="R3" library="resistor" package="R0603" value="0" x="10.035" y="21.465" smashed="yes" rot="R270">
+<element name="R3" library="resistor" package="R0603" value="0" x="10.035" y="21.465" populate="no" smashed="yes" rot="R270">
 <attribute name="NAME" x="10.87" y="23.1" size="0.8128" layer="25" rot="R270"/>
 <attribute name="VALUE" x="8.13" y="22.1" size="1.27" layer="27" rot="R270"/>
 <attribute name="PARTNO" value="CRCW06030000Z0EA" x="10.035" y="21.465" size="1.778" layer="27" rot="R270" display="off"/>

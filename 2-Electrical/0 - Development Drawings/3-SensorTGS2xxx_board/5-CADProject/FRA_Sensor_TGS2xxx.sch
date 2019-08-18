@@ -6817,7 +6817,7 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 </attributes>
 <variantdefs>
 <variantdef name="TGS26xx"/>
-<variantdef name="TGS2444"/>
+<variantdef name="TGS2444" current="yes"/>
 <variantdef name="CO2"/>
 </variantdefs>
 <classes>
