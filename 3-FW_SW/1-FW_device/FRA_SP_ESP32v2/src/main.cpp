@@ -37,7 +37,7 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1"
+#define FW_VERSION "V1.0"
 
 //GPIO expander
 #include <Wire.h>
