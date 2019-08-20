@@ -135,4 +135,5 @@ Desktop.ini
 *.aliases
 *.lvlps
 .cache/
-*.csv
+#*.csv
+DATA/

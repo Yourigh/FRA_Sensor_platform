@@ -1,0 +1,75 @@
+Partlist
+
+Exported from FRA_daughter_v2.sch at 08-Aug-19 22:05
+
+EAGLE Version 7.6.0 Copyright (c) 1988-2016 CadSoft
+
+Assembly variant: 
+
+Part     Value                     Device                    Package              Library        Sheet
+
+C1       1n                        C-EUC0603K                C0603K               resistor       1
+C2       100n                      C-EUC0603K                C0603K               resistor       1
+C3       1u                        C-EUC0603K                C0603K               resistor       1
+C5       10u                       C-EUC0603K                C0603K               resistor       1
+C6       DNI                       C-EUC0603K                C0603K               resistor       1
+C7       100n                      C-EUC0603K                C0603K               resistor       1
+C8       100n                      C-EUC0603K                C0603K               resistor       1
+C9       100n                      C-EUC0603K                C0603K               resistor       1
+C10      1n                        C-EUC0603K                C0603K               resistor       1
+C11      100n                      C-EUC0603K                C0603K               resistor       1
+C12      100n                      C-EUC0603K                C0603K               resistor       1
+C13      100n                      C-EUC0603K                C0603K               resistor       1
+FB1                                FERRITE                   0603                 microbuilder   1
+FB9                                FERRITE                   0603                 microbuilder   1
+IC1      LMV611                    OPA333DCK                 SC70-5L              linear         1
+IC3      LMV796MF_NOPB             LMV796MF_NOPB             SOT95P280X145-5N     SamacSys_Parts 1
+IC4      LMP91000SD_NOPB           LMP91000SD_NOPB           SON50P400X400X80-15N SamacSys_Parts 1
+IC5      REF3125AQDBZRQ1           REF3125AQDBZRQ1           SOT95P237X112-3N     SamacSys_Parts 1
+IC6      MCP6541T-I_OT             MCP6541T-I_OT             SOT95P270X145-5N     SamacSys_Parts 1
+J1       INSERT_MM5_06691.5MM      INSERT_MM5_06691.5MM      INSERT_1MM5_9372     FRA_eagle_lib  1
+J2       TGS3                      INSERT_MM5_0669           INSERT_MM5_0669      FRA_eagle_lib  1
+J3       TGS2                      INSERT_MM5_0669           INSERT_MM5_0669      FRA_eagle_lib  1
+J4       TGS1                      INSERT_MM5_0669           INSERT_MM5_0669      FRA_eagle_lib  1
+J5       TGS4                      INSERT_MM5_0669           INSERT_MM5_0669      FRA_eagle_lib  1
+J6       INSERT_MM5_06691.5MM      INSERT_MM5_06691.5MM      INSERT_1MM5_9372     FRA_eagle_lib  1
+J7       INSERT_MM5_06691.5MM      INSERT_MM5_06691.5MM      INSERT_1MM5_9372     FRA_eagle_lib  1
+J8       INSERT_MM5_06691.5MM      INSERT_MM5_06691.5MM      INSERT_1MM5_9372     FRA_eagle_lib  1
+J9       INSERT_MM5_06691.5MM      INSERT_MM5_06691.5MM      INSERT_1MM5_9372     FRA_eagle_lib  1
+J10      2wire                     PINHD-1X2                 1X02                 pinhead        1
+LED1                               LEDCHIP-LED0603           CHIP-LED0603         adafruit       1
+PS1      AP2202K-ADJTRG1           AP2202K-ADJTRG1           SOT95P280X145-5N     SamacSys_Parts 1
+Q1       PMBFJ177,215              PMBFJ177,215              SOT95P230X110-3N     SamacSys_Parts 1
+Q3       Si2300DS                  MOSFET-NREFLOW            SOT23                adafruit       1
+R1       100k                      R-EU_R0603                R0603                resistor       1
+R2       12k                       R-EU_R0603                R0603                resistor       1
+R3       5k                        R-EU_R0603                R0603                resistor       1
+R4       5.1k                      R-EU_R0603                R0603                resistor       1
+R5       10k                       R-EU_R0603                R0603                resistor       1
+R6       10k                       R-EU_R0603                R0603                resistor       1
+R7       10k                       R-EU_R0603                R0603                resistor       1
+R8       10k                       R-EU_R0603                R0603                resistor       1
+R9       10                        R-EU_R0603                R0603                resistor       1
+R10      10                        R-EU_R0603                R0603                resistor       1
+R11      10                        R-EU_R0603                R0603                resistor       1
+R12      10                        R-EU_R0603                R0603                resistor       1
+R13      0                         R-EU_R0603                R0603                resistor       1
+R14      0                         R-EU_R0603                R0603                resistor       1
+R15      0                         R-EU_R0603                R0603                resistor       1
+R16      0                         R-EU_R0603                R0603                resistor       1
+R17      0                         R-EU_R0603                R0603                resistor       1
+R18      0                         R-EU_R0603                R0603                resistor       1
+R19      10k                       R-EU_R0603                R0603                resistor       1
+R20      10k                       R-EU_R0603                R0603                resistor       1
+R21      10k                       R-EU_R0603                R0603                resistor       1
+R22      0                         R-EU_R0603                R0603                resistor       1
+R23      0                         R-EU_R0603                R0603                resistor       1
+R24      100                       R-EU_R0603                R0603                resistor       1
+R25      100k                      R-EU_R0603                R0603                resistor       1
+R26      5.1k                      R-EU_R0603                R0603                resistor       1
+R27      100k                      R-EU_R0603                R0603                resistor       1
+S$1      FIGARO_2611WITH_INSERTS   FIGARO_2611WITH_INSERTS   TH4_TGS2611_INSERTS  FRA_eagle_lib  1
+S$3      CITIPEL_4P50INSERTS       CITIPEL_4P50INSERTS       TH3_4P50_INSERTS     FRA_eagle_lib  1
+U$1      CONN_03X2_WE_61200621621  CONN_03X2_WE_61200621621  WE_61200621621       FRA_eagle_lib  1
+U$2      TGS5042                   TGS5042                   TGS5042              FRA_eagle_lib  1
+X1       3-ELECTRODE-GAS-SENSORINS 3-ELECTRODE-GAS-SENSORINS 3-ELECTRODE_INSETRS  gas-sensor     1

@@ -1,0 +1,38 @@
+Partlist
+
+Exported from FRA_Sensor_TGS2xxx.brd at 16-Aug-19 13:45
+
+EAGLE Version 7.6.0 Copyright (c) 1988-2016 CadSoft
+
+Assembly variant: 
+
+Part     Value          Package          Library        Position (mm)         Orientation
+
+C1       100n           C0603K           resistor       (15.355 28.544)       R180
+C2       100n           C0603K           resistor       (8.385 11.022)        R0
+C3       100n           C0603K           resistor       (2.115 23.265)        R0
+C9       1n             C0603K           resistor       (12.417 11.033)       R180
+C10      1n             C0603K           resistor       (3.983 12.292)        R270
+C13      100n           C0603K           resistor       (15.75 12.555)        R0
+FB1                     0603             microbuilder   (11.22 17.452)        R180
+FB9                     0603             microbuilder   (10.409 13.299)       R0
+FID1     FIDUCIAL""     FIDUCIAL_1MM     microbuilder   (14.59 1.355)         R0
+FID2     FIDUCIAL""     FIDUCIAL_1MM     microbuilder   (3.11 24.92)          R0
+FID4     FIDUCIAL""     FIDUCIAL_1MM     microbuilder   (18.925 28.94)        R0
+IC3      LMV796MF_NOPB  SOT95P280X145-5N SamacSys_Parts (6.66 26.326)         R270
+IC6      MCP6541T-I_OT  SOT95P270X145-5N SamacSys_Parts (4.277 17.317)        R270
+J1       CONN_03X2      WE_61200621621   FRA_eagle_lib  (7.136 5.278)         R270
+Q3       Si2300DS       SOT23            adafruit       (15.754 15.895)       R0
+R1       100k           R0603            resistor       (6.738 21.313)        R180
+R2       0              R0603            resistor       (10.035 24.885)       R90
+R3       0              R0603            resistor       (10.035 21.465)       R270
+R4       5.1k           R0603            resistor       (18.535 18.734)       R270
+R10      10             R0603            resistor       (18.038 6.487)        R270
+R11      10             R0603            resistor       (15.694 6.487)        R270
+R13      0              R0603            resistor       (11.68 28.564)        R0
+R19      10k            R0603            resistor       (7.695 18.405)        R90
+R23      0              R0603            resistor       (18.569 14.186)       R270
+R25      100k           R0603            resistor       (1.724 12.329)        R90
+R26      5.1k           R0603            resistor       (1.184 17.285)        R90
+R27      100k           R0603            resistor       (2.076 20.731)        R0
+U2       FIGARO_SR-7    FIGARO-SR7       FRA_eagle_lib  (14.535 23.175)       MR0

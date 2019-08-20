@@ -1,0 +1,36 @@
+Partlist
+
+Exported from Sensor_PCB_Electrochemical.brd at 19-Aug-19 09:33
+
+EAGLE Version 7.6.0 Copyright (c) 1988-2016 CadSoft
+
+Assembly variant: 
+
+Part     Value                         Package                         Library          Position (mm)         Orientation
+
+C1       DNI                           C0603K                          resistor         (37.35 7.38)          R180
+C2       100n                          C0603K                          resistor         (16.26 19.797)        R0
+C8       100n                          C0603K                          resistor         (45.091 7.555)        R270
+C9       100n                          C0603K                          resistor         (16.068 13.492)       R0
+C12      100n                          C0603K                          resistor         (31.098 8.738)        R90
+FB9                                    0603                            microbuilder     (16.169 16.809)       R0
+FID3     FIDUCIAL1X1UNMASKED           FIDUCIAL_1MM_UNMASKED           microbuilder     (8 2.5)               R0
+FID5     FIDUCIAL1X1UNMASKED           FIDUCIAL_1MM_UNMASKED           microbuilder     (6 19.5)              R0
+FID6     FIDUCIAL1X1UNMASKED           FIDUCIAL_1MM_UNMASKED           microbuilder     (51 15)               R0
+FID7     FIDUCIAL1X1UNMASKED           FIDUCIAL_1MM_UNMASKED           microbuilder     (47 2.5)              MR0
+FID8     FIDUCIAL1X1UNMASKED           FIDUCIAL_1MM_UNMASKED           microbuilder     (11 19)               MR0
+FID9     FIDUCIAL1X1UNMASKED           FIDUCIAL_1MM_UNMASKED           microbuilder     (10.5 2.5)            MR0
+IC4      LMP91000SD_NOPB               SON50P400X400X80-15N            SamacSys_Parts   (35.012 10.991)       R0
+IC5      REF3125AQDBZRQ1               SOT95P237X112-3N                SamacSys_Parts   (48.094 7.375)        R270
+J1       CONN_03X2_WE_61200621621      WE_61200621621                  FRA_eagle_lib    (9 11)                R0
+J2       2wire                         1X02                            pinhead          (45.855 17.966)       R270
+JP2      JUMPER-SMT_3_NO_NO_SILK       SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (41.94 17.73)         R270
+LED1                                   CHIP-LED0603                    adafruit         (24.126 19.843)       R270
+Q1       PMBFJ177,215                  SOT95P230X110-3N                SamacSys_Parts   (41.252 5.806)        R0
+R12      10                            R0603                           resistor         (16.101 10.834)       R0
+R20      10k                           R0603                           resistor         (41.437 3.084)        R0
+R21      10k                           R0603                           resistor         (32.117 14.524)       R180
+R22      0                             R0603                           resistor         (39.315 18.576)       R90
+R24      100                           R0603                           resistor         (24.233 17.75)        R180
+U2       TGS5042                       TGS5042                         FRA_eagle_lib    (27.5 11)             MR90
+X1       3-ELECTRODE-GAS-SENSOR_SOCKET 3-ELE_SOCKET_ANDON              gas-sensor       (35 11)               MR90
