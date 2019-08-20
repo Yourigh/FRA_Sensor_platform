@@ -37,6 +37,7 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
+#define FW_VERSION "V1"
 
 //GPIO expander
 #include <Wire.h>
@@ -57,6 +58,9 @@ Adafruit_Si7021 Si7021 = Adafruit_Si7021();
 
 //ADC
 #include "ADS1115.h"
+
+//LMP91000 settings
+#include "LMP91000conf.h"
 
 ADS1115 adc1(ADS1115_ADDRESS_ADDR_SDA);//change on V4, was GND
 ADS1115 adc2(ADS1115_ADDRESS_ADDR_VDD);
@@ -100,9 +104,9 @@ bool use_Si7021=1;//Temperature and RH sensor
 bool use_tgs24444=0; //amonia sensor
 bool UDP_read_flag = 0;
 bool BTN1_flag = 0;
-  uint8_t LMPreg_TIACN = 0xFF;
-  uint8_t LMPreg_REFCN = 0xFF;
-  uint8_t LMPreg_MODECN = 0xFF;
+uint8_t LMPreg_TIACN = 0x00;
+uint8_t LMPreg_REFCN = 0x00;
+uint8_t LMPreg_MODECN = 0x02;
 //functions
 uint8_t sd_create_file();
 uint8_t sd_format_header(uint32_t adc_period_ms);
@@ -145,6 +149,7 @@ void setup(){
   delay(20);
   digitalWrite(PIN_ETH_NRST,1);
   delay(10);
+  Serial.printf("FW version: %s\n",FW_VERSION);
 
   esp_efuse_read_mac(chipid);
   chipid[5]++; //use MAC address for ETH one larger than WiFi MAC (WiFi MAC is chip ID)
@@ -328,7 +333,7 @@ void loop(){
               if (receiveUDP_Buffer[5])//not equal 0
                 adc_period_ms = receiveUDP_Buffer[5]*100; //sample period setting in ms, received in 0.1s units
               if (receiveUDP_Buffer[6] & 0b01) {use_tgs24444 = 1; adc_period_ms = 250;PRINTDEBUG("Amonia will be used\n");}
-              if (receiveUDP_Buffer[6] & 0b10) {
+              if (receiveUDP_Buffer[6] & 0b11110) {
                 state = s15_setup_lmp91000; //will continue to s11 after this state
                 conf_set = receiveUDP_Buffer[6];
                 if (conf_set & 0b100){ //debug sending registers 
@@ -834,6 +839,7 @@ uint8_t ioexp_read(uint8_t *port0,uint8_t *port1){
   return 1;
 }
 
+//port 0 is A1.0 .... port 7 is A2.3, port 8 is A3.1, port 9 is A3.2. statepin is logical level on port pin (after FET)
 uint8_t ioexp_out_set_AIport(uint8_t AIport, bool statepin){
   static uint8_t p0,p1,p0ch,p1ch,mask0,mask1; 
   //must be static because ioexp read does not work when not static (some funny thing with addresses)
@@ -996,36 +1002,29 @@ void LMP91000_setup(uint8_t configuration_set){
   #define LMP_TIACN_REG 0x10
   #define LMP_REFCN_REG 0x11
   #define LMP_MODECN_REG 0x12
-  uint8_t LMPenable[10]=  {1,1,1,1,1,1,1,1,1,1};
-  LMPenable[10] = use_tgs24444 ? 0 : 1; //if anomia used, do not use port A3.2
-  uint8_t tiacn[10] ={0x18,0x18,0x18,0x19,0x15,0x14,0x12,0x0C,0x09,0x09};//4:2 tia gain, 1:0 rload
-  uint8_t refcn[10] ={0x00,0x00,0x00,0x00,0x40,0x00,0x00,0x00,0x27,0x00};
-  uint8_t modecn[10]={0x03,0x03,0x03,0x03,0x03,0x03,0x03,0x03,0x03,0x03};
 
   uint8_t LMPsett;
   LMPsett = ((configuration_set & 0b00011110)>>1);
-  if (LMPsett == 0b0001){
-    //index is AI input, value is register value
-    //use initialized values
-  }
-  if (LMPsett == 0b0011){ //test all configured the same as from labview
-    for (uint8_t boo;boo<10;boo++){
-      LMPenable[boo] = 1;
-      tiacn[boo] = LMPreg_TIACN;
-      refcn[boo] = LMPreg_REFCN;
-      modecn[boo] = LMPreg_MODECN;
-    }
-  }
+  if (LMPsett == 0x0000) return; //no LMPs
+  PRINTDEBUG("Conf. Set for El-Chem: %d \n",LMPsett);
+  LMPsett--; //decrement, as it will be used in settings arrays defined at LMP91000conf.h
 
-  //read ioexp so it can be put to original state should be done here
-  
-  //this is only copy from debug function.. TODO better..
   uint8_t statusLMP;
+  uint8_t last_port_LMP;
   if(!ioexp_out_set(0x00,0x00)) PRINTDEBUG("err\n");
-  PRINTDEBUG("set all AI to high\n");
   //to avoid 2 active LMPs on I2C bus
-  for (int qui=0;qui<10;qui++){ //scan channels
-    if(LMPenable[qui]){
+  PRINTDEBUG("set all AI to high\n");
+  if (use_tgs24444){
+    ioexp_out_set_AIport(9,0); //power off to Amonia
+    last_port_LMP = 8;
+    PRINTDEBUG("A3.2 to low\n");
+  } else {
+    last_port_LMP = 9;
+    if(!ioexp_out_set(0x00,0x00)) PRINTDEBUG("err\n");
+  }
+  
+  for (int qui=0;qui<=last_port_LMP;qui++){ //scan channels
+    if(modecn[LMPsett][qui]!=0){ //is turned on in the selected set?
       if(!ioexp_out_set_AIport(qui,0)) PRINTDEBUG("err2");
       PRINTDEBUG("AI %d low ...",qui);
       
@@ -1036,6 +1035,7 @@ void LMP91000_setup(uint8_t configuration_set){
         PRINTDEBUG("no LMP");
         if(!ioexp_out_set_AIport(qui,1)) PRINTDEBUG("err3");
         PRINTDEBUG(".. back to high\n");
+        log_error_code(22+qui);
         continue;
       }
       Wire.beginTransmission(LMP91000_ADR);
@@ -1051,17 +1051,26 @@ void LMP91000_setup(uint8_t configuration_set){
           //Write TIA
           Wire.beginTransmission(LMP91000_ADR);
           Wire.write(LMP_TIACN_REG);//0x10
-          Wire.write(tiacn[qui]);//0x18 for A1.1
+          if (qui == 8) //A3.1 custom
+            Wire.write(LMPreg_TIACN);//custom A3.1
+          else
+            Wire.write(tiacn[LMPsett][qui]);//0x18 for A1.1
           if (Wire.endTransmission()) PRINTDEBUG("Err r");
           //Write REF
           Wire.beginTransmission(LMP91000_ADR);
           Wire.write(LMP_REFCN_REG);//0x11
-          Wire.write(refcn[qui]);
+          if (qui == 8) //A3.1 custom
+            Wire.write(LMPreg_REFCN);//custom A3.1
+          else
+            Wire.write(refcn[LMPsett][qui]);
           if (Wire.endTransmission()) PRINTDEBUG("Err r");
           //Write MODECN
           Wire.beginTransmission(LMP91000_ADR);
           Wire.write(LMP_MODECN_REG);//0x12
-          Wire.write(modecn[qui]);
+          if (qui == 8) //A3.1 custom
+            Wire.write(LMPreg_MODECN);//custom A3.1
+          else
+            Wire.write(modecn[LMPsett][qui]);
           //Wire.write(0b111);//temperature
           if (Wire.endTransmission()) PRINTDEBUG("Err r");
           //readback TIA
@@ -1088,8 +1097,10 @@ void LMP91000_setup(uint8_t configuration_set){
           Wire.requestFrom(LMP91000_ADR,1);
           PRINTDEBUG("MODECN was set: 0x%02x\n",Wire.read());
         }
-        else
+        else{
           PRINTDEBUG("LMP not Ready");
+          log_error_code(22+qui);
+        }
       }
       if (Wire.endTransmission()) PRINTDEBUG("Err r");
       
@@ -1097,6 +1108,7 @@ void LMP91000_setup(uint8_t configuration_set){
       PRINTDEBUG(".. back to high\n");
     }
   }
+  PRINTDEBUG("LMPs configured successfully\n");
 }
 ////////////////////////////DEBUG FUNCTIONS
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
