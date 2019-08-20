@@ -1,0 +1,9 @@
+Board Size: 20x30mm
+stackup thickness: 1.6mm
+2 layers
+single side SMT assembly + single side TH assembly from TOP side
+Legend (silkscreen) - both sides
+
+Chnage list:
+V1	initial version
+V1.1	C13 changed from 100n to 1n - only BOM change

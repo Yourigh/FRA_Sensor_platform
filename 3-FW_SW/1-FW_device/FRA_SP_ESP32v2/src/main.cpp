@@ -411,8 +411,6 @@ void loop(){
           if (meas_sample_number < 10){ //begin at max range, till buffer fills
             adc_PGA_setting[adcn][adc_active_channel] = ADS1115_PGA_6P144;
           } else {
-            //if (adcn == 0 & adc_active_channel == 0)
-            //  PRINTDEBUG("PGA:%d,last:%d,newPGA:",adc_PGA_setting[adcn][adc_active_channel],adc_result_raw[adcn][adc_active_channel]);
             adc_PGA_setting[adcn][adc_active_channel] = adc_PGA_autorange(adc_PGA_setting[adcn][adc_active_channel],adc_result_raw[adcn][adc_active_channel]);
             //if (adcn == 0 & adc_active_channel == 0)
             //  PRINTDEBUG("%d\n",adc_PGA_setting[adcn][adc_active_channel]);
@@ -558,7 +556,6 @@ void loop(){
       case s14_get_amonia:
         //prepare ADC
         #define FAKE_ADDR 0x01 //I2C address only for purpose to keep up communication
-        adc3.initialize(); // initialize ADS1115 16 bit A/D chip
         adc3.setGain(ADS1115_PGA_6P144);//to adjust for reasonable range
         adc3.setMultiplexer(ADS1115_MUX_P2_NG); //A3.2
         adc3.setRate(ADS1115_RATE_860);
@@ -572,7 +569,6 @@ void loop(){
         delay(1);//wait for SDA to rise after lowpass
         ioexp_out_set(port0_check & 0b11111110,port1_check); //turn on A3.2 5V
         delayMicroseconds(1850);//tuned value kinda
-        
         //does mor matter much if I begin sooner, because comparator
         //does react on changes only after 2.2ms after powerup
         //keep some dummy communication on I2C so SDA is not high
@@ -582,17 +578,6 @@ void loop(){
           Wire.endTransmission();
           delayMicroseconds(1);
         }
-
-        /*
-        if(!Wire.begin(PIN_TP8,PIN_SCL,400000UL)) //reinit to fake SDA
-          log_error_code(4);
-        pinMode(PIN_SDA,OUTPUT);
-        digitalWrite(PIN_SDA,0); //make pulse for sensor, bring to low
-        ets_delay_us(2380); //tuned value
-        if(!Wire.begin(PIN_SDA,PIN_SCL,400000UL)) //init back to real SDA
-          log_error_code(4);*/
-
-
         adc3.triggerConversion();
         if(!adc3.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT)){delayMicroseconds(1);};
         //puse to FET ends automatically after about 200us
@@ -604,14 +589,14 @@ void loop(){
         adc_result_raw[2][2] = adc3.getConversion(0);//do not poll
         adc_PGA_setting[2][2] = 0xA0; //A3.2  (6), range 6.44v (0)
         //recover ADC settings as before
-        adc3.setMode(ADS1115_MODE_SINGLESHOT);
-        adc3.setRate(ADS1115_RATE_64); 
+        
+        adc3.setRate(ADS1115_RATE_64); //back to default rate for this setup
         state = s12_save_data;
         break;
       case s15_setup_lmp91000:{
         LMP91000_setup(conf_set);
         state = s11_start_measurement;
-        } //case setup amonia end
+        }
         break;
       default:
         PRINTDEBUG("Uknown FSM state %d",state);
@@ -1012,6 +997,7 @@ void LMP91000_setup(uint8_t configuration_set){
   #define LMP_REFCN_REG 0x11
   #define LMP_MODECN_REG 0x12
   uint8_t LMPenable[10]=  {1,1,1,1,1,1,1,1,1,1};
+  LMPenable[10] = use_tgs24444 ? 0 : 1; //if anomia used, do not use port A3.2
   uint8_t tiacn[10] ={0x18,0x18,0x18,0x19,0x15,0x14,0x12,0x0C,0x09,0x09};//4:2 tia gain, 1:0 rload
   uint8_t refcn[10] ={0x00,0x00,0x00,0x00,0x40,0x00,0x00,0x00,0x27,0x00};
   uint8_t modecn[10]={0x03,0x03,0x03,0x03,0x03,0x03,0x03,0x03,0x03,0x03};
@@ -1022,7 +1008,7 @@ void LMP91000_setup(uint8_t configuration_set){
     //index is AI input, value is register value
     //use initialized values
   }
-  if (LMPsett == 0b0011){
+  if (LMPsett == 0b0011){ //test all configured the same as from labview
     for (uint8_t boo;boo<10;boo++){
       LMPenable[boo] = 1;
       tiacn[boo] = LMPreg_TIACN;

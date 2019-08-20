@@ -1,0 +1,29 @@
+1. Get location of binary files: - skip these step if you alteady have binary files
+Run terminal in platformio (icon next to serial monitor on lower bar)
+Enter command>
+pio run -v -t upload
+
+See in output:
+"d:\cadence\spb_data\.platformio\penv\scripts\python.exe" "D:\Cadence\SPB_Data\.platformio\packages\tool-esptoolpy\esptool.py" 
+--chip esp32 
+--port "COM7" 
+--baud 921600 
+--before default_reset 
+--after hard_reset
+write_flash -z 
+--flash_mode dio 
+--flash_freq 40m 
+--flash_size detect 
+0x1000 D:\Cadence\SPB_Data\.platformio\packages\framework-arduinoespressif32\tools\sdk\bin\bootloader_dio_40m.bin 
+0x8000 D:\PROJECTS\01_GIT_REPOS\FRA_Sensor_platform\3-FW_SW\1-FW_device\FRA_SP_ESP32v2\.pio\build\FRAunit_COM7\partitions.bin 
+0xe000 D:\Cadence\SPB_Data\.platformio\packages\framework-arduinoespressif32\tools\partitions\boot_app0.bin 
+0x10000 .pio\build\FRAunit_COM7\firmware.bin
+
+2. Use ESP32 download tool to flash.
+Select ESP32 DownloadTool
+Configure as follows:
+
+0x1000 bootloader_dio_40m.bin 
+0x8000 partitions.bin 
+0xe000 boot_app0.bin 
+0x10000 firmware.bin
