@@ -1,9 +1,0 @@
-01Log2019_08_01-22_27_07.csv
-08/01/2019    22:27:07.819, VI started
-08/01/2019    22:27:12.234, Reset sent to #255
-08/01/2019    22:27:13.707, Announcement from #14
-08/01/2019    22:27:13.711, ERROR from #14 : VEML7700 light sensor not found - continue without
-08/01/2019    22:27:14.574, Announcement from #13
-08/01/2019    22:27:46.096, Logging to: 2019_08_01-22_27_45_Data.csv
-08/01/2019    22:27:46.097, Trigger sent to #255, T=1000ms
-08/01/2019    22:29:48.744, Stop sent to #255
