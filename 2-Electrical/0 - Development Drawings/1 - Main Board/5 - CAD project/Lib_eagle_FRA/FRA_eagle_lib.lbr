@@ -400,7 +400,7 @@
 <smd name="3" x="1.8" y="-1.8" dx="2.5" dy="2.5" layer="1" roundness="100"/>
 </package>
 <package name="INSERT_MM5_0669">
-<pad name="1" x="0" y="0" drill="1.6" diameter="3"/>
+<pad name="1" x="0" y="0" drill="1.5" diameter="3"/>
 </package>
 <package name="INSERT_1MM5_9372">
 <pad name="1" x="0" y="0" drill="2.7" diameter="4.5"/>

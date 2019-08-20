@@ -37,7 +37,7 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.0"
+#define FW_VERSION "V1.1"
 
 //GPIO expander
 #include <Wire.h>
@@ -125,6 +125,7 @@ uint8_t adc_PGA_autorange(uint8_t old_PGA,int16_t last_reading);
 uint8_t ioexp_out_set_AIport(uint8_t AIport, bool statepin);
 uint8_t is_sensor_out_signed(uint8_t sensor_type);
 void LMP91000_setup(uint8_t configuration_set);
+float SdFreeSpace();
 //debug functions
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len);
 void debug_sd_log();
@@ -228,6 +229,12 @@ void setup(){
   //debug_Si7021();
   //debug_ioexp_AIport();
   //debug_lmp91000();
+  if (use_sd){
+    float freeMB = SdFreeSpace();
+    if (freeMB < 100) log_error_code(32);
+    Serial.printf("Free Space on SD: %f MB\n",freeMB);
+  }
+
 }
 /*
  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄       ▄▄ 
@@ -617,53 +624,52 @@ void loop(){
       //data were already processed and put into receiveUDP_buffer.
       //flag is set to 1 by the same function
 
-    //DEBUG CODE
-    #ifdef DEBUG
-      //toogle PIN LED on every iteration - scope check
-      digitalWrite(PIN_LED, !digitalRead(PIN_LED));
-      if (BTN1_flag){
-        BTN1_flag = 0;
-        static uint32_t startms;
-        startms = millis();
-        PRINTDEBUG("Button pressed\n");
-        delay(20); //debounce
-        uint32_t LED_timing = 0;
-        static uint16_t ton = 80;
-        while (1){
-          if (millis() > (LED_timing + ton)){
-              LED_timing = millis();
-              digitalWrite(PIN_LED,!digitalRead(PIN_LED)); //toogle LED
-          } 
-          if (uint16_t(millis()) > (startms + 30000)){break;}  //30s timeout
-          
-          if (digitalRead(PIN_BTN1)){break;} //released button
-          
-          if (millis()-startms < 1000){
-            //PRINTDEBUG("Pressed under 1s, nothing happens\n");
-          } else if (millis()-startms < 4000) {
-            //1-10 s start measurement
-            //PRINTDEBUG("Pressed under 1-3.99s, starting measuremnt\n");
-            ton = 750;
-          } else if (millis()-startms < 15000){
-            //PRINTDEBUG("Pressed under 10-15s, reset\n");
-            ton = 100;
-          } else if (millis()-startms > 15000){
-            break;
-          }
-          delay(10);
+    
+    //toogle PIN LED on every iteration - scope check
+    digitalWrite(PIN_LED, !digitalRead(PIN_LED));
+    if (BTN1_flag){
+      BTN1_flag = 0;
+      static uint32_t startms;
+      startms = millis();
+      PRINTDEBUG("Button pressed\n");
+      delay(20); //debounce
+      uint32_t LED_timing = 0;
+      static uint16_t ton = 80;
+      while (1){
+        if (millis() > (LED_timing + ton)){
+            LED_timing = millis();
+            digitalWrite(PIN_LED,!digitalRead(PIN_LED)); //toogle LED
+        } 
+        if (uint16_t(millis()) > (startms + 30000)){break;}  //30s timeout
+        
+        if (digitalRead(PIN_BTN1)){break;} //released button
+        
+        if (millis()-startms < 1000){
+          //PRINTDEBUG("Pressed under 1s, nothing happens\n");
+        } else if (millis()-startms < 4000) {
+          //1-10 s start measurement
+          //PRINTDEBUG("Pressed under 1-3.99s, starting measuremnt\n");
+          ton = 750;
+        } else if (millis()-startms < 15000){
+          //PRINTDEBUG("Pressed under 10-15s, reset\n");
+          ton = 100;
+        } else if (millis()-startms > 15000){
+          break;
         }
-        if (ton==750) {
-          state = s11_start_measurement;
-          PRINTDEBUG("Starting measurement on button request\n");
-        }
-        if (ton==100) hard_restart();
+        delay(10);
       }
-      /*
-      if (millis()>(bl+1000)){ //every 1s
-        bl=millis();
-        PRINTDEBUG("t:%u\t st:%d\n",(uint32_t)now(),(int)state);
-      }*/
-    #endif
+      if (ton==750) {
+        state = s11_start_measurement;
+        PRINTDEBUG("Starting measurement on button request\n");
+      }
+      if (ton==100) hard_restart();
+    }
+    /*
+    if (millis()>(bl+10000)){ //every 10s
+      bl=millis();
+      PRINTDEBUG("t:%u\t st:%d\n",(uint32_t)now(),(int)state);
+      PRINTDEBUG("Free Clusters (a 32.7kB): %u",sd.vol()->freeClusterCount());
+    }*/
   }//while 1
 }//loop
 
@@ -1108,8 +1114,28 @@ void LMP91000_setup(uint8_t configuration_set){
       PRINTDEBUG(".. back to high\n");
     }
   }
-  PRINTDEBUG("LMPs configured successfully\n");
+  PRINTDEBUG("LMPs configured\n");
 }
+
+float SdFreeSpace() {
+  // Calculate free space (volume free clusters * blocks per clusters / 2) in kB
+  uint32_t lFreeKB = sd.vol()->freeClusterCount();
+  float freeMB;
+  return freeMB = ((float)lFreeKB) * ((float)sd.vol()->blocksPerCluster()) / 2 / 1024;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 ////////////////////////////DEBUG FUNCTIONS
 void debug_UDP_receive(uint16_t dest_port, uint8_t src_ip[IP_LEN], uint16_t src_port, const char *data, uint16_t len){
   IPAddress src(src_ip[0],src_ip[1],src_ip[2],src_ip[3]);
