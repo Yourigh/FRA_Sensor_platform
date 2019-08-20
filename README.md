@@ -8,6 +8,10 @@ https://www.espressif.com/en/products/hardware/esp32/resources
 
 Tools -> Flash Download Tool
 
+Built binary files with the guide are located here:
+
+https://github.com/Yourigh/FRA_Sensor_platform/tree/master/3-FW_SW/1-FW_device/Programming_procedure
+
 # Resources
 https://github.com/greiman/SdFat
 
