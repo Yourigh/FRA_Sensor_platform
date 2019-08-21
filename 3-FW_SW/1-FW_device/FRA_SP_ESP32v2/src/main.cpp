@@ -668,7 +668,6 @@ void loop(){
     if (millis()>(bl+10000)){ //every 10s
       bl=millis();
       PRINTDEBUG("t:%u\t st:%d\n",(uint32_t)now(),(int)state);
-      PRINTDEBUG("Free Clusters (a 32.7kB): %u",sd.vol()->freeClusterCount());
     }*/
   }//while 1
 }//loop
