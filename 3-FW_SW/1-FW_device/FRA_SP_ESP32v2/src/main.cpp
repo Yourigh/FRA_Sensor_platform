@@ -37,7 +37,7 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.1"
+#define FW_VERSION "V1.2"
 
 //GPIO expander
 #include <Wire.h>
@@ -133,7 +133,6 @@ void debug_GPIOexp();
 uint8_t debug_adc();
 void debug_Si7021();
 void debug_ioexp_AIport();
-void debug_lmp91000();
 
 
 
@@ -343,7 +342,7 @@ void loop(){
               if (receiveUDP_Buffer[6] & 0b11110) {
                 state = s15_setup_lmp91000; //will continue to s11 after this state
                 conf_set = receiveUDP_Buffer[6];
-                if (conf_set & 0b100){ //debug sending registers 
+                if (conf_set & 0b00011110){ //any bit 4-1 is non zero, sending config for A3.1 - always manual register control from labview
                   LMPreg_TIACN = receiveUDP_Buffer[7]; 
                   LMPreg_REFCN = receiveUDP_Buffer[8]; 
                   LMPreg_MODECN = receiveUDP_Buffer[9]; 
@@ -1316,91 +1315,3 @@ void debug_ioexp_AIport(){
     delay(10000);
   }
 }
-void debug_lmp91000(){
-  #define LMP_STATUS_REG 0x00
-  #define LMP_LOCK_REG 0x01
-  #define LMP_TIACN_REG 0x10
-  #define LMP_REFCN_REG 0x11
-  #define LMP_MODECN_REG 0x12
-  const uint8_t tiacn[10] =    {0x18,0x18,0x18,0x19,0x09,0x14,0x12,0x0C,0x09,0x09}; //4:2 tia gain, 1:0 rload
-  const uint8_t refcn[10] =    {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x27,0x00};
-  const uint8_t modecn[10] =   {0x01,0x03,0x03,0x03,0x03,0x03,0x01,0x03,0x03,0x03};
-        
-  //read ioexp so it can be put to original state should be done here
-  uint8_t statusLMP;
-  if(!ioexp_out_set(0x00,0x00)) PRINTDEBUG("err\n");
-  PRINTDEBUG("set all AI to high\n");
-  //to avoid 2 active LMPs on I2C bus
-  for (int qui=0;qui<10;qui++){ //scan channels
-    if(!ioexp_out_set_AIport(qui,0)) PRINTDEBUG("err2");
-    PRINTDEBUG("AI %d low ...",qui);
-    
-    //check if LMP is there
-    Wire.beginTransmission(LMP91000_ADR);
-    Wire.write(LMP_STATUS_REG);//status register
-    if (Wire.endTransmission()) {
-      PRINTDEBUG("no LMP");
-      if(!ioexp_out_set_AIport(qui,1)) PRINTDEBUG("err3");
-      PRINTDEBUG(".. back to high\n");
-      continue;
-    }
-    Wire.beginTransmission(LMP91000_ADR);
-    Wire.requestFrom(LMP91000_ADR,1);
-    if (Wire.available()){
-      statusLMP = Wire.read();
-      if (statusLMP) {
-        PRINTDEBUG("LMP Ready\n");
-        Wire.write(LMP_LOCK_REG);//0x11
-        Wire.write(0x00);//disable write protection
-        if (Wire.endTransmission()) PRINTDEBUG("Err r");
-        //lock disabled
-        //Write TIA
-        Wire.beginTransmission(LMP91000_ADR);
-        Wire.write(LMP_TIACN_REG);//0x10
-        Wire.write(tiacn[qui]);//0x18 for A1.1
-        if (Wire.endTransmission()) PRINTDEBUG("Err r");
-        //Write REF
-        Wire.beginTransmission(LMP91000_ADR);
-        Wire.write(LMP_REFCN_REG);//0x11
-        Wire.write(refcn[qui]);
-        if (Wire.endTransmission()) PRINTDEBUG("Err r");
-        //Write MODECN
-        Wire.beginTransmission(LMP91000_ADR);
-        Wire.write(LMP_MODECN_REG);//0x12
-        Wire.write(modecn[qui]);
-        //Wire.write(0b111);//temperature
-        if (Wire.endTransmission()) PRINTDEBUG("Err r");
-        //readback TIA
-        Wire.beginTransmission(LMP91000_ADR);
-        Wire.write(LMP_TIACN_REG);//0x10
-        if (Wire.endTransmission()) PRINTDEBUG("Err r");
-        Wire.beginTransmission(LMP91000_ADR);
-        Wire.requestFrom(LMP91000_ADR,1);
-        PRINTDEBUG("TIAREG was set: %02x\n",Wire.read());
-        if (Wire.endTransmission()) PRINTDEBUG("Err r");
-        //readback REFCN
-        Wire.beginTransmission(LMP91000_ADR);
-        Wire.write(LMP_REFCN_REG);//0x11
-        if (Wire.endTransmission()) PRINTDEBUG("Err r");
-        Wire.beginTransmission(LMP91000_ADR);
-        Wire.requestFrom(LMP91000_ADR,1);
-        PRINTDEBUG("REFCN was set: %02x\n",Wire.read());
-        if (Wire.endTransmission()) PRINTDEBUG("Err r");
-        //readback MODECN
-        Wire.beginTransmission(LMP91000_ADR);
-        Wire.write(LMP_MODECN_REG);//0x12
-        if (Wire.endTransmission()) PRINTDEBUG("Err r");
-        Wire.beginTransmission(LMP91000_ADR);
-        Wire.requestFrom(LMP91000_ADR,1);
-        PRINTDEBUG("MODECN was set: %02x\n",Wire.read());
-      }
-      else
-        PRINTDEBUG("LMP not Ready");
-    }
-    if (Wire.endTransmission()) PRINTDEBUG("Err r");
-    
-    if(!ioexp_out_set_AIport(qui,1)) PRINTDEBUG("err3");
-    PRINTDEBUG(".. back to high\n");
-  }
-}
-

@@ -1,0 +1,1 @@
+V1.2 - electrochemical sensor port A3.1 configuration fixed

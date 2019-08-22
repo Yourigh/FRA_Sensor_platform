@@ -27,3 +27,7 @@ Configure as follows:
 0x8000 partitions.bin 
 0xe000 boot_app0.bin 
 0x10000 firmware.bin
+
+3. if there are issues, try different UART converter (ESP-prog instead built in on board)
+and update esptool folder from
+https://github.com/espressif/esptool

@@ -6,4 +6,4 @@ Legend (silkscreen) - both sides
 
 Chnage list:
 V1	initial version
-V1.1	C13 changed from 100n to 1n - only BOM change
+V1.1	C13 changed from 100n to 1n - only BOM change (affects only variant B)
