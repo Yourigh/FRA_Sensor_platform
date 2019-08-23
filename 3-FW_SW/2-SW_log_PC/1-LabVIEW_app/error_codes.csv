@@ -31,3 +31,13 @@
 30,Electrochemical sensor not found at A3.1
 31,Electrochemical sensor not found at A3.2
 32,SD card almost full (<100MB free)
+33,Electrochemical sensor configuration readback failed at A1.0
+34,Electrochemical sensor configuration readback failed at A1.1
+35,Electrochemical sensor configuration readback failed at A1.2
+36,Electrochemical sensor configuration readback failed at A1.3
+37,Electrochemical sensor configuration readback failed at A2.0
+38,Electrochemical sensor configuration readback failed at A2.1
+39,Electrochemical sensor configuration readback failed at A2.2
+40,Electrochemical sensor configuration readback failed at A2.3
+41,Electrochemical sensor configuration readback failed at A3.1
+42,Electrochemical sensor configuration readback failed at A3.2

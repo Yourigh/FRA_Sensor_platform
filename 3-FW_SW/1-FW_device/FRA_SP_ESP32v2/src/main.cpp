@@ -38,7 +38,12 @@
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
 #define FW_VERSION "V1.2"
+/*
+V1.2 changelog
+*LMP registers readback and error report
+*configuration sets adjusted
 
+*/
 //GPIO expander
 #include <Wire.h>
 #define IOEXP_ADDR 0x20 //0x75 debug board, 0x20 final
@@ -1006,6 +1011,9 @@ void LMP91000_setup(uint8_t configuration_set){
   #define LMP_TIACN_REG 0x10
   #define LMP_REFCN_REG 0x11
   #define LMP_MODECN_REG 0x12
+  uint8_t readback_TIAREG;
+  uint8_t readback_REFREG;
+  uint8_t readback_MODEREG;
 
   uint8_t LMPsett;
   LMPsett = ((configuration_set & 0b00011110)>>1);
@@ -1083,7 +1091,14 @@ void LMP91000_setup(uint8_t configuration_set){
           if (Wire.endTransmission()) PRINTDEBUG("Err r");
           Wire.beginTransmission(LMP91000_ADR);
           Wire.requestFrom(LMP91000_ADR,1);
-          PRINTDEBUG("TIAREG was set: 0x%02x\n",Wire.read());
+          readback_TIAREG = Wire.read();
+          PRINTDEBUG("TIAREG was set: 0x%02x\n",readback_TIAREG);
+          if (qui == 8) //A3.1 custom
+            if (LMPreg_TIACN != readback_TIAREG)
+              log_error_code(33+qui);
+          else
+            if (tiacn[LMPsett][qui] != readback_TIAREG)
+              log_error_code(33+qui);
           if (Wire.endTransmission()) PRINTDEBUG("Err r");
           //readback REFCN
           Wire.beginTransmission(LMP91000_ADR);
@@ -1091,7 +1106,14 @@ void LMP91000_setup(uint8_t configuration_set){
           if (Wire.endTransmission()) PRINTDEBUG("Err r");
           Wire.beginTransmission(LMP91000_ADR);
           Wire.requestFrom(LMP91000_ADR,1);
-          PRINTDEBUG("REFCN was set: 0x%02x\n",Wire.read());
+          readback_REFREG = Wire.read();
+          PRINTDEBUG("REFCN was set: 0x%02x\n",readback_REFREG);
+          if (qui == 8) //A3.1 custom
+            if (LMPreg_REFCN != readback_REFREG)
+              log_error_code(33+qui);
+          else
+            if (refcn[LMPsett][qui] != readback_REFREG)
+              log_error_code(33+qui);
           if (Wire.endTransmission()) PRINTDEBUG("Err r");
           //readback MODECN
           Wire.beginTransmission(LMP91000_ADR);
@@ -1099,7 +1121,14 @@ void LMP91000_setup(uint8_t configuration_set){
           if (Wire.endTransmission()) PRINTDEBUG("Err r");
           Wire.beginTransmission(LMP91000_ADR);
           Wire.requestFrom(LMP91000_ADR,1);
-          PRINTDEBUG("MODECN was set: 0x%02x\n",Wire.read());
+          readback_MODEREG = Wire.read();
+          PRINTDEBUG("MODECN was set: 0x%02x\n",readback_MODEREG);
+          if (qui == 8) //A3.1 custom
+            if (LMPreg_MODECN != readback_MODEREG)
+              log_error_code(33+qui);
+          else
+            if (modecn[LMPsett][qui] != readback_MODEREG)
+              log_error_code(33+qui);
         }
         else{
           PRINTDEBUG("LMP not Ready");
