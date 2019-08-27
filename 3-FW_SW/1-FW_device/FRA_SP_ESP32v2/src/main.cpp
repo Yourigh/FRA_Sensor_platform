@@ -345,7 +345,6 @@ void loop(){
                 adc_period_ms = receiveUDP_Buffer[5]*100; //sample period setting in ms, received in 0.1s units
               if (receiveUDP_Buffer[6] & 0b01) {use_tgs24444 = 1; adc_period_ms = 250;PRINTDEBUG("Amonia will be used\n");}
               if (receiveUDP_Buffer[6] & 0b11110) {
-                state = s15_setup_lmp91000; //will continue to s11 after this state
                 conf_set = receiveUDP_Buffer[6];
                 if (conf_set & 0b00011110){ //any bit 4-1 is non zero, sending config for A3.1 - always manual register control from labview
                   LMPreg_TIACN = receiveUDP_Buffer[7]; 
@@ -353,6 +352,7 @@ void loop(){
                   LMPreg_MODECN = receiveUDP_Buffer[9]; 
                 }
                 UDP_read_flag = 0;
+                state = s15_setup_lmp91000; //will continue to s11 after this state
                 break;
               }
               state = s11_start_measurement;
@@ -1092,13 +1092,10 @@ void LMP91000_setup(uint8_t configuration_set){
           Wire.beginTransmission(LMP91000_ADR);
           Wire.requestFrom(LMP91000_ADR,1);
           readback_TIAREG = Wire.read();
-          PRINTDEBUG("TIAREG was set: 0x%02x\n",readback_TIAREG);
+          PRINTDEBUG("TIAREG was set : 0x%02x\n",readback_TIAREG);//test
           if (qui == 8) //A3.1 custom
-            if (LMPreg_TIACN != readback_TIAREG)
-              log_error_code(33+qui);
-          else
-            if (tiacn[LMPsett][qui] != readback_TIAREG)
-              log_error_code(33+qui);
+          {  if (!(LMPreg_TIACN == readback_TIAREG)) log_error_code(33+qui);}
+          else { if (tiacn[LMPsett][qui] != readback_TIAREG) log_error_code(33+qui);}
           if (Wire.endTransmission()) PRINTDEBUG("Err r");
           //readback REFCN
           Wire.beginTransmission(LMP91000_ADR);
@@ -1109,11 +1106,11 @@ void LMP91000_setup(uint8_t configuration_set){
           readback_REFREG = Wire.read();
           PRINTDEBUG("REFCN was set: 0x%02x\n",readback_REFREG);
           if (qui == 8) //A3.1 custom
-            if (LMPreg_REFCN != readback_REFREG)
-              log_error_code(33+qui);
+          {  if (LMPreg_REFCN != readback_REFREG)
+              log_error_code(33+qui);}
           else
-            if (refcn[LMPsett][qui] != readback_REFREG)
-              log_error_code(33+qui);
+           { if (refcn[LMPsett][qui] != readback_REFREG)
+              log_error_code(33+qui);}
           if (Wire.endTransmission()) PRINTDEBUG("Err r");
           //readback MODECN
           Wire.beginTransmission(LMP91000_ADR);
@@ -1124,11 +1121,11 @@ void LMP91000_setup(uint8_t configuration_set){
           readback_MODEREG = Wire.read();
           PRINTDEBUG("MODECN was set: 0x%02x\n",readback_MODEREG);
           if (qui == 8) //A3.1 custom
-            if (LMPreg_MODECN != readback_MODEREG)
-              log_error_code(33+qui);
+          {  if (LMPreg_MODECN != readback_MODEREG)
+              log_error_code(33+qui);}
           else
-            if (modecn[LMPsett][qui] != readback_MODEREG)
-              log_error_code(33+qui);
+          { if (modecn[LMPsett][qui] != readback_MODEREG)
+              log_error_code(33+qui);}
         }
         else{
           PRINTDEBUG("LMP not Ready");

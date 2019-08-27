@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
@@ -166,6 +166,7 @@
 <pad name="R" x="-6.75" y="0" drill="2.7"/>
 <circle x="0" y="0" radius="9" width="0.127" layer="21"/>
 <text x="-2.54" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-10.16" y="11.43" size="1.27" layer="21">sensor placed from other side</text>
 </package>
 <package name="SPEC">
 <wire x1="-7.5" y1="-7.5" x2="-7.5" y2="7.5" width="0.127" layer="21"/>
@@ -298,21 +299,22 @@
 <smd name="R" x="-6.75" y="0" dx="3.7" dy="3.7" layer="1" roundness="100"/>
 <smd name="W" x="0" y="6.75" dx="3.7" dy="3.7" layer="1" roundness="100"/>
 <smd name="C" x="6.75" y="0" dx="3.7" dy="3.7" layer="1" roundness="100"/>
+<text x="-10.16" y="-6.35" size="1.27" layer="21">sensor placed form other side</text>
 </package>
 <package name="3-ELE_SOCKET_ANDON">
 <circle x="0" y="0" radius="10.2" width="0.127" layer="21"/>
 <pad name="W" x="0" y="6.73" drill="2" diameter="3.81"/>
-<pad name="C" x="6.73" y="0" drill="2" diameter="3.81"/>
-<pad name="R" x="-6.73" y="0" drill="2" diameter="3.81"/>
+<pad name="R" x="6.73" y="0" drill="2" diameter="3.81"/>
+<pad name="C" x="-6.73" y="0" drill="2" diameter="3.81"/>
 <circle x="0" y="0" radius="9" width="0.127" layer="21"/>
 <text x="-2.54" y="1.27" size="1.27" layer="25">&gt;NAME</text>
 </package>
 </packages>
 <symbols>
 <symbol name="3E">
-<pin name="R" x="-12.7" y="0" length="middle"/>
+<pin name="R" x="12.7" y="0" length="middle" rot="R180"/>
 <pin name="W" x="0" y="12.7" length="middle" rot="R270"/>
-<pin name="C" x="12.7" y="0" length="middle" rot="R180"/>
+<pin name="C" x="-12.7" y="0" length="middle"/>
 <text x="-2.54" y="-2.54" size="1.778" layer="95">GAS</text>
 <text x="-5.08" y="-5.08" size="1.778" layer="95">SENSOR</text>
 <circle x="0" y="0" radius="7.62" width="0.254" layer="94"/>
@@ -351,8 +353,8 @@
 </device>
 <device name="_SOCKET" package="3-ELE_SOCKET_ANDON">
 <connects>
-<connect gate="G$1" pin="C" pad="C"/>
-<connect gate="G$1" pin="R" pad="R"/>
+<connect gate="G$1" pin="C" pad="R"/>
+<connect gate="G$1" pin="R" pad="C"/>
 <connect gate="G$1" pin="W" pad="W"/>
 </connects>
 <technologies>

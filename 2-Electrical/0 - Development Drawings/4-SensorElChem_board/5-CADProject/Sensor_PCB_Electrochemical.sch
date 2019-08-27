@@ -8085,6 +8085,14 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 <library name="gas-sensor">
 <description>LAB11 - Electrochemical gas sensors</description>
 <packages>
+<package name="3-ELE_SOCKET_ANDON">
+<circle x="0" y="0" radius="10.2" width="0.127" layer="21"/>
+<pad name="W" x="0" y="6.73" drill="2" diameter="3.81"/>
+<pad name="R" x="6.73" y="0" drill="2" diameter="3.81"/>
+<pad name="C" x="-6.73" y="0" drill="2" diameter="3.81"/>
+<circle x="0" y="0" radius="9" width="0.127" layer="21"/>
+<text x="-2.54" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+</package>
 <package name="3-ELECTRODE">
 <circle x="0" y="0" radius="10.2" width="0.127" layer="21"/>
 <pad name="W" x="0" y="6.75" drill="2.7"/>
@@ -8092,6 +8100,7 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 <pad name="R" x="-6.75" y="0" drill="2.7"/>
 <circle x="0" y="0" radius="9" width="0.127" layer="21"/>
 <text x="-2.54" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-10.16" y="11.43" size="1.27" layer="21">sensor placed from other side</text>
 </package>
 <package name="3-ELECTRODE_INSETRS">
 <circle x="0" y="0" radius="10.2" width="0.127" layer="21"/>
@@ -8100,21 +8109,14 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 <smd name="R" x="-6.75" y="0" dx="3.7" dy="3.7" layer="1" roundness="100"/>
 <smd name="W" x="0" y="6.75" dx="3.7" dy="3.7" layer="1" roundness="100"/>
 <smd name="C" x="6.75" y="0" dx="3.7" dy="3.7" layer="1" roundness="100"/>
-</package>
-<package name="3-ELE_SOCKET_ANDON">
-<circle x="0" y="0" radius="10.2" width="0.127" layer="21"/>
-<pad name="W" x="0" y="6.73" drill="2" diameter="3.81"/>
-<pad name="C" x="6.73" y="0" drill="2" diameter="3.81"/>
-<pad name="R" x="-6.73" y="0" drill="2" diameter="3.81"/>
-<circle x="0" y="0" radius="9" width="0.127" layer="21"/>
-<text x="-2.54" y="1.27" size="1.27" layer="25">&gt;NAME</text>
+<text x="-10.16" y="-6.35" size="1.27" layer="21">sensor placed form other side</text>
 </package>
 </packages>
 <symbols>
 <symbol name="3E">
-<pin name="R" x="-12.7" y="0" length="middle"/>
+<pin name="R" x="12.7" y="0" length="middle" rot="R180"/>
 <pin name="W" x="0" y="12.7" length="middle" rot="R270"/>
-<pin name="C" x="12.7" y="0" length="middle" rot="R180"/>
+<pin name="C" x="-12.7" y="0" length="middle"/>
 <text x="-2.54" y="-2.54" size="1.778" layer="95">GAS</text>
 <text x="-5.08" y="-5.08" size="1.778" layer="95">SENSOR</text>
 <circle x="0" y="0" radius="7.62" width="0.254" layer="94"/>
@@ -8153,8 +8155,8 @@ round, layers 1 + 16 + 21 + 39 + 49</description>
 </device>
 <device name="_SOCKET" package="3-ELE_SOCKET_ANDON">
 <connects>
-<connect gate="G$1" pin="C" pad="C"/>
-<connect gate="G$1" pin="R" pad="R"/>
+<connect gate="G$1" pin="C" pad="R"/>
+<connect gate="G$1" pin="R" pad="C"/>
 <connect gate="G$1" pin="W" pad="W"/>
 </connects>
 <technologies>
@@ -8273,7 +8275,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </libraries>
 <attributes>
 <attribute name="CNAME" value="Electrochemical gas sensor PCB"/>
-<attribute name="CREVISION" value="01"/>
+<attribute name="CREVISION" value="02"/>
 </attributes>
 <variantdefs>
 <variantdef name="ESP8266 CH340 default"/>
@@ -8589,11 +8591,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </net>
 <net name="RE" class="0">
 <segment>
-<pinref part="X1" gate="G$1" pin="R"/>
-<wire x1="129.54" y1="116.84" x2="144.78" y2="116.84" width="0.1524" layer="91"/>
-<label x="137.16" y="119.38" size="1.778" layer="95" rot="R180"/>
-</segment>
-<segment>
 <pinref part="IC4" gate="G$1" pin="RE"/>
 <wire x1="142.24" y1="99.06" x2="154.94" y2="99.06" width="0.1524" layer="91"/>
 <label x="144.78" y="99.06" size="1.778" layer="95"/>
@@ -8610,17 +8607,23 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="101.6" y="116.84" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="111.76" y1="154.94" x2="104.14" y2="154.94" width="0.1524" layer="91"/>
-<label x="104.14" y="154.94" size="1.778" layer="95"/>
-<pinref part="JP2" gate="G$1" pin="3"/>
+<pinref part="R22" gate="G$1" pin="1"/>
+<wire x1="114.3" y1="40.64" x2="119.38" y2="40.64" width="0.1524" layer="91"/>
+<label x="116.84" y="40.64" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="JP2" gate="G$1" pin="2"/>
+<wire x1="116.84" y1="160.02" x2="116.84" y2="165.1" width="0.1524" layer="91"/>
+<wire x1="116.84" y1="165.1" x2="129.54" y2="165.1" width="0.1524" layer="91"/>
+<label x="121.92" y="165.1" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="X1" gate="G$1" pin="C"/>
+<wire x1="144.78" y1="116.84" x2="134.62" y2="116.84" width="0.1524" layer="91"/>
+<label x="134.62" y="116.84" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="CE" class="0">
-<segment>
-<pinref part="X1" gate="G$1" pin="C"/>
-<wire x1="182.88" y1="116.84" x2="170.18" y2="116.84" width="0.1524" layer="91"/>
-<label x="175.26" y="119.38" size="1.778" layer="95" rot="R180"/>
-</segment>
 <segment>
 <pinref part="IC4" gate="G$1" pin="CE"/>
 <wire x1="142.24" y1="101.6" x2="154.94" y2="101.6" width="0.1524" layer="91"/>
@@ -8633,15 +8636,14 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <label x="86.36" y="116.84" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="R22" gate="G$1" pin="1"/>
-<wire x1="114.3" y1="40.64" x2="119.38" y2="40.64" width="0.1524" layer="91"/>
-<label x="116.84" y="40.64" size="1.778" layer="95"/>
+<wire x1="111.76" y1="154.94" x2="104.14" y2="154.94" width="0.1524" layer="91"/>
+<label x="104.14" y="154.94" size="1.778" layer="95"/>
+<pinref part="JP2" gate="G$1" pin="3"/>
 </segment>
 <segment>
-<pinref part="JP2" gate="G$1" pin="2"/>
-<wire x1="116.84" y1="160.02" x2="116.84" y2="165.1" width="0.1524" layer="91"/>
-<wire x1="116.84" y1="165.1" x2="129.54" y2="165.1" width="0.1524" layer="91"/>
-<label x="121.92" y="165.1" size="1.778" layer="95"/>
+<pinref part="X1" gate="G$1" pin="R"/>
+<wire x1="170.18" y1="116.84" x2="180.34" y2="116.84" width="0.1524" layer="91"/>
+<label x="175.26" y="116.84" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="VREF" class="0">
@@ -8695,19 +8697,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="198.12" y1="134.62" x2="198.12" y2="137.16" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="CE_CO" class="0">
-<segment>
-<pinref part="R22" gate="G$1" pin="2"/>
-<pinref part="U2" gate="G$1" pin="CE"/>
-<wire x1="104.14" y1="40.64" x2="96.52" y2="40.64" width="0.1524" layer="91"/>
-<label x="99.06" y="40.64" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="JP2" gate="G$1" pin="1"/>
-<wire x1="121.92" y1="154.94" x2="132.08" y2="154.94" width="0.1524" layer="91"/>
-<label x="129.54" y="154.94" size="1.778" layer="95"/>
-</segment>
-</net>
 <net name="N$1" class="0">
 <segment>
 <pinref part="R24" gate="G$1" pin="2"/>
@@ -8755,6 +8744,19 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="C1" gate="G$1" pin="2"/>
 <wire x1="147.32" y1="78.74" x2="152.4" y2="78.74" width="0.1524" layer="91"/>
 <wire x1="152.4" y1="78.74" x2="152.4" y2="81.28" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="RE_CO" class="0">
+<segment>
+<pinref part="JP2" gate="G$1" pin="1"/>
+<wire x1="121.92" y1="154.94" x2="132.08" y2="154.94" width="0.1524" layer="91"/>
+<label x="129.54" y="154.94" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R22" gate="G$1" pin="2"/>
+<pinref part="U2" gate="G$1" pin="CE"/>
+<wire x1="104.14" y1="40.64" x2="96.52" y2="40.64" width="0.1524" layer="91"/>
+<label x="99.06" y="40.64" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
