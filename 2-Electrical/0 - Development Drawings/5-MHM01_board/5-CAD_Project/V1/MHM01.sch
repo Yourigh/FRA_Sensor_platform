@@ -16498,7 +16498,7 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 </library>
 </libraries>
 <attributes>
-<attribute name="CNAME" value="Sensor board v1"/>
+<attribute name="CNAME" value="MHM01 board"/>
 <attribute name="CREVISION" value="01"/>
 </attributes>
 <variantdefs>
@@ -16513,29 +16513,36 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <part name="FRAME1" library="SparkFun-Aesthetics" deviceset="FRAME-A4L" device=""/>
 <part name="SUPPLY1" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
 <part name="PS1" library="SamacSys_Parts" deviceset="AP2202K-ADJTRG1" device="">
+<attribute name="PARTNO" value="AP2202K-ADJTRG1"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="SUPPLY4" library="supply2" deviceset="GND" device=""/>
 <part name="R2" library="resistor" deviceset="R-EU_" device="R0603" value="10k">
+<attribute name="PARTNO" value="CRCW060310K0FKEA"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="R3" library="resistor" deviceset="R-EU_" device="R0603" value="3k">
+<attribute name="PARTNO" value="ERA-3AEB302V"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="SUPPLY5" library="supply2" deviceset="GND" device=""/>
 <part name="C3" library="resistor" deviceset="C-EU" device="C0603K" value="1u">
+<attribute name="PARTNO" value="GRM188R71C105KE15D"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="SUPPLY9" library="supply2" deviceset="GND" device=""/>
 <part name="C5" library="resistor" deviceset="C-EU" device="C0603K" value="10u">
+<attribute name="PARTNO" value="GRM188R61A106KE69J"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="SUPPLY10" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY12" library="supply2" deviceset="GND" device=""/>
 <part name="C7" library="resistor" deviceset="C-EU" device="C0603K" value="100n">
+<attribute name="PARTNO" value="CC0603KRX7R8BB104"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="U$1" library="FRA_eagle_lib" deviceset="CONN_03X2_WE_61200621621" device="">
+<attribute name="PARTNO" value="61200621621"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="FID1" library="microbuilder" deviceset="FIDUCIAL" device="&quot;&quot;"/>
@@ -16551,7 +16558,7 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <part name="TP6" library="testpad" deviceset="TP" device="TP10R"/>
 <part name="TP7" library="testpad" deviceset="TP" device="TP10R"/>
 <part name="U2" library="FRA_eagle_lib" deviceset="FIGARO_SR-7" device="">
-<attribute name="PARTNO" value="installed_by_customer"/>
+<attribute name="PARTNO" value="SR-7"/>
 </part>
 <part name="X1" library="con-wago-500" deviceset="W237-102" device="" value="TB001-500-02BE">
 <attribute name="PARTNO" value="TB001-500-02BE"/>
@@ -16562,20 +16569,25 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <variant name="Sensor platform" populate="no"/>
 </part>
 <part name="SUPPLY8" library="supply2" deviceset="GND" device=""/>
-<part name="LED2" library="adafruit" deviceset="LED" device="CHIPLED_1206"/>
+<part name="LED2" library="adafruit" deviceset="LED" device="CHIPLED_1206" value="Red">
+<attribute name="PARTNO" value="BR1101W-TR"/>
+</part>
 <part name="FB1" library="microbuilder" deviceset="FERRITE" device="">
 <attribute name="PARTNO" value="BLM18PG121SN1D"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="SUPPLY16" library="supply2" deviceset="GND" device=""/>
 <part name="R8" library="resistor" deviceset="R-EU_" device="R0603" value="10k">
+<attribute name="PARTNO" value="CRCW060310K0FKEA"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="SUPPLY23" library="supply2" deviceset="GND" device=""/>
 <part name="R9" library="resistor" deviceset="R-EU_" device="R0603" value="220">
+<attribute name="PARTNO" value="CRCW0603220RFKEA"/>
 <variant name="Standalone" populate="no"/>
 </part>
-<part name="R12" library="pot" deviceset="TRIM_EU-" device="RJ9W">
+<part name="R12" library="pot" deviceset="TRIM_EU-" device="RJ9W" value="100">
+<attribute name="PARTNO" value="3296X-1-101LF"/>
 <variant name="Sensor platform" populate="no"/>
 </part>
 <part name="R19" library="rcl" deviceset="R-EU_" device="R1206" value="DNI">
@@ -16583,15 +16595,20 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <variant name="Sensor platform" populate="no"/>
 </part>
 <part name="R20" library="rcl" deviceset="R-EU_" device="R1206" value="75">
+<attribute name="PARTNO" value="CRCW120675R0FKEA"/>
 <variant name="Sensor platform" populate="no"/>
 </part>
 <part name="SUPPLY24" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY14" library="SparkFun-PowerSymbols" deviceset="5V" device=""/>
-<part name="R21" library="rcl" deviceset="R-EU_" device="R1206" value="75"/>
+<part name="R21" library="rcl" deviceset="R-EU_" device="R1206" value="75">
+<attribute name="PARTNO" value="CRCW120675R0FKEA"/>
+</part>
 <part name="R7" library="rcl" deviceset="R-EU_" device="R1206" value="75">
+<attribute name="PARTNO" value="CRCW120675R0FKEA"/>
 <variant name="Sensor platform" populate="no"/>
 </part>
 <part name="R22" library="rcl" deviceset="R-EU_" device="R1206" value="10K">
+<attribute name="PARTNO" value="CRCW120610K0FKEA"/>
 <variant name="Sensor platform" populate="no"/>
 </part>
 <part name="Q1" library="adafruit" deviceset="MOSFET-N" device="REFLOW" value="Si2300DS">
@@ -16601,14 +16618,20 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <part name="SUPPLY17" library="supply2" deviceset="GND" device=""/>
 <part name="TP1" library="testpad" deviceset="TP" device="TP10R"/>
 <part name="TP2" library="testpad" deviceset="TP" device="TP10R"/>
-<part name="C1" library="rcl" deviceset="C-EU" device="C1206" value="10u"/>
+<part name="C1" library="rcl" deviceset="C-EU" device="C1206" value="10u">
+<attribute name="PARTNO" value="JMF316AB7106KLHT"/>
+</part>
 <part name="C2" library="rcl" deviceset="C-EU" device="C1206" value="10u">
+<attribute name="PARTNO" value="JMF316AB7106KLHT"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="SUPPLY2" library="supply2" deviceset="GND" device=""/>
 <part name="SUPPLY6" library="supply2" deviceset="GND" device=""/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="R1206" value="75"/>
+<part name="R1" library="rcl" deviceset="R-EU_" device="R1206" value="75">
+<attribute name="PARTNO" value="CRCW120675R0FKEA"/>
+</part>
 <part name="R4" library="rcl" deviceset="R-EU_" device="R1206" value="0">
+<attribute name="PARTNO" value="CRCW12060000Z0EA"/>
 <variant name="Standalone" populate="no"/>
 </part>
 <part name="SUPPLY7" library="supply2" deviceset="GND" device=""/>
@@ -16617,18 +16640,28 @@ Source: http://www.bourns.com/data/global/PDFs/3223.PDF</description>
 <sheet>
 <plain>
 <text x="68.58" y="53.34" size="1.778" layer="97">MHM01 fists to ST-7 as follows:
-ST7 pin     MHM01 pin      Function
+SR7 pin     MHM01 pin      Function
 1              2                      sensor -
 2              NC
 3              NC
 4              1                      sensor+</text>
-<text x="27.94" y="137.16" size="1.778" layer="97">VOUT=1.25* (1+R2/R3)</text>
+<text x="27.94" y="162.56" size="1.778" layer="97">VOUT=1.25* (1+RB/RA)</text>
 <text x="200.66" y="88.9" size="1.778" layer="97">JMF316AB7106KLHT</text>
 <text x="243.84" y="142.24" size="1.778" layer="97">3296X-1-101LF</text>
 <text x="2.54" y="73.66" size="1.778" layer="97">V_IL = 0.5V
 V_IH = 1.5V
 V_max = 10V
 </text>
+<text x="81.28" y="157.48" size="1.778" layer="97">RA</text>
+<text x="81.28" y="137.16" size="1.778" layer="97">RB</text>
+<wire x1="63.5" y1="167.64" x2="63.5" y2="149.86" width="0.1524" layer="97" style="shortdash"/>
+<wire x1="63.5" y1="149.86" x2="86.36" y2="149.86" width="0.1524" layer="97" style="shortdash"/>
+<wire x1="86.36" y1="149.86" x2="86.36" y2="167.64" width="0.1524" layer="97" style="shortdash"/>
+<wire x1="86.36" y1="167.64" x2="63.5" y2="167.64" width="0.1524" layer="97" style="shortdash"/>
+<wire x1="63.5" y1="142.24" x2="63.5" y2="129.54" width="0.1524" layer="97" style="shortdash"/>
+<wire x1="63.5" y1="129.54" x2="86.36" y2="129.54" width="0.1524" layer="97" style="shortdash"/>
+<wire x1="86.36" y1="129.54" x2="86.36" y2="142.24" width="0.1524" layer="97" style="shortdash"/>
+<wire x1="86.36" y1="142.24" x2="63.5" y2="142.24" width="0.1524" layer="97" style="shortdash"/>
 </plain>
 <instances>
 <instance part="FRAME1" gate="G$1" x="0" y="0"/>
@@ -16636,20 +16669,32 @@ V_max = 10V
 <instance part="PS1" gate="G$1" x="27.94" y="147.32" smashed="yes">
 <attribute name="NAME" x="34.29" y="154.94" size="1.778" layer="95" align="center-left"/>
 <attribute name="VALUE" x="34.29" y="152.4" size="1.778" layer="96" align="center-left"/>
+<attribute name="PARTNO" x="27.94" y="147.32" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="SUPPLY4" gate="GND" x="17.78" y="129.54"/>
-<instance part="R2" gate="G$1" x="76.2" y="134.62" rot="R270"/>
-<instance part="R3" gate="G$1" x="76.2" y="154.94" rot="R270"/>
+<instance part="R2" gate="G$1" x="76.2" y="134.62" rot="R270">
+<attribute name="PARTNO" x="76.2" y="134.62" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="R3" gate="G$1" x="76.2" y="154.94" rot="R270">
+<attribute name="PARTNO" x="76.2" y="154.94" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY5" gate="GND" x="76.2" y="127"/>
-<instance part="C3" gate="G$1" x="22.86" y="137.16"/>
+<instance part="C3" gate="G$1" x="22.86" y="137.16">
+<attribute name="PARTNO" x="22.86" y="137.16" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY9" gate="GND" x="22.86" y="129.54"/>
-<instance part="C5" gate="G$1" x="58.42" y="137.16"/>
+<instance part="C5" gate="G$1" x="58.42" y="137.16">
+<attribute name="PARTNO" x="58.42" y="137.16" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY10" gate="GND" x="58.42" y="129.54"/>
 <instance part="SUPPLY12" gate="GND" x="104.14" y="127"/>
-<instance part="C7" gate="G$1" x="104.14" y="147.32"/>
+<instance part="C7" gate="G$1" x="104.14" y="147.32">
+<attribute name="PARTNO" x="104.14" y="147.32" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="U$1" gate="G$1" x="193.04" y="60.96" smashed="yes">
 <attribute name="NAME" x="189.484" y="66.548" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="177.038" y="55.118" size="1.778" layer="96" font="vector" align="top-left"/>
+<attribute name="PARTNO" x="193.04" y="60.96" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="FID1" gate="G$1" x="256.54" y="172.72"/>
 <instance part="FID2" gate="G$1" x="266.7" y="172.72"/>
@@ -16675,34 +16720,58 @@ V_max = 10V
 </instance>
 <instance part="X3" gate="-2" x="167.64" y="99.06"/>
 <instance part="SUPPLY8" gate="GND" x="195.58" y="116.84" rot="R90"/>
-<instance part="LED2" gate="G$1" x="231.14" y="50.8"/>
+<instance part="LED2" gate="G$1" x="231.14" y="50.8">
+<attribute name="PARTNO" x="231.14" y="50.8" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="FB1" gate="G$1" x="5.08" y="152.4" rot="R90">
 <attribute name="PARTNO" x="5.08" y="152.4" size="1.778" layer="96" rot="R90" display="off"/>
 </instance>
 <instance part="SUPPLY16" gate="GND" x="38.1" y="58.42"/>
-<instance part="R8" gate="G$1" x="68.58" y="134.62" rot="R270"/>
+<instance part="R8" gate="G$1" x="68.58" y="134.62" rot="R270">
+<attribute name="PARTNO" x="68.58" y="134.62" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY23" gate="GND" x="68.58" y="127"/>
-<instance part="R9" gate="G$1" x="68.58" y="162.56"/>
-<instance part="R12" gate="1" x="238.76" y="147.32"/>
+<instance part="R9" gate="G$1" x="68.58" y="162.56">
+<attribute name="PARTNO" x="68.58" y="162.56" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="R12" gate="1" x="238.76" y="147.32">
+<attribute name="PARTNO" x="238.76" y="147.32" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="R19" gate="G$1" x="226.06" y="147.32" rot="R90"/>
-<instance part="R20" gate="G$1" x="226.06" y="127" rot="R90"/>
+<instance part="R20" gate="G$1" x="226.06" y="127" rot="R90">
+<attribute name="PARTNO" x="226.06" y="127" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY24" gate="GND" x="226.06" y="119.38"/>
 <instance part="SUPPLY14" gate="G$1" x="195.58" y="104.14" rot="R270"/>
-<instance part="R21" gate="G$1" x="101.6" y="99.06" rot="R90"/>
-<instance part="R7" gate="G$1" x="25.4" y="71.12" rot="R180"/>
-<instance part="R22" gate="G$1" x="15.24" y="66.04" rot="R270"/>
+<instance part="R21" gate="G$1" x="101.6" y="99.06" rot="R90">
+<attribute name="PARTNO" x="101.6" y="99.06" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="R7" gate="G$1" x="25.4" y="71.12" rot="R180">
+<attribute name="PARTNO" x="25.4" y="71.12" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="R22" gate="G$1" x="15.24" y="66.04" rot="R270">
+<attribute name="PARTNO" x="15.24" y="66.04" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="Q1" gate="G$1" x="35.56" y="73.66">
 <attribute name="PARTNO" x="35.56" y="73.66" size="1.778" layer="96" display="off"/>
 </instance>
 <instance part="SUPPLY17" gate="GND" x="15.24" y="58.42"/>
 <instance part="TP1" gate="G$1" x="200.66" y="142.24"/>
 <instance part="TP2" gate="G$1" x="200.66" y="132.08" rot="R270"/>
-<instance part="C1" gate="G$1" x="185.42" y="91.44"/>
-<instance part="C2" gate="G$1" x="193.04" y="91.44"/>
+<instance part="C1" gate="G$1" x="185.42" y="91.44">
+<attribute name="PARTNO" x="185.42" y="91.44" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="C2" gate="G$1" x="193.04" y="91.44">
+<attribute name="PARTNO" x="193.04" y="91.44" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY2" gate="GND" x="185.42" y="81.28"/>
 <instance part="SUPPLY6" gate="GND" x="193.04" y="81.28"/>
-<instance part="R1" gate="G$1" x="231.14" y="60.96" rot="R90"/>
-<instance part="R4" gate="G$1" x="53.34" y="73.66" rot="R90"/>
+<instance part="R1" gate="G$1" x="231.14" y="60.96" rot="R90">
+<attribute name="PARTNO" x="231.14" y="60.96" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="R4" gate="G$1" x="53.34" y="73.66" rot="R90">
+<attribute name="PARTNO" x="53.34" y="73.66" size="1.778" layer="96" display="off"/>
+</instance>
 <instance part="SUPPLY7" gate="GND" x="53.34" y="58.42"/>
 </instances>
 <busses>

@@ -1,0 +1,43 @@
+Partlist
+
+Exported from MHM01.brd at 02-Sep-19 11:14
+
+EAGLE Version 7.6.0 Copyright (c) 1988-2016 CadSoft
+
+Assembly variant: 
+
+Part     Value                    Package          Library        Position (mm)         Orientation
+
+C1       10u                      C1206            rcl            (18.63 16.65)         R180
+C2       10u                      C1206            rcl            (18.585 13.14)        R180
+C3       1u                       C0603K           resistor       (30.6 32.062)         R90
+C5       10u                      C0603K           resistor       (20.231 32.07)        R90
+C7       100n                     C0603K           resistor       (21.182 29.125)       R0
+FB1                               0603             microbuilder   (29.205 28.89)        R180
+FID1     FIDUCIAL""               FIDUCIAL_1MM     microbuilder   (2.845 32.495)        R0
+FID2     FIDUCIAL""               FIDUCIAL_1MM     microbuilder   (1.4 11.78)           R0
+FID4     FIDUCIAL""               FIDUCIAL_1MM     microbuilder   (31 12.5)             R0
+LED2     Red                      CHIPLED_1206     adafruit       (20.43 25.11)         R180
+PS1      AP2202K-ADJTRG1          SOT95P280X145-5N SamacSys_Parts (26.663 32.062)       R180
+Q1       Si2300DS                 SOT23            adafruit       (14.985 21.285)       R0
+R1       75                       R1206            rcl            (17.685 24.93)        R270
+R2       10k                      R0603            resistor       (26.147 37.532)       R0
+R3       3k                       R0603            resistor       (22.591 36.525)       R90
+R4       0                        R1206            rcl            (19.035 38.25)        R180
+R7       75                       R1206            rcl            (11.205 14.985)       R270
+R8       10k                      R0603            resistor       (26.145 35.1)         R0
+R9       220                      R0603            resistor       (22.59 32.04)         R90
+R12      100                      RJ9W             pot            (6.03 24.255)         R180
+R19      DNI                      R1206            rcl            (4.59 28.17)          R0
+R20      75                       R1206            rcl            (3.195 14.94)         R270
+R21      75                       R1206            rcl            (7.2 15.075)          R90
+R22      10K                      R1206            rcl            (14.31 15.03)         R90
+TP1      TPTP10R                  TP10R            testpad        (4.32 11.745)         R0
+TP2      TPTP10R                  TP10R            testpad        (6.165 11.745)        R0
+TP6      TPTP10R                  TP10R            testpad        (11.88 20.16)         R0
+TP7      TPTP10R                  TP10R            testpad        (28.8 12.645)         R0
+U$1      CONN_03X2_WE_61200621621 WE_61200621621   FRA_eagle_lib  (26.942 20.816)       R0
+U2       FIGARO_SR-7              FIGARO-SR7       FRA_eagle_lib  (12.06 33.615)        R180
+X1       TB001-500-02BE           W237-102         con-wago-500   (6.165 6.8)           R0
+X2       TB001-500-02BE           W237-102         con-wago-500   (16.165 6.8)          R0
+X3       TB001-500-02BE           W237-102         con-wago-500   (26.165 6.8)          R0
