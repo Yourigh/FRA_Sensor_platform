@@ -37,7 +37,7 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.2"
+#define FW_VERSION "V1.3"
 /*
 V1.2 changelog
 *LMP registers readback and error report
@@ -265,7 +265,7 @@ void loop(){
   uint32_t meas_sample_number = 0; //0 is measurement not active, from 1 on - sample number
   uint8_t port0_check;
   uint8_t port1_check;
-  uint8_t conf_set = 0;
+  uint8_t conf_set = 0; // raw received configuration set byte
 
   //FSM states
   enum states { //FSM states
