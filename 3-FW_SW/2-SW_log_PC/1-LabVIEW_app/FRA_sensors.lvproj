@@ -36,6 +36,7 @@
 		<Item Name="Sensor_power_ctrl.ctl" Type="VI" URL="../subVIs/Sensor_power_ctrl.ctl"/>
 		<Item Name="Split number byte.vi" Type="VI" URL="../subVIs/Split number byte.vi"/>
 		<Item Name="Status send Error cluster.vi" Type="VI" URL="../subVIs/Status send Error cluster.vi"/>
+		<Item Name="Tester_Sensor_data_to_value.vi" Type="VI" URL="../subVIs/Tester_Sensor_data_to_value.vi"/>
 		<Item Name="UDP_read_datagram.ctl" Type="VI" URL="../subVIs/UDP_read_datagram.ctl"/>
 		<Item Name="UI_states.ctl" Type="VI" URL="../subVIs/UI_states.ctl"/>
 		<Item Name="Unit_select_s_m.ctl" Type="VI" URL="../subVIs/Unit_select_s_m.ctl"/>
