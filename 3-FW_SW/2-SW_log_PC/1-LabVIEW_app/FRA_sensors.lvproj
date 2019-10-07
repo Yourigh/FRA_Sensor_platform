@@ -15,6 +15,7 @@
 		<Item Name="Add to array if not in array.vi" Type="VI" URL="../subVIs/Add to array if not in array.vi"/>
 		<Item Name="Add_row_to_string_indicator.vi" Type="VI" URL="../subVIs/Add_row_to_string_indicator.vi"/>
 		<Item Name="Create_data_log_file.vi" Type="VI" URL="../subVIs/Create_data_log_file.vi"/>
+		<Item Name="Data_conv_UI.ctl" Type="VI" URL="../subVIs/Data_conv_UI.ctl"/>
 		<Item Name="error_codes.csv" Type="Document" URL="../error_codes.csv"/>
 		<Item Name="FRA_UDP_get_time.vi" Type="VI" URL="../subVIs/FRA_UDP_get_time.vi"/>
 		<Item Name="FRA_UDP_get_timestamp_msg_type.vi" Type="VI" URL="../subVIs/FRA_UDP_get_timestamp_msg_type.vi"/>
@@ -40,6 +41,7 @@
 		<Item Name="UDP_read_datagram.ctl" Type="VI" URL="../subVIs/UDP_read_datagram.ctl"/>
 		<Item Name="UI_states.ctl" Type="VI" URL="../subVIs/UI_states.ctl"/>
 		<Item Name="Unit_select_s_m.ctl" Type="VI" URL="../subVIs/Unit_select_s_m.ctl"/>
+		<Item Name="Untitled 1.vi" Type="VI" URL="../subVIs/Untitled 1.vi"/>
 		<Item Name="Write_data_to_file_time_sender_dtgn.vi" Type="VI" URL="../subVIs/Write_data_to_file_time_sender_dtgn.vi"/>
 		<Item Name="Write_error_to_error_indicator.vi" Type="VI" URL="../subVIs/Write_error_to_error_indicator.vi"/>
 		<Item Name="Write_sensor_power.vi" Type="VI" URL="../subVIs/Write_sensor_power.vi"/>
