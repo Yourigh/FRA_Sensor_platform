@@ -14,8 +14,15 @@
 		<Item Name="01_FRA_Data_converter.vi" Type="VI" URL="../01_FRA_Data_converter.vi"/>
 		<Item Name="Add to array if not in array.vi" Type="VI" URL="../subVIs/Add to array if not in array.vi"/>
 		<Item Name="Add_row_to_string_indicator.vi" Type="VI" URL="../subVIs/Add_row_to_string_indicator.vi"/>
+		<Item Name="Converter_add_to_sum_array.vi" Type="VI" URL="../subVIs/Converter_add_to_sum_array.vi"/>
 		<Item Name="Converter_app_spec_set.ctl" Type="VI" URL="../subVIs/Converter_app_spec_set.ctl"/>
+		<Item Name="Converter_average_fom_sum_array.vi" Type="VI" URL="../subVIs/Converter_average_fom_sum_array.vi"/>
+		<Item Name="Converter_baseline_avg_to_string_indicator.vi" Type="VI" URL="../subVIs/Converter_baseline_avg_to_string_indicator.vi"/>
+		<Item Name="Converter_baseline_indicator.ctl" Type="VI" URL="../subVIs/Converter_baseline_indicator.ctl"/>
 		<Item Name="Converter_calc_app-spec.vi" Type="VI" URL="../subVIs/Converter_calc_app-spec.vi"/>
+		<Item Name="Converter_get_baseline_DBL_arr.vi" Type="VI" URL="../subVIs/Converter_get_baseline_DBL_arr.vi"/>
+		<Item Name="Converter_get_baseline_str_arr.vi" Type="VI" URL="../subVIs/Converter_get_baseline_str_arr.vi"/>
+		<Item Name="Converter_sample_is_in_selected_time.vi" Type="VI" URL="../subVIs/Converter_sample_is_in_selected_time.vi"/>
 		<Item Name="Converter_search_input_unit_get_column.vi" Type="VI" URL="../subVIs/Converter_search_input_unit_get_column.vi"/>
 		<Item Name="Create_data_log_file.vi" Type="VI" URL="../subVIs/Create_data_log_file.vi"/>
 		<Item Name="Data_conv_UI.ctl" Type="VI" URL="../subVIs/Data_conv_UI.ctl"/>
@@ -40,6 +47,8 @@
 		<Item Name="Sensor_power_ctrl.ctl" Type="VI" URL="../subVIs/Sensor_power_ctrl.ctl"/>
 		<Item Name="Split number byte.vi" Type="VI" URL="../subVIs/Split number byte.vi"/>
 		<Item Name="Status send Error cluster.vi" Type="VI" URL="../subVIs/Status send Error cluster.vi"/>
+		<Item Name="Sum_array_for_avg_baseline.ctl" Type="VI" URL="../subVIs/Sum_array_for_avg_baseline.ctl"/>
+		<Item Name="Test_baseline_subVIs.vi" Type="VI" URL="../subVIs/Test_baseline_subVIs.vi"/>
 		<Item Name="Tester_Sensor_data_to_value.vi" Type="VI" URL="../subVIs/Tester_Sensor_data_to_value.vi"/>
 		<Item Name="UDP_read_datagram.ctl" Type="VI" URL="../subVIs/UDP_read_datagram.ctl"/>
 		<Item Name="UI_states.ctl" Type="VI" URL="../subVIs/UI_states.ctl"/>
@@ -75,6 +84,7 @@
 				<Item Name="Longest Line Length in Pixels.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Longest Line Length in Pixels.vi"/>
 				<Item Name="LVBoundsTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVBoundsTypeDef.ctl"/>
 				<Item Name="NI_Gmath.lvlib" Type="Library" URL="/&lt;vilib&gt;/gmath/NI_Gmath.lvlib"/>
+				<Item Name="NI_Matrix.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/Matrix/NI_Matrix.lvlib"/>
 				<Item Name="Not Found Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Not Found Dialog.vi"/>
 				<Item Name="Open File+.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Open File+.vi"/>
 				<Item Name="Read File+ (string).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Read File+ (string).vi"/>
