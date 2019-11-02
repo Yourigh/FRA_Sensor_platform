@@ -1,0 +1,3 @@
+V1.2 - electrochemical sensor port A3.1 configuration fixed
+V1.3 - updated configuration sets
+V1.4 - added configuration set 6

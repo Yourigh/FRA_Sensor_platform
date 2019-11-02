@@ -37,8 +37,10 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.3"
+#define FW_VERSION "V1.4"
 /*
+V1.4 changelog
+added configuration set 6
 V1.2 changelog
 *LMP registers readback and error report
 *configuration sets adjusted
