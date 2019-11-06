@@ -37,8 +37,10 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.4"
+#define FW_VERSION "V1.5"
 /*
+V1.5 changelog
+changed A1.3 REFCN register, fixed bug on conf set 5 and 6 (0x04 instead of 0x40)
 V1.4 changelog
 added configuration set 6
 V1.2 changelog

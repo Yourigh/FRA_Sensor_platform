@@ -106,6 +106,45 @@
 			<Item Name="lvanlys.dll" Type="Document" URL="/&lt;resource&gt;/lvanlys.dll"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
+			<Item Name="FRA_logger_191106" Type="EXE">
+				<Property Name="App_copyErrors" Type="Bool">true</Property>
+				<Property Name="App_INI_aliasGUID" Type="Str">{230494EF-83E0-47FC-A418-A11F9226F278}</Property>
+				<Property Name="App_INI_GUID" Type="Str">{55200340-1AD0-47E1-B175-0720E9A6A238}</Property>
+				<Property Name="App_serverConfig.httpPort" Type="Int">8002</Property>
+				<Property Name="Bld_autoIncrement" Type="Bool">true</Property>
+				<Property Name="Bld_buildCacheID" Type="Str">{3D5F951C-1FF9-4E51-BB95-41B0A0E692BA}</Property>
+				<Property Name="Bld_buildSpecName" Type="Str">FRA_logger_191106</Property>
+				<Property Name="Bld_excludeInlineSubVIs" Type="Bool">true</Property>
+				<Property Name="Bld_excludeLibraryItems" Type="Bool">true</Property>
+				<Property Name="Bld_excludePolymorphicVIs" Type="Bool">true</Property>
+				<Property Name="Bld_localDestDir" Type="Path">../builds/NI_AB_PROJECTNAME/FRA_logger_191106</Property>
+				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
+				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
+				<Property Name="Bld_previewCacheID" Type="Str">{B84C39F5-0374-4E5C-B683-A4C308B68D58}</Property>
+				<Property Name="Bld_version.build" Type="Int">2</Property>
+				<Property Name="Bld_version.major" Type="Int">1</Property>
+				<Property Name="Destination[0].destName" Type="Str">FRA_logger.exe</Property>
+				<Property Name="Destination[0].path" Type="Path">../builds/NI_AB_PROJECTNAME/FRA_logger_191106/FRA_logger.exe</Property>
+				<Property Name="Destination[0].preserveHierarchy" Type="Bool">true</Property>
+				<Property Name="Destination[0].type" Type="Str">App</Property>
+				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
+				<Property Name="Destination[1].path" Type="Path">../builds/NI_AB_PROJECTNAME/FRA_logger_191106/data</Property>
+				<Property Name="DestinationCount" Type="Int">2</Property>
+				<Property Name="Source[0].itemID" Type="Str">{C1C046DC-7091-44C3-B485-F7339759BA27}</Property>
+				<Property Name="Source[0].type" Type="Str">Container</Property>
+				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[1].itemID" Type="Ref">/My Computer/00_FRA_sensors_main.vi</Property>
+				<Property Name="Source[1].sourceInclusion" Type="Str">TopLevel</Property>
+				<Property Name="Source[1].type" Type="Str">VI</Property>
+				<Property Name="SourceCount" Type="Int">2</Property>
+				<Property Name="TgtF_companyName" Type="Str">Electronics design solutions s.r.o.</Property>
+				<Property Name="TgtF_fileDescription" Type="Str">FRA_logger_191106</Property>
+				<Property Name="TgtF_internalName" Type="Str">FRA_logger_191106</Property>
+				<Property Name="TgtF_legalCopyright" Type="Str">GNU GPLv2</Property>
+				<Property Name="TgtF_productName" Type="Str">FRA_logger_191106</Property>
+				<Property Name="TgtF_targetfileGUID" Type="Str">{87A3AA43-6AB5-437E-8204-FF8BCE572319}</Property>
+				<Property Name="TgtF_targetfileName" Type="Str">FRA_logger.exe</Property>
+			</Item>
 			<Item Name="FRAlog_data_converter" Type="EXE">
 				<Property Name="App_copyErrors" Type="Bool">true</Property>
 				<Property Name="App_INI_aliasGUID" Type="Str">{9471C769-64FB-48FD-BA7C-30FD7043E1CB}</Property>
