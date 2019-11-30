@@ -37,8 +37,10 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.5"
+#define FW_VERSION "V1.6"
 /*
+V1.6 changelog
+NOT NOT NOT fixed SDFat lib dependency - now included in the project,
 V1.5 changelog
 changed A1.3 REFCN register, fixed bug on conf set 5 and 6 (0x04 instead of 0x40)
 V1.4 changelog

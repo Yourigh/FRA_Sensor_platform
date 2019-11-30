@@ -252,7 +252,7 @@ void ENC28J60::initSPI () {
 	digitalWrite(selectPin, HIGH);
 	SpiPtr->begin();
 	
-	if (!EEPROM.begin(1024)) 
+	if (!EEPROM.begin(1024))
 	{
 		Serial.println("Failed to initialise EEPROM");
 		Serial.println("Restarting...");
