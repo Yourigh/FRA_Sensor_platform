@@ -242,7 +242,7 @@ static byte selectPin;
 void ENC28J60::initSPI () {
 
 	#ifdef SPI_VSPI 
-		selectPin = 5;
+		selectPin = 23; //should be 23!, worked with 5 though
 		SpiPtr = new SPIClass(VSPI); //SCLK = 18, MISO = 19, MOSI = 23, SS = 5
 	#else 		
 		selectPin = 15;
@@ -250,8 +250,9 @@ void ENC28J60::initSPI () {
 	#endif
 	pinMode(selectPin, OUTPUT);
 	digitalWrite(selectPin, HIGH);
+
 	SpiPtr->begin();
-	
+
 	if (!EEPROM.begin(1024))
 	{
 		Serial.println("Failed to initialise EEPROM");
