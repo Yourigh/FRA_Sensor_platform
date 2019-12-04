@@ -2,8 +2,8 @@
 Analog and Digital datalogger with 16 analog channels (16bit) with programmable gain amplifier (auto ranged from 0-256mV to 0-5V).
 
 # Main board picture
-![Assembled main board](1-SystemDocs/pictures/Main_noModule.jpg)
-![Assembled main board with Ethernet controller](1-SystemDocs/pictures/Main_wModule.jpg)
+![Assembled main board](1-SystemDocs/pictures/Main_noModule2.jpg)
+![Assembled main board with Ethernet controller](1-SystemDocs/pictures/Main_wModule2.jpg)
 
 # Development tools
 Built on ESP32 module and Arduino framework using Platformio IDE.
