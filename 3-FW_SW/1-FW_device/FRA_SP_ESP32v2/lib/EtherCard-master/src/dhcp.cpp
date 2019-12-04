@@ -32,6 +32,7 @@
 #define DHCP_RELEASE 7
 #define DHCP_TIMEOUT 60000 //in ms
 #define PIN_LED 16 //added JR
+#define PIN_BTN1 34 //added JR
 
 // DHCP States for access in applications (ref RFC 2131)
 enum {
@@ -373,6 +374,12 @@ bool EtherCard::dhcpSetup (const char *hname, bool fromRam) {
             if (uint16_t(millis()) > (LED_timing + 200)){
                 LED_timing = uint16_t(millis());
                 digitalWrite(PIN_LED,1); //shine LED
+            }
+        }
+        if (digitalRead(PIN_BTN1)==0){
+            delay(1000);
+            if (digitalRead(PIN_BTN1)==0) {
+                return  0;
             }
         }       
     }

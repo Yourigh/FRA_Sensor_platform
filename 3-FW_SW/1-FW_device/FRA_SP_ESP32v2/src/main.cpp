@@ -37,10 +37,13 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.6"
+#define FW_VERSION "V1.7"
 /*
+V1.7 changelog
+Button can now start and stop measurement (before only start was possible)
+Static IP will be used if button pressed at least 1s on DHCP wait time and after wait time.
 V1.6 changelog
-NOT NOT NOT fixed SDFat lib dependency - now included in the project,
+SDFat lib dependency fixed in project - now included in the project, EEPROM init failed and was skipped, test ok
 V1.5 changelog
 changed A1.3 REFCN register, fixed bug on conf set 5 and 6 (0x04 instead of 0x40)
 V1.4 changelog
@@ -88,21 +91,13 @@ char SDbuf[300];//limited to 299 characters
 #define error(s) sd.errorHalt(F(s))
 
 //For Ethernet
-#define STATIC 0  // set to 1 to disable DHCP (adjust myip/gwip values below)
-//without DHCP there was a problem with UDP
-#if STATIC
-// ethernet interface ip address
-static byte myip[] = { 192,168,0,10 };
-// gateway ip address
-static byte gwip[] = { 192,168,0,2 };
-#endif
 // ethernet mac address - must be unique on your network
 uint8_t chipid[6];
 byte Ethernet::buffer[500]; // tcp/ip send and receive buffer
 //UDP sender
 const int dstPort PROGMEM = 65511;
 const int srcPort PROGMEM = 65500;
-uint8_t destIp[] = { 192,168,0,5 }; // UDP unicast or broadcast, this ip does not matter, will be broadcast on given IP network by DHCP
+uint8_t destIp[] = { 192,168,0,255 }; // UDP unicast or broadcast, this ip does not matter, will be broadcast on given IP network by DHCP
 uint8_t sendUDP_Buffer[100]; //send function limited to 220
 uint8_t sendUDP_len; //length of data is going always along the array
 uint8_t receiveUDP_Buffer[100]; 
@@ -169,17 +164,25 @@ void setup(){
     Serial.println(F("Failed to access Ethernet controller"));
     log_error_code(1);
   }
-#if STATIC
-  ether.staticSetup(myip, gwip);
-#else
+
   if (error_code[0]==0){
     Serial.println(F("Waiting for DHCP...")); //60s timeout
-    if (!ether.dhcpSetup()){ //blocking
-      Serial.println(F("DHCP failed"));
+    if (!ether.dhcpSetup()){ //blocking, will wait for DHCP. 
+    //if button was pressed in 60s wait time at least for 1s,
+    //waiting will be cancelled and static ip
+    //will be used (192.168.1.200,gw .1)
+    //if 60s period passes, static will be set.
+      Serial.println(F("DHCP failed, using static"));
+      static byte smyip[] = { 192,168,5,200 };
+      static byte sgwip[] = { 192,168,5,1 };
+      static byte sdns[] = { 192,168,5,1 };
+      static byte smask[] = { 255,255,255,0 };
+      ether.staticSetup(smyip, sgwip,sdns,smask);
+      //for static connection to computer CROSSOVER cable have to be used.
       log_error_code(2);
     }
   }
-#endif
+
   Serial.printf("ETH  MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",chipid[0], chipid[1], chipid[2], chipid[3], chipid[4], chipid[5]);
   chipid[5]--;
   Serial.printf("WiFi MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",chipid[0], chipid[1], chipid[2], chipid[3], chipid[4], chipid[5]);
@@ -669,8 +672,16 @@ void loop(){
         delay(10);
       }
       if (ton==750) {
-        state = s11_start_measurement;
-        PRINTDEBUG("Starting measurement on button request\n");
+        if (meas_sample_number == 0){ //measurement not active
+          state = s11_start_measurement;
+          PRINTDEBUG("Starting measurement on button request\n");
+        }
+        else{ //measurement active
+          meas_sample_number = 0; //stop sampling
+          if (use_sd) 
+            logfile.close();
+          PRINTDEBUG("Stopping measurement on button request\n");
+        }
       }
       if (ton==100) hard_restart();
     }

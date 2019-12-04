@@ -255,7 +255,7 @@ void ENC28J60::initSPI () {
 
 	if (!EEPROM.begin(1024))
 	{
-		Serial.println("Failed to initialise EEPROM"); //BUG - no cause found, everything seems to work
+		Serial.println("Failed to initialise EEPROM (known bug)"); //BUG - no cause found, everything seems to work
 		//Serial.println("Restarting...");
 		delay(1000);
 		//ESP.restart(); //was constantly restarting
