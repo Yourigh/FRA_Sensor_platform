@@ -3,11 +3,11 @@
 <eagle version="9.5.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="no"/>
+<setting alwaysvectorfont="yes"/>
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.127" unitdist="mm" unit="mm" style="lines" multiple="5" display="no" altdistance="5" altunitdist="mil" altunit="mm"/>
+<grid distance="50" unitdist="mil" unit="mil" style="lines" multiple="1" display="no" altdistance="5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -122,7 +122,7 @@
 <layer number="154" name="FabDoc2" color="7" fill="1" visible="no" active="no"/>
 <layer number="155" name="FabDoc3" color="7" fill="1" visible="no" active="no"/>
 <layer number="199" name="Contour" color="7" fill="1" visible="no" active="no"/>
-<layer number="200" name="200bmp" color="57" fill="10" visible="yes" active="yes"/>
+<layer number="200" name="200bmp" color="57" fill="10" visible="no" active="yes"/>
 <layer number="201" name="201bmp" color="7" fill="1" visible="no" active="yes"/>
 <layer number="202" name="202bmp" color="3" fill="10" visible="no" active="no"/>
 <layer number="203" name="203bmp" color="4" fill="10" visible="no" active="no"/>
@@ -2360,9 +2360,9 @@
 <text x="45.048" y="20.168" size="1" layer="52" font="vector" ratio="15" rot="MR0">SCL_5V</text>
 <text x="50.72" y="24.968" size="1" layer="52" font="vector" ratio="15" rot="MR0">5V</text>
 <text x="52.416" y="18.088" size="1" layer="52" font="vector" ratio="15" rot="MR0">5V/HiZ</text>
-<text x="20" y="27" size="1.5" layer="51" font="vector" ratio="15">Electronics design solutions s.r.o.</text>
-<text x="20" y="29" size="2" layer="51" font="vector" ratio="15">FRA Sensor unit junction board</text>
-<text x="20" y="25" size="1.5" layer="51" font="vector" ratio="15">J. Repcik 03/2020</text>
+<text x="22.54" y="27" size="1.5" layer="51" font="vector" ratio="15">Electronics design solutions s.r.o.</text>
+<text x="22.54" y="29" size="2" layer="51" font="vector" ratio="15">FRA Sensor unit junction board</text>
+<text x="22.54" y="25" size="1.5" layer="51" font="vector" ratio="15">J. Repcik 03/2020</text>
 <dimension x1="100" y1="55" x2="0" y2="55" x3="50" y3="59" textsize="1.778" layer="47"/>
 <dimension x1="100" y1="0" x2="100" y2="55" x3="106" y3="27.5" textsize="1.778" layer="47"/>
 <circle x="5" y="49" radius="2.5" width="2.54" layer="39"/>

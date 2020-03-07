@@ -1,0 +1,5 @@
+Board Size: 93x100mm
+stackup thickness: 1.6mm
+2 layers
+double side TH assembly
+HAL surface is OK.
