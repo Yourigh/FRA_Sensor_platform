@@ -7,3 +7,5 @@ SDFat lib dependency fixed in project - now included in the project, EEPROM init
 V1.7 changelog
 Button can now start and stop measurement (before only start was possible)
 Static IP will be used if button pressed at least 1s on DHCP wait time and after wait time.
+V1.8 changelog
+*confuguration set 7 added (4xO2 sensor on all A1 ports)
