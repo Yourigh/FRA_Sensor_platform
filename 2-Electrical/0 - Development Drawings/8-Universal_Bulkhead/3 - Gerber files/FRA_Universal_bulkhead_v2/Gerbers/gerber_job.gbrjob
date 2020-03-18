@@ -1,0 +1,24 @@
+{
+    "Header": {
+        "Comment": "All values are metric (mm)",
+        "CreationDate": "2020-03-07T17:18:46Z",
+        "GenerationSoftware": {
+            "Application": "EAGLE",
+            "Vendor": "Autodesk",
+            "Version": "9.5.2"
+        },
+        "Part": "Single"
+    },
+    "Overall": {
+        "BoardThickness": 1.67,
+        "LayerNumber": 2,
+        "Name": {
+            "ProjectId": "FRA_bulkhead_v2"
+        },
+        "Owner": "Juraj Repik <jurajrepcik@gmail.com>",
+        "Size": {
+            "X": 112,
+            "Y": 83
+        }
+    }
+}

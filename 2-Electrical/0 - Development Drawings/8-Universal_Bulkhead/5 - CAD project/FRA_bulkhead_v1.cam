@@ -175,9 +175,10 @@
                     },
                     "filename_format": "%PREFIX/silkscreen_bottom.SSB",
                     "layers": [
+                        20,
                         22,
                         26,
-                        20
+                        52
                     ],
                     "milling": false,
                     "name": "Silkscreen Bottom",
@@ -203,7 +204,7 @@
                         "rotate": false,
                         "upside_down": false
                     },
-                    "filename_format": "%PREFIX/drill_%FROM_%TO.xln",
+                    "filename_format": "%PREFIX/xln_drill_%FROM_%TO.DRD",
                     "name": "Auto Drill",
                     "type": "autodrills"
                 }
@@ -236,7 +237,7 @@
             ]
         }
     ],
-    "timestamp": "2020-03-07T14:49:37",
+    "timestamp": "2020-03-07T18:08:20",
     "type": "EAGLE CAM job",
     "units": "metric",
     "version": "9.2.0"

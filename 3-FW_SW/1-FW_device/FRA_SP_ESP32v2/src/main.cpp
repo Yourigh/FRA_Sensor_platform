@@ -37,8 +37,10 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.7"
+#define FW_VERSION "V1.8"
 /*
+V1.8 changelog
+*confuguration set 7 added (4xO2 sensor on all A1 ports)
 V1.7 changelog
 Button can now start and stop measurement (before only start was possible)
 Static IP will be used if button pressed at least 1s on DHCP wait time and after wait time.
@@ -51,8 +53,8 @@ added configuration set 6
 V1.2 changelog
 *LMP registers readback and error report
 *configuration sets adjusted
-
 */
+
 //GPIO expander
 #include <Wire.h>
 #define IOEXP_ADDR 0x20 //0x75 debug board, 0x20 final
