@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.2">
+<eagle version="9.6.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -522,7 +522,7 @@ Source: &lt;a href="https://componentsearchengine.com/Datasheets/1/SSW-103-01-F-
 </libraries>
 <attributes>
 <attribute name="CNAME" value="FRA Junction Board"/>
-<attribute name="CREVISION" value="01"/>
+<attribute name="CREVISION" value="02"/>
 </attributes>
 <variantdefs>
 </variantdefs>

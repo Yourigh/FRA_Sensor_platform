@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.2">
+<eagle version="9.6.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -1125,7 +1125,7 @@
 <text x="27.416" y="23.088" size="1" layer="52" font="vector" ratio="15" rot="MR0">5V/HiZ</text>
 <text x="7.54" y="32" size="1.5" layer="51" font="vector" ratio="15">Electronics design solutions s.r.o.</text>
 <text x="7.54" y="34" size="2" layer="51" font="vector" ratio="15">Breakout 6U</text>
-<text x="7.54" y="30" size="1.5" layer="51" font="vector" ratio="15">J. Repcik 03/2020</text>
+<text x="7.54" y="30" size="1.5" layer="51" font="vector" ratio="15">J. Repcik 12/2020</text>
 <wire x1="19.001" y1="27.86" x2="18.493" y2="27.86" width="0.3048" layer="51"/>
 <wire x1="18.493" y1="27.86" x2="18.366" y2="27.733" width="0.3048" layer="51"/>
 <wire x1="18.366" y1="27.733" x2="18.366" y2="27.352" width="0.3048" layer="51"/>
@@ -1144,20 +1144,20 @@
 GND
 ---
 5V
-
+---
 A3.2
 ---
 GND
 ---
 5V
 ---
-A2.2
+A2.3
 ---
 GND
 ---
 5V
 ---
-A2.4
+A2.0
 ---
 GND</text>
 <text x="48.871" y="64.925" size="1.66" layer="51" font="vector" ratio="15" rot="R90" align="bottom-right">---
@@ -1171,13 +1171,13 @@ GND
 ---
 5V
 ---
-A2.1
+A2.2
 ---
 GND
 ---
 5V
 ---
-A2.3
+A2.1
 ---
 GND</text>
 <wire x1="17.985" y1="27.606" x2="17.35" y2="27.606" width="0.3048" layer="51"/>

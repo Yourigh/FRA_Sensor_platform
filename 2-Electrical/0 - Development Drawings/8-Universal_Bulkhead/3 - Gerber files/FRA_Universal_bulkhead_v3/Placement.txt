@@ -1,0 +1,53 @@
+Partlist
+
+Exported from FRA_bulkhead_v2.brd at 04.12.2020 19:24
+
+EAGLE Version 9.6.2 Copyright (c) 1988-2020 Autodesk, Inc.
+
+Assembly variant: 
+
+Part     Value                             Package                         Library          Position (mm)         Orientation
+
+FAN_5V   2pin                              1X02                            pinhead          (28 84.84)            MR90
+J9       4pin                              1X04                            pinhead          (34 95)               MR90
+JP1      JUMPER-SMT_3_NO_NO_SILK           SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (61 82)               R90
+JP2      JUMPER-SMT_3_NO_NO_SILK           SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (96 82)               R90
+JP3      JUMPER-SMT_3_NO_NO_SILK           SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (114 82)              R90
+JP4      JUMPER-SMT_3_NO_NO_SILK           SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (78 82)               R90
+JP5      JUMPER-SMT_3_NO_NO_SILK           SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (79 95)               R90
+JP6      JUMPER-SMT_3_NO_NO_SILK           SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (114 95)              R90
+JP7      JUMPER-SMT_3_NO_NO_SILK           SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (96 95)               R90
+JP8      JUMPER-SMT_3_NO_NO_SILK           SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (61 95)               R90
+JP10     JUMPER-SMT_3_NO_NO_SILK           SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (44 82)               R90
+JP11     JUMPER-SMT_3_NO_NO_SILK           SMT-JUMPER_3_0-NO_TRACE_NO-SILK SparkFun-Jumpers (44 95)               R90
+LED_HDR  2pin                              1X02                            pinhead          (28 92.1652)          MR270
+LED_HDR1 2pin                              1X02                            pinhead          (40 121)              R0
+S_D1     4pin                              1X04                            pinhead          (34.086 81.8272)      MR270
+S_D2     4pin                              1X04                            pinhead          (29 66)               R270
+S_D3     4pin                              1X04                            pinhead          (34 66)               R270
+U$1      CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (50 105)              R90
+U$2      CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (50 71)               R90
+U$3      CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (50 95)               MR270
+U$4      CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (67.5 105)            R90
+U$5      CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (67.5 71)             R90
+U$6      CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (102.5 105)           R90
+U$8      CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (50 82)               MR270
+U$9      CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (67.5 95)             MR270
+U$10     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (67.5 82)             MR270
+U$11     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (102.5 95)            MR270
+U$12     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (102.5 82)            MR270
+U$13     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (120 95)              MR270
+U$14     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (120 82)              MR270
+U$15     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (85 95)               MR270
+U$16     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (85 82)               MR270
+U$17     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (102.5 71)            R90
+U$18     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (120 105)             R90
+U$19     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (120 71)              R90
+U$20     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (85 105)              R90
+U$21     CONN_03X2_WE_61200621621          WE_61200621621                  FRA_eagle_lib    (85 71)               R90
+U1       TB003V-500-P05BERIGHTANGLE-NORMAL TB003-500-P05BE                 SamacSys_Parts   (120 115)             R180
+U2       TB003V-500-P10BERIGHTANGLE-NORMAL TB003-500-P10BE                 SamacSys_Parts   (95 115)              R180
+U3       TB003V-500-P05BERIGHTANGLE-NORMAL TB003-500-P05BE                 SamacSys_Parts   (131 78)              R90
+U22      TB003V-500-P05BERIGHTANGLE-NORMAL TB003-500-P05BE                 SamacSys_Parts   (50 57.368)           R0
+U23      TB003V-500-P10BERIGHTANGLE-NORMAL TB003-500-P10BE                 SamacSys_Parts   (75 57.368)           R0
+X1       TB001-500-02BE                    W237-102                        con-wago-500     (31.715 108.4307)     R270

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.2">
+<eagle version="9.6.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -1039,7 +1039,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </libraries>
 <attributes>
 <attribute name="CNAME" value="FRA universal bulkhead"/>
-<attribute name="CREVISION" value="02"/>
+<attribute name="CREVISION" value="03"/>
 </attributes>
 <variantdefs>
 </variantdefs>

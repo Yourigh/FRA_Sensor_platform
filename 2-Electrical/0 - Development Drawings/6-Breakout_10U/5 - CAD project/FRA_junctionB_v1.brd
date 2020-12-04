@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.5.2">
+<eagle version="9.6.2">
 <drawing>
 <settings>
-<setting alwaysvectorfont="yes"/>
+<setting alwaysvectorfont="no"/>
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
@@ -34,7 +34,7 @@
 <layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
 <layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="yes"/>
 <layer number="25" name="tNames" color="58" fill="1" visible="yes" active="yes"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="no" active="yes"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
@@ -2362,7 +2362,7 @@
 <text x="52.416" y="18.088" size="1" layer="52" font="vector" ratio="15" rot="MR0">5V/HiZ</text>
 <text x="22.54" y="27" size="1.5" layer="51" font="vector" ratio="15">Electronics design solutions s.r.o.</text>
 <text x="22.54" y="29" size="2" layer="51" font="vector" ratio="15">FRA Sensor unit junction board</text>
-<text x="22.54" y="25" size="1.5" layer="51" font="vector" ratio="15">J. Repcik 03/2020</text>
+<text x="22.54" y="25" size="1.5" layer="51" font="vector" ratio="15">J. Repcik 12/2020</text>
 <dimension x1="100" y1="55" x2="0" y2="55" x3="50" y3="59" textsize="1.778" layer="47"/>
 <dimension x1="100" y1="0" x2="100" y2="55" x3="106" y3="27.5" textsize="1.778" layer="47"/>
 <circle x="5" y="49" radius="2.5" width="2.54" layer="39"/>
@@ -2399,13 +2399,13 @@ noise</text>
 2A</text>
 <text x="85.871" y="6.284" size="1.66" layer="51" font="vector" ratio="15" rot="R90" align="bottom-right">5V
 ---
-A1.2
+A1.3
 ---
 GND
 ---
 5V
 ---
-A1.4
+A1.0
 ---
 GND
 ---
@@ -2417,24 +2417,24 @@ GND
 ---
 5V
 ---
-A2.2
+A2.3
 ---
 GND
 ---
 5V
 ---
-A2.4
+A2.0
 ---
 GND</text>
 <text x="85.871" y="54.925" size="1.66" layer="51" font="vector" ratio="15" rot="R90" align="bottom-right">5V
 ---
-A1.1
+A1.2
 ---
 GND
 ---
 5V
 ---
-A1.3
+A1.1
 ---
 GND
 ---
@@ -2446,13 +2446,13 @@ GND
 ---
 5V
 ---
-A2.1
+A2.2
 ---
 GND
 ---
 5V
 ---
-A2.3
+A2.1
 ---
 GND</text>
 <wire x1="6.985" y1="22.606" x2="6.35" y2="22.606" width="0.3048" layer="51"/>
