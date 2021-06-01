@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"ftd2xx.h": "c",
+			"libmpsse_spi.h": "c"
+		}
+	}
+}
