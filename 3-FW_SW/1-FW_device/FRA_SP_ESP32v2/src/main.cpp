@@ -37,8 +37,10 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.8"
+#define FW_VERSION "V1.9"
 /*
+V1.9 changelog
+*configuration sets adjusted - added set 8 (10x H2 sensor)
 V1.8 changelog
 *confuguration set 7 added (4xO2 sensor on all A1 ports)
 V1.7 changelog
