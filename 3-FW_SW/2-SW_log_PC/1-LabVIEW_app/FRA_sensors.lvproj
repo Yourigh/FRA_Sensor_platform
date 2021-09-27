@@ -14,6 +14,7 @@
 		<Item Name="01_FRA_Data_converter.vi" Type="VI" URL="../01_FRA_Data_converter.vi"/>
 		<Item Name="Add to array if not in array.vi" Type="VI" URL="../subVIs/Add to array if not in array.vi"/>
 		<Item Name="Add_row_to_string_indicator.vi" Type="VI" URL="../subVIs/Add_row_to_string_indicator.vi"/>
+		<Item Name="Convert_calc_app-spec_preview_graphs.vi" Type="VI" URL="../subVIs/Convert_calc_app-spec_preview_graphs.vi"/>
 		<Item Name="Converter_add_to_sum_array.vi" Type="VI" URL="../subVIs/Converter_add_to_sum_array.vi"/>
 		<Item Name="Converter_app_spec_set.ctl" Type="VI" URL="../subVIs/Converter_app_spec_set.ctl"/>
 		<Item Name="Converter_average_fom_sum_array.vi" Type="VI" URL="../subVIs/Converter_average_fom_sum_array.vi"/>
@@ -25,6 +26,7 @@
 		<Item Name="Converter_sample_is_in_selected_time.vi" Type="VI" URL="../subVIs/Converter_sample_is_in_selected_time.vi"/>
 		<Item Name="Converter_search_input_unit_get_column.vi" Type="VI" URL="../subVIs/Converter_search_input_unit_get_column.vi"/>
 		<Item Name="Create_data_log_file.vi" Type="VI" URL="../subVIs/Create_data_log_file.vi"/>
+		<Item Name="Custom-preview-graph-override.vi" Type="VI" URL="../subVIs/Custom-preview-graph-override.vi"/>
 		<Item Name="Data_conv_UI.ctl" Type="VI" URL="../subVIs/Data_conv_UI.ctl"/>
 		<Item Name="error_codes.csv" Type="Document" URL="../error_codes.csv"/>
 		<Item Name="FRA_UDP_get_time.vi" Type="VI" URL="../subVIs/FRA_UDP_get_time.vi"/>
