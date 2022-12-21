@@ -37,8 +37,10 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.9"
+#define FW_VERSION "V1.91"
 /*
+V1.91 changelog
+*defined framework and libraries version
 V1.9 changelog
 *configuration sets adjusted - added set 8 (10x H2 sensor)
 V1.8 changelog
