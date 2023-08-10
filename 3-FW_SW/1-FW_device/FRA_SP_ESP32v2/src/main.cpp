@@ -37,8 +37,11 @@
 //custom parameters
 #define ANNOUNCEMENTS_PERIOD 2000 //in ms
 #define LMP91000_ADR 0x48 //checked with scanner
-#define FW_VERSION "V1.91"
+#define FW_VERSION "V2.0"
 /*
+V2.0 changelog
+* updated configuration list 
+* A3.2 power enabled by default (ammonia sensor is obsolete, now poert used for NDIR module and T+RH sensor power)
 V1.91 changelog
 *defined framework and libraries version
 V1.9 changelog
@@ -113,7 +116,6 @@ uint8_t error_code[50]; //error flag, 0 at index 0 means no error
 bool use_sd=1;
 bool use_veml=1;//light sensor VEML7700
 bool use_Si7021=1;//Temperature and RH sensor
-bool use_tgs24444=0; //amonia sensor
 bool UDP_read_flag = 0;
 bool BTN1_flag = 0;
 uint8_t LMPreg_TIACN = 0x00;
@@ -216,14 +218,14 @@ void setup(){
   if(!Wire.begin(PIN_SDA,PIN_SCL,400000UL))
     log_error_code(4);
   
-  if (!ioexp_init(0x01,0x3F)){ //unrouted expander outputs low, used low (5V on) except A3.2 is high (5V off).
+  if (!ioexp_init(0x00,0x3F)){ //unrouted expander outputs low, used low (5V on)
     error("failed to init GPIO expander");
     log_error_code(5);
   } else {
     uint8_t port0_check;
     uint8_t port1_check;
     ioexp_read(&port0_check,&port1_check);
-    if (!((port0_check == 0x01)&&(port1_check == 0x3F))){
+    if (!((port0_check == 0x00)&&(port1_check == 0x3F))){
       log_error_code(8); //setting not matching
     }
   }
@@ -270,7 +272,7 @@ void setup(){
 */
 void loop(){
   
-  uint32_t bl = 0;
+  //uint32_t bl = 0;
   uint32_t timer1 = 0;
   uint8_t adc_active_channel = 0; //looping thorugh channels of ADC
   uint32_t adc_last_measurement_ms = 0; //millis of last measurement
@@ -298,7 +300,6 @@ void loop(){
       s11_start_measurement,
       s12_save_data,
       s13_start_sample,
-      s14_get_amonia,
       s15_setup_lmp91000,
     } state;
   state = s0_START;
@@ -358,7 +359,7 @@ void loop(){
               setup_time(); //update time from master
               if (receiveUDP_Buffer[5])//not equal 0
                 adc_period_ms = receiveUDP_Buffer[5]*100; //sample period setting in ms, received in 0.1s units
-              if (receiveUDP_Buffer[6] & 0b01) {use_tgs24444 = 1; adc_period_ms = 250;PRINTDEBUG("Amonia will be used\n");}
+              if (receiveUDP_Buffer[6] & 0b01) {PRINTDEBUG("Amonia TGS2444 sensor is deprecated. Continue as normal.\n");}
               if (receiveUDP_Buffer[6] & 0b11110) {
                 conf_set = receiveUDP_Buffer[6];
                 if (conf_set & 0b00011110){ //any bit 4-1 is non zero, sending config for A3.1 - always manual register control from labview
@@ -480,10 +481,7 @@ void loop(){
         adc_active_channel++;
         if (adc_active_channel == 4){
           adc_active_channel = 0;
-          if (use_tgs24444)
-            state = s14_get_amonia;
-          else
-            state = s12_save_data;
+          state = s12_save_data;
           break;
         }
         state = s5_set_PGA;
@@ -584,46 +582,7 @@ void loop(){
           }
         state = s5_set_PGA;
         break;
-      case s14_get_amonia:
-        //prepare ADC
-        #define FAKE_ADDR 0x01 //I2C address only for purpose to keep up communication
-        adc3.setGain(ADS1115_PGA_6P144);//to adjust for reasonable range
-        adc3.setMultiplexer(ADS1115_MUX_P2_NG); //A3.2
-        adc3.setRate(ADS1115_RATE_860);
-        delayMicroseconds(500);
-        //14ms pulse on power
-        //5ms pulse low on SDA, 2ms after power pulse. - low pass is on sensor board.
-        if(!ioexp_read(&port0_check,&port1_check)){
-            PRINTDEBUG("failed to read IO exp status\n");
-            log_error_code(9);
-          }
-        delay(1);//wait for SDA to rise after lowpass
-        ioexp_out_set(port0_check & 0b11111110,port1_check); //turn on A3.2 5V
-        delayMicroseconds(1850);//tuned value kinda
-        //does mor matter much if I begin sooner, because comparator
-        //does react on changes only after 2.2ms after powerup
-        //keep some dummy communication on I2C so SDA is not high
-        //low pass and comparator will keep the high pulse on FET
-        for (uint16_t quee=0;quee<34;quee++){//110us one iteration
-          Wire.beginTransmission(FAKE_ADDR);
-          Wire.endTransmission();
-          delayMicroseconds(1);
-        }
-        adc3.triggerConversion();
-        if(!adc3.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT)){delayMicroseconds(1);};
-        //puse to FET ends automatically after about 200us
-        ets_delay_us(6800); //tuned value - 
-        //need to wait to turn off power to sensor. only after ADC can be read via I2C
-        ioexp_out_set(port0_check | 0b00000001,port1_check); //turn off A3.2 5V
-        delayMicroseconds(500);
-        //if(!adc1.pollConversion(I2CDEV_DEFAULT_READ_TIMEOUT)){delayMicroseconds(1);};
-        adc_result_raw[2][2] = adc3.getConversion(0);//do not poll
-        adc_PGA_setting[2][2] = 0xA0; //A3.2  (6), range 6.44v (0)
-        //recover ADC settings as before
-        
-        adc3.setRate(ADS1115_RATE_64); //back to default rate for this setup
-        state = s12_save_data;
-        break;
+      // case s14_get_amonia: removed
       case s15_setup_lmp91000:{
         LMP91000_setup(conf_set);
         state = s11_start_measurement;
@@ -819,7 +778,7 @@ uint8_t ioexp_init(uint8_t port1,uint8_t port2){
   }
   delay(1);
   Wire.beginTransmission(IOEXP_ADDR);
-  Wire.write(0x04); //polarity inversion
+  Wire.write(0x04); //polarity inversion register
   Wire.write(0x00); // no inversion
   Wire.write(0x00); // no inversion
   error_ioexp = Wire.endTransmission(); 
@@ -1045,18 +1004,10 @@ void LMP91000_setup(uint8_t configuration_set){
   LMPsett--; //decrement, as it will be used in settings arrays defined at LMP91000conf.h
 
   uint8_t statusLMP;
-  uint8_t last_port_LMP;
+  uint8_t last_port_LMP = 9;
   if(!ioexp_out_set(0x00,0x00)) PRINTDEBUG("err\n");
   //to avoid 2 active LMPs on I2C bus
   PRINTDEBUG("set all AI to high\n");
-  if (use_tgs24444){
-    ioexp_out_set_AIport(9,0); //power off to Amonia
-    last_port_LMP = 8;
-    PRINTDEBUG("A3.2 to low\n");
-  } else {
-    last_port_LMP = 9;
-    if(!ioexp_out_set(0x00,0x00)) PRINTDEBUG("err\n");
-  }
   
   for (int qui=0;qui<=last_port_LMP;qui++){ //scan channels
     if(modecn[LMPsett][qui]!=0){ //is turned on in the selected set?

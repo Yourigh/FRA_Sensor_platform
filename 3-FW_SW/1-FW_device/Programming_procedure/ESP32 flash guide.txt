@@ -31,3 +31,10 @@ Configure as follows:
 3. if there are issues, try different UART converter (ESP-prog instead built in on board)
 and update esptool folder from
 https://github.com/espressif/esptool
+
+4. In case of issue:
+"A fatal error occurred: Failed to connect to ESP32: Timed out waiting for packet header"
+Several solutions:
+* short GPIO0 to GND in connecting (sync) phase. Short is easiest on U$2 connector, pins 4+6 (ones closest to R7)
+* Or change C16 from 100n to 4.7uF (or 10uF).
+* or use some different version of esptool? (not tested)
