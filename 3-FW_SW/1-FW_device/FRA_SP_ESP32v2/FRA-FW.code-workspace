@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "../temporary_untracked/FRA_i2c_scanner"
 		}
 	],
 	"settings": {

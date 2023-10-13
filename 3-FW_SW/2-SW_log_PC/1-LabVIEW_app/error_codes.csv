@@ -17,7 +17,7 @@
 16,Time sent from master not accepted - set the clock (redundant to 7)
 17,SD card not used in this measurement
 18,VEML7700 light sensor not found - continue without
-19,Unknows state machine state, restart the device!
+19,Unknows state machine state - restart the device!
 20,Si7021 RH T sensor not found at initalization - continue without
 21,Si7021 RH T sensor not responding - continue without
 22,Electrochemical sensor not found at A1.0
@@ -41,3 +41,8 @@
 40,Electrochemical sensor configuration readback failed at A2.3
 41,Electrochemical sensor configuration readback failed at A3.1
 42,Electrochemical sensor configuration readback failed at A3.2
+43,NDIR module not found - continue without
+44,NDIR module data not valid (all 0xFFFF)
+45,NDIR module error - common voltage off
+46,NDIR module error - ACT or REF clipping
+47,NDIR module error - sensor not detected (temperature <-25 degC)

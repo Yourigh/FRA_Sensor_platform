@@ -137,3 +137,5 @@ Desktop.ini
 .cache/
 #*.csv
 DATA/
+
+temporary_untracked/
